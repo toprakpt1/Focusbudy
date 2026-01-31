@@ -9,7 +9,7 @@ import { ProgressBar } from '../src/components/ui/ProgressBar';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { usePomodoro } from '../src/hooks/usePomodoro';
 import { useUserStore } from '../src/stores/useUserStore';
-import { useTheme } from '../src/constants/theme';
+import { useTheme, THEME } from '../src/constants/theme';
 
 const { height } = Dimensions.get('window');
 const IS_SMALL_DEVICE = height < 700;

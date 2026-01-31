@@ -49,10 +49,13 @@ export const useTimerStore = create<TimerStore>()(
             },
 
             resume: () => {
-                const now = Date.now();
+                const { timeLeft, totalTime } = get();
+                // Keep remaining time: startTimestamp so that elapsed = (totalTime - timeLeft)
+                const elapsedSeconds = totalTime - timeLeft;
+                const startTimestamp = Date.now() - elapsedSeconds * 1000;
                 set({
                     status: 'running',
-                    startTimestamp: now,
+                    startTimestamp,
                 });
             },
 
@@ -141,9 +144,9 @@ export const useTimerStore = create<TimerStore>()(
                 }
 
                 set({
-                    status: newTimeLeft > 0 ? status : 'idle',
+                    status: newTimeLeft > 0 ? 'paused' : 'idle', // Always pause on sync, don't auto-start
                     timeLeft: newTimeLeft,
-                    startTimestamp: status === 'running' ? Date.now() : null,
+                    startTimestamp: null, // Clear timestamp to prevent auto-counting
                 });
             },
         }),

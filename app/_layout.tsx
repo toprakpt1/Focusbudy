@@ -15,7 +15,7 @@ export default function RootLayout() {
 
     return (
         <SafeAreaProvider>
-            <StatusBar style={theme.colors.backgrounds.main === '#FFFFFF' || theme.colors.backgrounds.main === '#F8FAFC' ? 'dark' : 'light'} />
+            <StatusBar style={theme.colors.backgrounds.main === '#FFFFFF' || theme.colors.backgrounds.main === '#F8FAFC' || theme.colors.backgrounds.main === '#FFF8F5' || theme.colors.backgrounds.main === '#F5F3FF' ? 'dark' : 'light'} />
             <Stack
                 screenOptions={{
                     headerShown: false,

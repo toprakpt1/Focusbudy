@@ -20,17 +20,17 @@ const radius = {
     full: 9999,
 } as const;
 
-/** Default theme — pastel, soft colors (default) */
+/** Default theme — renkli pastel (Color Hunt style) */
 const defaultTheme = {
     colors: {
         primary: {
             cat: '#C4B5FD',   // Pastel purple
-            dog: '#FDBA74',   // Pastel orange
+            dog: '#FDBA74',   // Pastel peach/orange
             panda: '#6EE7B7', // Pastel mint
             fox: '#F9A8D4',   // Pastel pink
         },
         backgrounds: {
-            main: '#F5F3FF',      // Very light lavender
+            main: '#F5F3FF',
             card: 'rgba(255,255,255,0.9)',
             cardSolid: '#EDE9FE',
             overlay: 'rgba(0,0,0,0.5)',
@@ -94,44 +94,44 @@ const defaultTheme = {
     },
 } as const;
 
-/** Dark theme */
+/** Dark theme — koyu pastel (darker pastels on dark bg) */
 const darkTheme = {
     colors: {
         primary: {
-            cat: '#A78BFA',
-            dog: '#FB923C',
-            panda: '#34D399',
-            fox: '#F472B6',
+            cat: '#B8A9E9',   // Pastel lavender
+            dog: '#E8B88C',   // Pastel peach
+            panda: '#7EB89A', // Pastel sage
+            fox: '#E8A0BF',   // Pastel rose
         },
         backgrounds: {
-            main: '#0C0A14',
-            card: 'rgba(30,27,45,0.85)',
-            cardSolid: '#1E1B2D',
+            main: '#1A1625',     // Deep pastel dark
+            card: 'rgba(37,34,53,0.9)',
+            cardSolid: '#252235',
             overlay: 'rgba(0,0,0,0.7)',
-            focus: '#08060C',
+            focus: '#14121D',
         },
         text: {
-            primary: '#FAFAFA',
-            secondary: '#A1A1AA',
-            inverse: '#0C0A14',
-            muted: '#71717A',
+            primary: '#F5F3FF',   // Açık metin (okunaklı)
+            secondary: '#B8B0C9', // Pastel gri
+            inverse: '#1A1625',
+            muted: '#8B85A0',
         },
         accents: {
-            success: '#22C55E',
-            warning: '#F59E0B',
-            streak: '#EAB308',
-            xp: '#0EA5E9',
+            success: '#7EB89A',
+            warning: '#E8B88C',
+            streak: '#E8D88C',
+            xp: '#7EB8D8',
         },
         ui: {
-            border: 'rgba(255,255,255,0.08)',
-            borderStrong: 'rgba(255,255,255,0.12)',
+            border: 'rgba(245,243,255,0.1)',
+            borderStrong: 'rgba(245,243,255,0.18)',
             shadow: '#000000',
-            disabled: '#3F3F46',
+            disabled: '#4A4558',
         },
         glow: {
-            primary: 'rgba(167,139,250,0.35)',
-            streak: 'rgba(234,179,8,0.25)',
-            xp: 'rgba(14,165,233,0.25)',
+            primary: 'rgba(184,169,233,0.3)',
+            streak: 'rgba(232,216,140,0.25)',
+            xp: 'rgba(126,184,216,0.25)',
         },
     },
     spacing,
@@ -168,44 +168,44 @@ const darkTheme = {
     },
 } as const;
 
-/** White / light theme — clean white */
+/** Light theme — açık pastel (çok açık, yumuşak) */
 const whiteTheme = {
     colors: {
         primary: {
-            cat: '#7C3AED',
-            dog: '#EA580C',
-            panda: '#059669',
-            fox: '#DB2777',
+            cat: '#C4B5FD',   // Açık pastel mor
+            dog: '#FDBA74',   // Açık pastel şeftali
+            panda: '#86EFAC', // Açık pastel nane
+            fox: '#F9A8D4',   // Açık pastel pembe
         },
         backgrounds: {
-            main: '#FFFFFF',
+            main: '#FFF8F5',     // Çok açık krem
             card: 'rgba(255,255,255,0.95)',
-            cardSolid: '#F8FAFC',
-            overlay: 'rgba(0,0,0,0.5)',
-            focus: '#F1F5F9',
+            cardSolid: '#FEF3E8',
+            overlay: 'rgba(0,0,0,0.4)',
+            focus: '#F5F0FF',
         },
         text: {
-            primary: '#0F172A',
-            secondary: '#64748B',
-            inverse: '#FFFFFF',
-            muted: '#94A3B8',
+            primary: '#2D2A3D',
+            secondary: '#6B6578',
+            inverse: '#FFF8F5',
+            muted: '#8B8598',
         },
         accents: {
-            success: '#10B981',
-            warning: '#F59E0B',
-            streak: '#EAB308',
-            xp: '#0284C7',
+            success: '#6EE7B7',
+            warning: '#FCD34D',
+            streak: '#FDE047',
+            xp: '#7DD3FC',
         },
         ui: {
-            border: '#E2E8F0',
-            borderStrong: '#CBD5E1',
+            border: 'rgba(45,42,61,0.12)',
+            borderStrong: 'rgba(45,42,61,0.2)',
             shadow: '#000000',
-            disabled: '#CBD5E1',
+            disabled: '#D1CBD8',
         },
         glow: {
-            primary: 'rgba(124,58,237,0.25)',
-            streak: 'rgba(234,179,8,0.2)',
-            xp: 'rgba(2,132,199,0.2)',
+            primary: 'rgba(196,181,253,0.3)',
+            streak: 'rgba(253,224,71,0.25)',
+            xp: 'rgba(125,211,252,0.25)',
         },
     },
     spacing,
