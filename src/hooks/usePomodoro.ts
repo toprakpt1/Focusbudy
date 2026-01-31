@@ -21,7 +21,7 @@ export const usePomodoro = () => {
     useEffect(() => {
         if (timer.status === 'completed' && timer.phase === 'work') {
             // Work session completed - award XP
-            user.incrementSessionsToday();
+            user.incrementSessionsToday(timer.totalTime);
             user.addFocusTime(timer.totalTime);
         }
     }, [timer.status, timer.phase]);

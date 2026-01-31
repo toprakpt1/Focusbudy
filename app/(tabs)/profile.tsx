@@ -16,6 +16,8 @@ const THEME_OPTIONS: { id: ThemeId; label: string; emoji: string }[] = [
     { id: 'white', label: 'Beyaz', emoji: '☀️' },
 ];
 
+import { FocusHeatmap } from '../../src/components/profile/FocusHeatmap';
+
 export default function ProfileScreen() {
     const theme = useTheme();
     const themeId = useThemeStore((s) => s.themeId);
@@ -27,6 +29,7 @@ export default function ProfileScreen() {
         streak,
         totalFocusTime,
         sessionsToday,
+        history,
     } = useUserStore();
 
     const levelProgress = getLevelProgress(xp, level);
@@ -172,25 +175,9 @@ export default function ProfileScreen() {
                     </Card>
                 </View>
 
-                {/* Weekly Activity */}
+                {/* Focus Heatmap */}
                 <Card style={styles.activityCard}>
-                    <Text size="lg" weight="semibold" style={styles.sectionTitle}>📊 This Week</Text>
-                    <View style={styles.weekChart}>
-                        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
-                            <View key={`weekday-${index}`} style={styles.dayColumn}>
-                                <View
-                                    style={[
-                                        styles.dayBar,
-                                        {
-                                            height: index < 5 ? '80%' : '30%',
-                                            backgroundColor: index < 5 ? theme.colors.primary.cat : theme.colors.ui.border,
-                                        },
-                                    ]}
-                                />
-                                <Text size="xs" color={theme.colors.text.secondary}>{day}</Text>
-                            </View>
-                        ))}
-                    </View>
+                    <FocusHeatmap data={history || {}} />
                 </Card>
 
                 {/* Today's Stats */}
@@ -208,6 +195,6 @@ export default function ProfileScreen() {
                     </View>
                 </Card>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }

@@ -172,40 +172,40 @@ const darkTheme = {
 const whiteTheme = {
     colors: {
         primary: {
-            cat: '#BFAE9F',   // primary-100
-            dog: '#937962',   // primary-200
-            panda: '#FFFFFF', // primary-300
-            fox: '#C9BEB9',   // accent-100
+            cat: '#FF6600',   // primary-100
+            dog: '#ff983f',   // primary-200
+            panda: '#ffffa1', // primary-300
+            fox: '#F5F5F5',   // accent-100
         },
         backgrounds: {
-            main: '#F5EFE8',     // bg-100
-            card: 'rgba(238,227,215,0.95)', // bg-200
-            cardSolid: '#EEE3D7',           // bg-200
+            main: '#ffffff',     // bg-100
+            card: 'rgba(245,245,245,0.95)', // bg-200
+            cardSolid: '#f5f5f5',           // bg-200
             overlay: 'rgba(0,0,0,0.4)',
-            focus: '#FFFFFF',   // bg-300
+            focus: '#cccccc',   // bg-300
         },
         text: {
-            primary: '#4D4D4D',   // text-100
-            secondary: '#9e9e9e', // text-200
-            inverse: '#4D4D4D',
-            muted: '#9e9e9e',
+            primary: '#1d1f21',   // text-100
+            secondary: '#444648',  // text-200
+            inverse: '#ffffff',   // buton metni (turuncu üzerinde)
+            muted: '#444648',
         },
         accents: {
-            success: '#937962',
-            warning: '#978178',
-            streak: '#978178',   // accent-200
-            xp: '#BFAE9F',
+            success: '#ff983f',
+            warning: '#929292',
+            streak: '#929292',   // accent-200
+            xp: '#FF6600',
         },
         ui: {
-            border: 'rgba(77,77,77,0.12)',
-            borderStrong: 'rgba(77,77,77,0.2)',
+            border: 'rgba(29,31,33,0.12)',
+            borderStrong: 'rgba(29,31,33,0.2)',
             shadow: '#000000',
-            disabled: '#C9BEB9',
+            disabled: '#cccccc',
         },
         glow: {
-            primary: 'rgba(191,174,159,0.3)',
-            streak: 'rgba(151,129,120,0.25)',
-            xp: 'rgba(191,174,159,0.25)',
+            primary: 'rgba(255,102,0,0.35)',
+            streak: 'rgba(146,146,146,0.25)',
+            xp: 'rgba(255,102,0,0.3)',
         },
     },
     spacing,
@@ -233,9 +233,9 @@ const whiteTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#BFAE9F',
+            shadowColor: '#FF6600',
             shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.3,
+            shadowOpacity: 0.35,
             shadowRadius: 14,
             elevation: 8,
         },

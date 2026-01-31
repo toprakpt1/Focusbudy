@@ -3,12 +3,19 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { UserStats, CompanionType } from '../types';
 
+
+interface DailyStats {
+    count: number;
+    duration: number; // in seconds
+}
+
 interface UserStore extends UserStats {
+    history: Record<string, DailyStats>; // YYYY-MM-DD -> Stats
     addXP: (amount: number) => void;
     incrementStreak: () => void;
     resetStreak: () => void;
     addFocusTime: (seconds: number) => void;
-    incrementSessionsToday: () => void;
+    incrementSessionsToday: (sessionDuration: number) => void;
     setActiveCompanion: (companion: CompanionType) => void;
     unlockCompanion: (companion: CompanionType) => void;
     spendCurrency: (amount: number) => boolean;
@@ -21,6 +28,8 @@ const XP_PER_LEVEL = 100;
 const XP_PER_SESSION = 25;
 const CURRENCY_PER_SESSION = 10;
 
+const getTodayString = () => new Date().toISOString().split('T')[0];
+
 export const useUserStore = create<UserStore>()(
     persist(
         (set, get) => ({
@@ -28,6 +37,7 @@ export const useUserStore = create<UserStore>()(
             xp: 0,
             level: 1,
             streak: 0,
+            history: {},
             totalFocusTime: 0,
             sessionsToday: 0,
             currency: 0,
@@ -68,13 +78,31 @@ export const useUserStore = create<UserStore>()(
                 });
             },
 
-            incrementSessionsToday: () => {
+            incrementSessionsToday: (sessionDuration: number) => {
                 set((state) => {
+                    const today = getTodayString();
+                    const currentHistory = state.history || {};
+                    const todayStats = currentHistory[today] || { count: 0, duration: 0 };
+
                     const newCount = state.sessionsToday + 1;
+
+                    // Update history
+                    const newHistory = {
+                        ...currentHistory,
+                        [today]: {
+                            count: todayStats.count + 1,
+                            duration: todayStats.duration + sessionDuration
+                        }
+                    };
+
                     // Award XP and currency
                     get().addXP(XP_PER_SESSION);
                     get().addCurrency(CURRENCY_PER_SESSION);
-                    return { sessionsToday: newCount };
+                    
+                    return { 
+                        sessionsToday: newCount,
+                        history: newHistory
+                    };
                 });
             },
 
