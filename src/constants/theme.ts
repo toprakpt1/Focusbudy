@@ -20,44 +20,44 @@ const radius = {
     full: 9999,
 } as const;
 
-/** Default theme — renkli pastel (Color Hunt style) */
+/** Default theme — primary-100/200/300, accent, bg-100/200/300 */
 const defaultTheme = {
     colors: {
         primary: {
-            cat: '#C4B5FD',   // Pastel purple
-            dog: '#FDBA74',   // Pastel peach/orange
-            panda: '#6EE7B7', // Pastel mint
-            fox: '#F9A8D4',   // Pastel pink
+            cat: '#FF7F50',   // primary-100
+            dog: '#dd6236',   // primary-200
+            panda: '#8f1e00', // primary-300
+            fox: '#8B4513',   // accent-100
         },
         backgrounds: {
-            main: '#F5F3FF',
-            card: 'rgba(255,255,255,0.9)',
-            cardSolid: '#EDE9FE',
+            main: '#F7EEDD',     // bg-100
+            card: 'rgba(237,228,211,0.9)',  // bg-200
+            cardSolid: '#ede4d3',           // bg-200
             overlay: 'rgba(0,0,0,0.5)',
-            focus: '#E9E5FF',
+            focus: '#c4bcaa',   // bg-300 (c4bca → c4bcaa)
         },
         text: {
-            primary: '#1E1B4B',
-            secondary: '#5B5488',
-            inverse: '#F5F3FF',
-            muted: '#7C7A9E',
+            primary: '#000000',   // text-100
+            secondary: '#2c2c2c', // text-200
+            inverse: '#F7EEDD',   // okunaklı buton metni
+            muted: '#2c2c2c',
         },
         accents: {
-            success: '#34D399',
-            warning: '#FBBF24',
-            streak: '#FACC15',
-            xp: '#38BDF8',
+            success: '#8B4513',
+            warning: '#dd6236',
+            streak: '#ffd299',   // accent-200
+            xp: '#FF7F50',
         },
         ui: {
-            border: 'rgba(30,27,75,0.12)',
-            borderStrong: 'rgba(30,27,75,0.2)',
+            border: 'rgba(0,0,0,0.12)',
+            borderStrong: 'rgba(0,0,0,0.2)',
             shadow: '#000000',
-            disabled: '#C4C0D4',
+            disabled: '#c4bcaa',
         },
         glow: {
-            primary: 'rgba(196,181,253,0.4)',
-            streak: 'rgba(250,204,21,0.3)',
-            xp: 'rgba(56,189,248,0.3)',
+            primary: 'rgba(255,127,80,0.4)',
+            streak: 'rgba(255,210,153,0.3)',
+            xp: 'rgba(255,127,80,0.3)',
         },
     },
     spacing,
@@ -85,7 +85,7 @@ const defaultTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#C4B5FD',
+            shadowColor: '#FF7F50',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.35,
             shadowRadius: 14,
@@ -94,44 +94,44 @@ const defaultTheme = {
     },
 } as const;
 
-/** Dark theme — koyu pastel (darker pastels on dark bg) */
+/** Dark theme — primary-100/200/300, accent, bg-100/200/300 */
 const darkTheme = {
     colors: {
         primary: {
-            cat: '#B8A9E9',   // Pastel lavender
-            dog: '#E8B88C',   // Pastel peach
-            panda: '#7EB89A', // Pastel sage
-            fox: '#E8A0BF',   // Pastel rose
+            cat: '#0D6E6E',   // primary-100
+            dog: '#4a9d9c',   // primary-200
+            panda: '#afffff', // primary-300
+            fox: '#FF3D3D',   // accent-100
         },
         backgrounds: {
-            main: '#1A1625',     // Deep pastel dark
-            card: 'rgba(37,34,53,0.9)',
-            cardSolid: '#252235',
+            main: '#0D1F2D',     // bg-100
+            card: 'rgba(29,46,61,0.9)',   // bg-200
+            cardSolid: '#1d2e3d',         // bg-200
             overlay: 'rgba(0,0,0,0.7)',
-            focus: '#14121D',
+            focus: '#354656',   // bg-300
         },
         text: {
-            primary: '#F5F3FF',   // Açık metin (okunaklı)
-            secondary: '#B8B0C9', // Pastel gri
-            inverse: '#1A1625',
-            muted: '#8B85A0',
+            primary: '#FFFFFF',   // text-100
+            secondary: '#e0e0e0', // text-200
+            inverse: '#0D1F2D',
+            muted: '#e0e0e0',
         },
         accents: {
-            success: '#7EB89A',
-            warning: '#E8B88C',
-            streak: '#E8D88C',
-            xp: '#7EB8D8',
+            success: '#4a9d9c',
+            warning: '#FF3D3D',
+            streak: '#ffe0c8',   // accent-200
+            xp: '#afffff',
         },
         ui: {
-            border: 'rgba(245,243,255,0.1)',
-            borderStrong: 'rgba(245,243,255,0.18)',
+            border: 'rgba(255,255,255,0.1)',
+            borderStrong: 'rgba(255,255,255,0.18)',
             shadow: '#000000',
-            disabled: '#4A4558',
+            disabled: '#354656',
         },
         glow: {
-            primary: 'rgba(184,169,233,0.3)',
-            streak: 'rgba(232,216,140,0.25)',
-            xp: 'rgba(126,184,216,0.25)',
+            primary: 'rgba(13,110,110,0.4)',
+            streak: 'rgba(255,224,200,0.25)',
+            xp: 'rgba(175,255,255,0.3)',
         },
     },
     spacing,
@@ -159,7 +159,7 @@ const darkTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#A78BFA',
+            shadowColor: '#0D6E6E',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.4,
             shadowRadius: 16,
@@ -168,44 +168,44 @@ const darkTheme = {
     },
 } as const;
 
-/** Light theme — açık pastel (çok açık, yumuşak) */
+/** Light theme — primary-100/200/300, accent, bg-100/200/300 */
 const whiteTheme = {
     colors: {
         primary: {
-            cat: '#C4B5FD',   // Açık pastel mor
-            dog: '#FDBA74',   // Açık pastel şeftali
-            panda: '#86EFAC', // Açık pastel nane
-            fox: '#F9A8D4',   // Açık pastel pembe
+            cat: '#BFAE9F',   // primary-100
+            dog: '#937962',   // primary-200
+            panda: '#FFFFFF', // primary-300
+            fox: '#C9BEB9',   // accent-100
         },
         backgrounds: {
-            main: '#FFF8F5',     // Çok açık krem
-            card: 'rgba(255,255,255,0.95)',
-            cardSolid: '#FEF3E8',
+            main: '#F5EFE8',     // bg-100
+            card: 'rgba(238,227,215,0.95)', // bg-200
+            cardSolid: '#EEE3D7',           // bg-200
             overlay: 'rgba(0,0,0,0.4)',
-            focus: '#F5F0FF',
+            focus: '#FFFFFF',   // bg-300
         },
         text: {
-            primary: '#2D2A3D',
-            secondary: '#6B6578',
-            inverse: '#FFF8F5',
-            muted: '#8B8598',
+            primary: '#4D4D4D',   // text-100
+            secondary: '#9e9e9e', // text-200
+            inverse: '#4D4D4D',
+            muted: '#9e9e9e',
         },
         accents: {
-            success: '#6EE7B7',
-            warning: '#FCD34D',
-            streak: '#FDE047',
-            xp: '#7DD3FC',
+            success: '#937962',
+            warning: '#978178',
+            streak: '#978178',   // accent-200
+            xp: '#BFAE9F',
         },
         ui: {
-            border: 'rgba(45,42,61,0.12)',
-            borderStrong: 'rgba(45,42,61,0.2)',
+            border: 'rgba(77,77,77,0.12)',
+            borderStrong: 'rgba(77,77,77,0.2)',
             shadow: '#000000',
-            disabled: '#D1CBD8',
+            disabled: '#C9BEB9',
         },
         glow: {
-            primary: 'rgba(196,181,253,0.3)',
-            streak: 'rgba(253,224,71,0.25)',
-            xp: 'rgba(125,211,252,0.25)',
+            primary: 'rgba(191,174,159,0.3)',
+            streak: 'rgba(151,129,120,0.25)',
+            xp: 'rgba(191,174,159,0.25)',
         },
     },
     spacing,
@@ -233,7 +233,7 @@ const whiteTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#7C3AED',
+            shadowColor: '#BFAE9F',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.3,
             shadowRadius: 14,

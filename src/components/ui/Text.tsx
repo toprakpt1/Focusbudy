@@ -35,7 +35,7 @@ export const Text: React.FC<TextProps> = ({
                     fontSize,
                     lineHeight,
                     fontWeight: TYPOGRAPHY.fontWeights[weight],
-                    textColor,
+                    color: textColor,
                     textAlign: align,
                 },
                 style,

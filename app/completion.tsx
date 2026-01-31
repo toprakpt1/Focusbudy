@@ -14,7 +14,7 @@ import { Button } from '../src/components/ui/Button';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
-import { useTheme, THEME } from '../src/constants/theme';
+import { useTheme } from '../src/constants/theme';
 
 export default function CompletionScreen() {
     const theme = useTheme();
