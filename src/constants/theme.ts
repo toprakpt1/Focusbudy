@@ -33,6 +33,7 @@ const defaultTheme = {
             main: '#F7EEDD',     // bg-100
             card: 'rgba(237,228,211,0.9)',  // bg-200
             cardSolid: '#ede4d3',           // bg-200
+            subtle: '#F1E8D9',              // light cream for default
             overlay: 'rgba(0,0,0,0.5)',
             focus: '#c4bcaa',   // bg-300 (c4bca → c4bcaa)
         },
@@ -107,6 +108,7 @@ const darkTheme = {
             main: '#0D1F2D',     // bg-100
             card: 'rgba(29,46,61,0.9)',   // bg-200
             cardSolid: '#1d2e3d',         // bg-200
+            subtle: '#142a3b',            // slightly lighter dark blue for dark
             overlay: 'rgba(0,0,0,0.7)',
             focus: '#354656',   // bg-300
         },
@@ -181,6 +183,7 @@ const whiteTheme = {
             main: '#ffffff',     // bg-100
             card: 'rgba(245,245,245,0.95)', // bg-200
             cardSolid: '#f5f5f5',           // bg-200
+            subtle: '#FAFAFA',              // off-white for white theme
             overlay: 'rgba(0,0,0,0.4)',
             focus: '#cccccc',   // bg-300
         },
@@ -242,7 +245,24 @@ const whiteTheme = {
     },
 } as const;
 
-export type Theme = typeof defaultTheme;
+export interface Theme {
+    colors: {
+        primary: { cat: string; dog: string; panda: string; fox: string };
+        backgrounds: { main: string; card: string; cardSolid: string; subtle: string; overlay: string; focus: string };
+        text: { primary: string; secondary: string; inverse: string; muted: string };
+        accents: { success: string; warning: string; streak: string; xp: string };
+        ui: { border: string; borderStrong: string; shadow: string; disabled: string };
+        glow: { primary: string; streak: string; xp: string };
+    };
+    spacing: typeof spacing;
+    radius: typeof radius;
+    shadows: {
+        soft: any;
+        medium: any;
+        strong: any;
+        glow: any;
+    };
+}
 
 export const THEMES: Record<ThemeId, Theme> = {
     default: defaultTheme,

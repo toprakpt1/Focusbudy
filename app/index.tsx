@@ -40,8 +40,8 @@ export default function OnboardingScreen() {
     }), [theme]);
 
     const companions: Array<{ type: CompanionType; name: string }> = [
-        { type: 'cat', name: '🐱 Cat' },
-        { type: 'dog', name: '🐶 Dog' },
+        { type: 'cat', name: 'Cat' },
+        { type: 'dog', name: 'Dog' },
     ];
 
     const handleSelect = (type: CompanionType) => {

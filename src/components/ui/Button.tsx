@@ -22,7 +22,7 @@ interface ButtonProps extends Omit<PressableProps, 'style'> {
     variant?: 'primary' | 'secondary' | 'ghost';
     size?: 'sm' | 'md' | 'lg';
     disabled?: boolean;
-    icon?: React.ReactNode;
+    icon?: React.ElementType;
     style?: ViewStyle;
 }
 
@@ -32,7 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
     variant = 'primary',
     size = 'md',
     disabled = false,
-    icon,
+    icon: Icon,
     style,
     ...props
 }) => {
@@ -100,8 +100,8 @@ export const Button: React.FC<ButtonProps> = ({
         opacity.value = withSpring(1);
     };
 
-    // Separate custom props from standard Pressable props
-    const { ...pressableProps } = props;
+    const iconColor = variant === 'primary' ? theme.colors.text.inverse : theme.colors.text.primary;
+    const iconSize = size === 'lg' ? 24 : size === 'sm' ? 18 : 20;
 
     return (
         <AnimatedPressable
@@ -117,9 +117,9 @@ export const Button: React.FC<ButtonProps> = ({
                 disabled && styles.disabled,
                 style,
             ]}
-            {...pressableProps}
+            {...props}
         >
-            {icon}
+            {Icon && <Icon size={iconSize} color={iconColor} strokeWidth={2.5} />}
             <Text
                 size={size === 'lg' ? 'lg' : size === 'sm' ? 'sm' : 'md'}
                 weight="semibold"

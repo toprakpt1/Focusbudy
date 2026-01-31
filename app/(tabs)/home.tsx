@@ -12,6 +12,7 @@ import { useUserStore } from '../../src/stores/useUserStore';
 import { getCharacterMood } from '../../src/utils/characterMood';
 import { useScreenSize } from '../../src/hooks/useScreenSize';
 import { useTheme } from '../../src/constants/theme';
+import { Flame, Star, Play, CircleDot } from 'lucide-react-native';
 
 export default function HomeScreen() {
     const theme = useTheme();
@@ -50,6 +51,9 @@ export default function HomeScreen() {
         },
         timerText: { letterSpacing: 2 },
         phaseLabel: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            gap: 6,
             marginTop: theme.spacing.xs,
             letterSpacing: 0.5,
         },
@@ -93,8 +97,8 @@ export default function HomeScreen() {
         <SafeAreaView style={styles.container}>
             {/* Stats Bar — glass-style badges */}
             <View style={styles.statsBar}>
-                <Badge icon="🔥" value={streak} color={theme.colors.accents.streak} />
-                <Badge icon="⭐" value={sessionsToday * 25} color={theme.colors.accents.xp} />
+                <Badge icon={Flame} value={streak} color={theme.colors.accents.streak} />
+                <Badge icon={Star} value={sessionsToday * 25} color={theme.colors.accents.xp} />
             </View>
 
             {/* Character — centered with subtle space */}
@@ -114,17 +118,21 @@ export default function HomeScreen() {
                 <Text size={isSmall ? "huge" : "timer"} weight="bold" align="center" style={[styles.timerText, { transform: [{ scale }] }]}>
                     {formatTime(timeLeft)}
                 </Text>
-                <Text size="md" color={theme.colors.text.secondary} align="center" style={styles.phaseLabel}>
-                    {phase === 'work' ? 'Focus Time' : 'Break Time'}
-                </Text>
+                <View style={styles.phaseLabel}>
+                    <CircleDot size={14} color={phase === 'work' ? theme.colors.primary.cat : theme.colors.accents.xp} />
+                    <Text size="md" color={theme.colors.text.secondary} align="center">
+                        {phase === 'work' ? 'Odaklanma Zamanı' : 'Mola Zamanı'}
+                    </Text>
+                </View>
             </View>
 
             {/* CTA — primary action with glow */}
             <View style={styles.actionContainer}>
                 <Button
-                    label={status === 'idle' ? 'Start Focus' : 'Resume'}
+                    label={status === 'idle' ? 'Odağa Başla' : 'Devam Et'}
                     onPress={handleStart}
                     size="lg"
+                    icon={Play}
                     style={styles.startButton}
                 />
             </View>
@@ -133,7 +141,7 @@ export default function HomeScreen() {
             <View style={styles.progressContainer}>
                 <View style={styles.progressCard}>
                     <Text size="md" weight="semibold" style={styles.progressTitle}>
-                        Today's Sessions
+                        Günün Özeti
                     </Text>
                     <ProgressBar
                         progress={sessionProgress}
@@ -141,7 +149,7 @@ export default function HomeScreen() {
                         height={10}
                     />
                     <Text size="sm" color={theme.colors.text.secondary} style={styles.progressText}>
-                        {sessionsToday}/{targetSessions} completed
+                        {sessionsToday}/{targetSessions} oturum tamamlandı
                     </Text>
                 </View>
             </View>
