@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import Animated, {
     useAnimatedStyle,
@@ -13,9 +14,10 @@ import { Button } from '../src/components/ui/Button';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
-import { THEME } from '../src/constants/theme';
+import { useTheme } from '../src/constants/theme';
 
 export default function CompletionScreen() {
+    const theme = useTheme();
     const router = useRouter();
     const { activeCompanion, xp, level } = useUserStore();
     const reset = useTimerStore((state) => state.reset);
@@ -47,6 +49,39 @@ export default function CompletionScreen() {
         router.replace('/(tabs)/home');
     };
 
+    const styles = useMemo(() => StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.backgrounds.main,
+        },
+        confetti: {
+            position: 'absolute' as const,
+            top: 100,
+            left: 0,
+            right: 0,
+            flexDirection: 'row' as const,
+            justifyContent: 'space-around' as const,
+            zIndex: 10,
+        },
+        content: {
+            flex: 1,
+            justifyContent: 'center' as const,
+            alignItems: 'center' as const,
+            paddingHorizontal: theme.spacing.xl,
+        },
+        title: {
+            marginTop: theme.spacing.xl,
+            marginBottom: theme.spacing.sm,
+        },
+        rewardContainer: {
+            marginTop: theme.spacing.xxl,
+            marginBottom: theme.spacing.xxl,
+            alignItems: 'center' as const,
+            gap: theme.spacing.xs,
+        },
+        button: { width: '100%' as const },
+    }), [theme]);
+
     return (
         <SafeAreaView style={styles.container}>
             {/* Confetti Effect */}
@@ -70,16 +105,16 @@ export default function CompletionScreen() {
                     Great work! 🎉
                 </Text>
 
-                <Text size="lg" color={THEME.colors.text.secondary} align="center">
+                <Text size="lg" color={theme.colors.text.secondary} align="center">
                     You completed a focus session
                 </Text>
 
                 {/* XP Reward */}
                 <View style={styles.rewardContainer}>
-                    <Text size="xl" weight="bold" color={THEME.colors.accents.xp}>
+                    <Text size="xl" weight="bold" color={theme.colors.accents.xp}>
                         +25 XP
                     </Text>
-                    <Text size="md" color={THEME.colors.text.secondary}>
+                    <Text size="md" color={theme.colors.text.secondary}>
                         Level {level} • {xp} XP
                     </Text>
                 </View>
@@ -95,38 +130,3 @@ export default function CompletionScreen() {
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.colors.backgrounds.main,
-    },
-    confetti: {
-        position: 'absolute',
-        top: 100,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        zIndex: 10,
-    },
-    content: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: THEME.spacing.xl,
-    },
-    title: {
-        marginTop: THEME.spacing.xl,
-        marginBottom: THEME.spacing.sm,
-    },
-    rewardContainer: {
-        marginTop: THEME.spacing.xxl,
-        marginBottom: THEME.spacing.xxl,
-        alignItems: 'center',
-        gap: THEME.spacing.xs,
-    },
-    button: {
-        width: '100%',
-    },
-});

@@ -74,14 +74,13 @@ export const useTimerStore = create<TimerStore>()(
 
             tick: () => {
                 set((state) => {
-                    if (state.status !== 'running') return state;
-
-                    const newTimeLeft = Math.max(0, state.timeLeft - 1);
-
+                    if (state.status !== 'running' || state.startTimestamp == null) return state;
+                    // Elapsed-based countdown: avoids double-tick when React runs effects twice (e.g. Strict Mode)
+                    const elapsed = Math.floor((Date.now() - state.startTimestamp) / 1000);
+                    const newTimeLeft = Math.max(0, state.totalTime - elapsed);
                     if (newTimeLeft === 0) {
                         get().complete();
                     }
-
                     return { timeLeft: newTimeLeft };
                 });
             },

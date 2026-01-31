@@ -111,7 +111,7 @@ export const CharacterDisplay: React.FC<CharacterDisplayProps> = ({
     const imageSize = sizeMap[size];
 
     return (
-        <Animated.View style={[animatedStyle, style]}>
+        <Animated.View style={[animatedStyle, { width: imageSize, height: imageSize }, style]}>
             <Image
                 source={imageSource}
                 style={[
@@ -129,6 +129,7 @@ export const CharacterDisplay: React.FC<CharacterDisplayProps> = ({
 
 const styles = StyleSheet.create({
     image: {
-        alignSelf: 'center',
+        width: '100%',
+        height: '100%',
     },
 });

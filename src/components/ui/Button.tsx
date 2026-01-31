@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     Pressable,
     StyleSheet,
@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Text } from './Text';
 import { useScreenSize } from '../../hooks/useScreenSize';
-import { THEME } from '../../constants/theme';
+import { useTheme } from '../../constants/theme';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -36,9 +36,54 @@ export const Button: React.FC<ButtonProps> = ({
     style,
     ...props
 }) => {
+    const theme = useTheme();
     const scale = useSharedValue(1);
     const opacity = useSharedValue(1);
     const { isSmall } = useScreenSize();
+
+    const styles = useMemo(() => ({
+        button: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+            borderRadius: theme.radius.lg,
+            gap: theme.spacing.sm,
+        },
+        primary: {
+            backgroundColor: theme.colors.primary.cat,
+            ...theme.shadows.medium,
+            shadowColor: theme.colors.primary.cat,
+            shadowOpacity: 0.35,
+            shadowRadius: 14,
+        },
+        secondary: {
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderWidth: 1,
+            borderColor: theme.colors.ui.borderStrong,
+        },
+        ghost: {
+            backgroundColor: 'transparent' as const,
+        },
+        sm: {
+            paddingHorizontal: theme.spacing.md,
+            paddingVertical: theme.spacing.sm,
+            minHeight: 36,
+        },
+        md: {
+            paddingHorizontal: theme.spacing.lg,
+            paddingVertical: theme.spacing.md,
+            minHeight: 44,
+        },
+        lg: {
+            paddingHorizontal: theme.spacing.xl,
+            paddingVertical: theme.spacing.lg,
+            minHeight: 52,
+        },
+        disabled: {
+            opacity: 0.5,
+            backgroundColor: theme.colors.ui.disabled,
+        },
+    }), [theme]);
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ scale: scale.value }],
@@ -80,8 +125,8 @@ export const Button: React.FC<ButtonProps> = ({
                 weight="semibold"
                 color={
                     variant === 'primary'
-                        ? THEME.colors.text.inverse
-                        : THEME.colors.text.primary
+                        ? theme.colors.text.inverse
+                        : theme.colors.text.primary
                 }
             >
                 {label}
@@ -89,44 +134,3 @@ export const Button: React.FC<ButtonProps> = ({
         </AnimatedPressable>
     );
 };
-
-const styles = StyleSheet.create({
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: THEME.radius.full,
-        gap: THEME.spacing.sm,
-    },
-    primary: {
-        backgroundColor: THEME.colors.primary.cat,
-        ...THEME.shadows.medium,
-    },
-    secondary: {
-        backgroundColor: THEME.colors.backgrounds.card,
-        borderWidth: 2,
-        borderColor: THEME.colors.ui.border,
-    },
-    ghost: {
-        backgroundColor: 'transparent',
-    },
-    sm: {
-        paddingHorizontal: THEME.spacing.md,
-        paddingVertical: THEME.spacing.sm,
-        minHeight: 36,
-    },
-    md: {
-        paddingHorizontal: THEME.spacing.lg,
-        paddingVertical: THEME.spacing.md,
-        minHeight: 44,
-    },
-    lg: {
-        paddingHorizontal: THEME.spacing.xl,
-        paddingVertical: THEME.spacing.lg,
-        minHeight: 52,
-    },
-    disabled: {
-        opacity: 0.5,
-        backgroundColor: THEME.colors.ui.disabled,
-    },
-});

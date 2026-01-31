@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Text } from '../../src/components/ui/Text';
 import { Button } from '../../src/components/ui/Button';
@@ -10,13 +11,73 @@ import { usePomodoro } from '../../src/hooks/usePomodoro';
 import { useUserStore } from '../../src/stores/useUserStore';
 import { getCharacterMood } from '../../src/utils/characterMood';
 import { useScreenSize } from '../../src/hooks/useScreenSize';
-import { THEME } from '../../src/constants/theme';
+import { useTheme } from '../../src/constants/theme';
 
 export default function HomeScreen() {
+    const theme = useTheme();
     const router = useRouter();
     const { status, phase, timeLeft, formatTime, start, reset } = usePomodoro();
     const { activeCompanion, streak, sessionsToday } = useUserStore();
     const { isSmall, scale } = useScreenSize();
+
+    const styles = useMemo(() => StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.backgrounds.main,
+        },
+        statsBar: {
+            flexDirection: 'row' as const,
+            justifyContent: 'center' as const,
+            gap: theme.spacing.lg,
+            paddingVertical: theme.spacing.lg,
+            paddingHorizontal: theme.spacing.lg,
+        },
+        characterContainer: {
+            justifyContent: 'center' as const,
+            alignItems: 'center' as const,
+            minHeight: 200,
+            maxHeight: 220,
+            paddingVertical: theme.spacing.md,
+        },
+        characterGlow: {
+            borderRadius: theme.radius.xl,
+            padding: theme.spacing.sm,
+        },
+        timerContainer: {
+            paddingHorizontal: theme.spacing.xl,
+            marginBottom: theme.spacing.xl,
+            alignItems: 'center' as const,
+        },
+        timerText: { letterSpacing: 2 },
+        phaseLabel: {
+            marginTop: theme.spacing.xs,
+            letterSpacing: 0.5,
+        },
+        actionContainer: {
+            paddingHorizontal: theme.spacing.xl,
+            marginBottom: theme.spacing.xl,
+        },
+        startButton: {
+            width: '100%' as const,
+            ...theme.shadows.glow,
+        },
+        progressContainer: {
+            paddingHorizontal: theme.spacing.xl,
+            paddingBottom: theme.spacing.xl,
+        },
+        progressCard: {
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderRadius: theme.radius.xl,
+            borderWidth: 1,
+            borderColor: theme.colors.ui.border,
+            padding: theme.spacing.lg,
+        },
+        progressTitle: { marginBottom: theme.spacing.sm },
+        progressText: {
+            marginTop: theme.spacing.sm,
+            textAlign: 'center' as const,
+        },
+    }), [theme]);
 
     const mood = getCharacterMood(status, phase, timeLeft);
 
@@ -30,33 +91,35 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Stats Bar */}
+            {/* Stats Bar — glass-style badges */}
             <View style={styles.statsBar}>
-                <Badge icon="🔥" value={streak} color={THEME.colors.accents.streak} />
-                <Badge icon="⭐" value={sessionsToday * 25} color={THEME.colors.accents.xp} />
+                <Badge icon="🔥" value={streak} color={theme.colors.accents.streak} />
+                <Badge icon="⭐" value={sessionsToday * 25} color={theme.colors.accents.xp} />
             </View>
 
-            {/* Character */}
+            {/* Character — centered with subtle space */}
             <View style={styles.characterContainer}>
-                <CharacterDisplay
-                    type={activeCompanion}
-                    mood={mood}
-                    size={isSmall ? "md" : "lg"}
-                    animated={true}
-                />
+                <View style={styles.characterGlow}>
+                    <CharacterDisplay
+                        type={activeCompanion}
+                        mood={mood}
+                        size={isSmall ? "md" : "lg"}
+                        animated={true}
+                    />
+                </View>
             </View>
 
-            {/* Timer Display */}
+            {/* Timer Display — modern typography */}
             <View style={styles.timerContainer}>
-                <Text size={isSmall ? "huge" : "timer"} weight="bold" align="center" style={{transform: [{scale}]}}>
+                <Text size={isSmall ? "huge" : "timer"} weight="bold" align="center" style={[styles.timerText, { transform: [{ scale }] }]}>
                     {formatTime(timeLeft)}
                 </Text>
-                <Text size="md" color={THEME.colors.text.secondary} align="center">
+                <Text size="md" color={theme.colors.text.secondary} align="center" style={styles.phaseLabel}>
                     {phase === 'work' ? 'Focus Time' : 'Break Time'}
                 </Text>
             </View>
 
-            {/* Action Button */}
+            {/* CTA — primary action with glow */}
             <View style={styles.actionContainer}>
                 <Button
                     label={status === 'idle' ? 'Start Focus' : 'Resume'}
@@ -66,62 +129,22 @@ export default function HomeScreen() {
                 />
             </View>
 
-            {/* Today's Progress */}
+            {/* Today's Progress — card-style section */}
             <View style={styles.progressContainer}>
-                <Text size="md" weight="semibold" style={styles.progressTitle}>
-                    Today's Sessions
-                </Text>
-                <ProgressBar
-                    progress={sessionProgress}
-                    color={THEME.colors.primary.cat}
-                    height={12}
-                />
-                <Text size="sm" color={THEME.colors.text.secondary} style={styles.progressText}>
-                    {sessionsToday}/{targetSessions} completed
-                </Text>
+                <View style={styles.progressCard}>
+                    <Text size="md" weight="semibold" style={styles.progressTitle}>
+                        Today's Sessions
+                    </Text>
+                    <ProgressBar
+                        progress={sessionProgress}
+                        color={theme.colors.primary.cat}
+                        height={10}
+                    />
+                    <Text size="sm" color={theme.colors.text.secondary} style={styles.progressText}>
+                        {sessionsToday}/{targetSessions} completed
+                    </Text>
+                </View>
             </View>
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.colors.backgrounds.main,
-    },
-    statsBar: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        gap: THEME.spacing.md,
-        paddingVertical: THEME.spacing.md,
-    },
-    characterContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: 200,
-    },
-    timerContainer: {
-        paddingHorizontal: THEME.spacing.xl,
-        marginBottom: THEME.spacing.xl,
-        alignItems: 'center',
-    },
-    actionContainer: {
-        paddingHorizontal: THEME.spacing.xl,
-        marginBottom: THEME.spacing.lg,
-    },
-    startButton: {
-        width: '100%',
-    },
-    progressContainer: {
-        paddingHorizontal: THEME.spacing.xl,
-        paddingBottom: THEME.spacing.lg,
-    },
-    progressTitle: {
-        marginBottom: THEME.spacing.sm,
-    },
-    progressText: {
-        marginTop: THEME.spacing.xs,
-        textAlign: 'center',
-    },
-});

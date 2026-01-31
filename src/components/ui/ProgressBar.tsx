@@ -6,7 +6,7 @@ import Animated, {
     withSpring,
     withTiming,
 } from 'react-native-reanimated';
-import { THEME } from '../../constants/theme';
+import { useTheme } from '../../constants/theme';
 
 interface ProgressBarProps {
     progress: number; // 0-1
@@ -18,11 +18,13 @@ interface ProgressBarProps {
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
     progress,
-    color = THEME.colors.primary.cat,
+    color: colorProp,
     height = 8,
     animated = true,
     style,
 }) => {
+    const theme = useTheme();
+    const color = colorProp ?? theme.colors.primary.cat;
     const width = useSharedValue(0);
 
     useEffect(() => {
@@ -59,15 +61,15 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        backgroundColor: THEME.colors.ui.border,
-        borderRadius: THEME.radius.full,
+        backgroundColor: 'rgba(255,255,255,0.06)',
+        borderRadius: 9999,
         overflow: 'hidden',
     },
     fill: {
-        borderRadius: THEME.radius.full,
-        shadowColor: '#000',
+        borderRadius: 9999,
+        shadowColor: '#A78BFA',
         shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        shadowOpacity: 0.25,
+        shadowRadius: 6,
     },
 });

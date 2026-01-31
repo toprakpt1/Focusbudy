@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, SafeAreaView, Alert, Dimensions } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet, Alert, Dimensions, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { X } from 'lucide-react-native';
 import { Text } from '../src/components/ui/Text';
@@ -8,13 +9,13 @@ import { ProgressBar } from '../src/components/ui/ProgressBar';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { usePomodoro } from '../src/hooks/usePomodoro';
 import { useUserStore } from '../src/stores/useUserStore';
-import { THEME } from '../src/constants/theme';
-import { Pressable } from 'react-native';
+import { useTheme } from '../src/constants/theme';
 
 const { height } = Dimensions.get('window');
 const IS_SMALL_DEVICE = height < 700;
 
 export default function FocusScreen() {
+    const theme = useTheme();
     const router = useRouter();
     const {
         status,
@@ -54,19 +55,84 @@ export default function FocusScreen() {
         }
     };
 
-    // Auto-navigate to completion when done
     React.useEffect(() => {
         if (status === 'completed') {
             router.replace('/completion');
         }
     }, [status]);
 
+    const styles = useMemo(() => StyleSheet.create({
+        container: { flex: 1, backgroundColor: theme.colors.backgrounds.focus },
+        header: {
+            flexDirection: 'row' as const,
+            justifyContent: 'flex-end' as const,
+            paddingHorizontal: theme.spacing.lg,
+            paddingTop: theme.spacing.sm,
+            height: 50,
+            alignItems: 'center' as const,
+        },
+        exitButton: {
+            padding: theme.spacing.xs,
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderRadius: 9999,
+        },
+        progressContainer: {
+            paddingHorizontal: theme.spacing.xl,
+            marginVertical: theme.spacing.sm,
+        },
+        contentContainer: {
+            flex: 1,
+            justifyContent: 'space-between' as const,
+            paddingHorizontal: theme.spacing.lg,
+        },
+        characterContainer: {
+            flex: 4,
+            justifyContent: 'center' as const,
+            alignItems: 'center' as const,
+            position: 'relative' as const,
+        },
+        glowEffect: {
+            position: 'absolute' as const,
+            width: 200,
+            height: 200,
+            backgroundColor: theme.colors.backgrounds.overlay,
+            borderRadius: 100,
+            opacity: 0.5,
+        },
+        timerContainer: {
+            flex: 2,
+            justifyContent: 'center' as const,
+            alignItems: 'center' as const,
+        },
+        timerText: {
+            fontVariant: ['tabular-nums'] as const,
+            letterSpacing: 2,
+            color: theme.colors.text.primary,
+        },
+        phaseText: {
+            marginTop: theme.spacing.sm,
+            textTransform: 'uppercase' as const,
+            letterSpacing: 1,
+            opacity: 0.8,
+        },
+        controls: {
+            flex: 1,
+            justifyContent: 'flex-end' as const,
+            paddingBottom: theme.spacing.xl,
+        },
+        actionButton: {
+            width: '100%' as const,
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderWidth: 1,
+            borderColor: theme.colors.ui.border,
+        },
+    }), [theme]);
+
     return (
         <SafeAreaView style={styles.container}>
-            {/* Header Area */}
             <View style={styles.header}>
                 <Pressable onPress={handleExit} style={styles.exitButton} hitSlop={10}>
-                    <X color={THEME.colors.text.primary} size={24} />
+                    <X color={theme.colors.text.primary} size={24} />
                 </Pressable>
             </View>
 
@@ -74,7 +140,7 @@ export default function FocusScreen() {
             <View style={styles.progressContainer}>
                 <ProgressBar
                     progress={getProgress()}
-                    color={THEME.colors.primary[activeCompanion || 'cat']}
+                    color={theme.colors.primary[activeCompanion || 'cat']}
                     height={6}
                 />
             </View>
@@ -98,7 +164,7 @@ export default function FocusScreen() {
                     </Text>
                     <Text
                         size="md"
-                        color={THEME.colors.text.secondary}
+                        color={theme.colors.text.secondary}
                         align="center"
                         style={styles.phaseText}
                     >
@@ -120,73 +186,3 @@ export default function FocusScreen() {
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.colors.backgrounds.focus,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        paddingHorizontal: THEME.spacing.lg,
-        paddingTop: THEME.spacing.sm,
-        height: 50, // Fixed height for header
-        alignItems: 'center',
-    },
-    exitButton: {
-        padding: THEME.spacing.xs,
-        backgroundColor: THEME.colors.backgrounds.card,
-        borderRadius: THEME.radius.full,
-    },
-    progressContainer: {
-        paddingHorizontal: THEME.spacing.xl,
-        marginVertical: THEME.spacing.sm,
-    },
-    contentContainer: {
-        flex: 1, // Takes remaining space
-        justifyContent: 'space-between',
-        paddingHorizontal: THEME.spacing.lg,
-    },
-    characterContainer: {
-        flex: 4, // Dominates space
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-    },
-    glowEffect: {
-        position: 'absolute',
-        width: 200,
-        height: 200,
-        backgroundColor: THEME.colors.backgrounds.overlay,
-        borderRadius: 100,
-        opacity: 0.5,
-    },
-    timerContainer: {
-        flex: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    timerText: {
-        fontVariant: ['tabular-nums'],
-        letterSpacing: 2,
-        color: THEME.colors.text.primary,
-    },
-    phaseText: {
-        marginTop: THEME.spacing.sm,
-        textTransform: 'uppercase',
-        letterSpacing: 1,
-        opacity: 0.8,
-    },
-    controls: {
-        flex: 1, // Bottom section
-        justifyContent: 'flex-end',
-        paddingBottom: THEME.spacing.xl,
-    },
-    actionButton: {
-        width: '100%',
-        backgroundColor: THEME.colors.backgrounds.card,
-        borderWidth: 1,
-        borderColor: THEME.colors.ui.border,
-    }
-});

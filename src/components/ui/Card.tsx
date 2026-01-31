@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     View,
     ViewStyle,
-    StyleSheet,
     Pressable,
     PressableProps,
 } from 'react-native';
@@ -11,7 +10,7 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
-import { THEME } from '../../constants/theme';
+import { useTheme } from '../../constants/theme';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -30,7 +29,29 @@ export const Card: React.FC<CardProps> = ({
     shadow = 'soft',
     ...props
 }) => {
+    const theme = useTheme();
     const scale = useSharedValue(1);
+
+    const styles = useMemo(() => ({
+        card: {
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderRadius: theme.radius.xl,
+            padding: theme.spacing.lg,
+            borderWidth: 1,
+            borderColor: theme.colors.ui.border,
+            overflow: 'hidden' as const,
+            ...theme.shadows[shadow],
+        },
+        selected: {
+            borderColor: theme.colors.primary.cat,
+            borderWidth: 1.5,
+            shadowColor: theme.colors.primary.cat,
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.35,
+            shadowRadius: 12,
+            elevation: 8,
+        },
+    }), [theme, shadow]);
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ scale: scale.value }],
@@ -44,7 +65,6 @@ export const Card: React.FC<CardProps> = ({
         scale.value = withSpring(1);
     };
 
-    // Remove custom props that shouldn't go to Pressable
     const { ...pressableProps } = props;
 
     return (
@@ -59,7 +79,6 @@ export const Card: React.FC<CardProps> = ({
             <View
                 style={[
                     styles.card,
-                    THEME.shadows[shadow],
                     selected && styles.selected,
                     style,
                 ]}
@@ -69,18 +88,3 @@ export const Card: React.FC<CardProps> = ({
         </AnimatedPressable>
     );
 };
-
-const styles = StyleSheet.create({
-    card: {
-        backgroundColor: THEME.colors.backgrounds.card,
-        borderRadius: THEME.radius.lg,
-        padding: THEME.spacing.lg,
-        borderWidth: 2,
-        borderColor: 'transparent',
-    },
-    selected: {
-        borderColor: THEME.colors.primary.cat,
-        shadowColor: THEME.colors.primary.cat,
-        shadowOpacity: 0.3,
-    },
-});

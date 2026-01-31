@@ -2,7 +2,7 @@ import React from 'react';
 import { Text as RNText, TextProps as RNTextProps, StyleSheet } from 'react-native';
 import { TYPOGRAPHY } from '../../constants/typography';
 import { useScreenSize } from '../../hooks/useScreenSize';
-import { THEME } from '../../constants/theme';
+import { useTheme } from '../../constants/theme';
 
 interface TextProps extends RNTextProps {
     size?: keyof typeof TYPOGRAPHY.fontSizes;
@@ -15,15 +15,17 @@ interface TextProps extends RNTextProps {
 export const Text: React.FC<TextProps> = ({
     size = 'md',
     weight = 'regular',
-    color = THEME.colors.text.primary,
+    color,
     align = 'left',
     style,
     children,
     ...props
 }) => {
+    const theme = useTheme();
     const { scale } = useScreenSize();
-    
+    const textColor = color ?? theme.colors.text.primary;
     const fontSize = TYPOGRAPHY.fontSizes[size] * scale;
+    const lineHeight = fontSize * TYPOGRAPHY.lineHeights.normal;
     
     return (
         <RNText
@@ -31,8 +33,9 @@ export const Text: React.FC<TextProps> = ({
                 styles.base,
                 {
                     fontSize,
+                    lineHeight,
                     fontWeight: TYPOGRAPHY.fontWeights[weight],
-                    color,
+                    textColor,
                     textAlign: align,
                 },
                 style,
@@ -46,6 +49,6 @@ export const Text: React.FC<TextProps> = ({
 
 const styles = StyleSheet.create({
     base: {
-        lineHeight: TYPOGRAPHY.lineHeights.normal * TYPOGRAPHY.fontSizes.md,
+        flexShrink: 0,
     },
 });

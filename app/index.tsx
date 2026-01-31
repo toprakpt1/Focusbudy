@@ -1,19 +1,43 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Text } from '../src/components/ui/Text';
 import { Card } from '../src/components/ui/Card';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useScreenSize } from '../src/hooks/useScreenSize';
-import { THEME } from '../src/constants/theme';
+import { useTheme } from '../src/constants/theme';
 import type { CompanionType } from '../src/types';
 
 export default function OnboardingScreen() {
+    const theme = useTheme();
     const router = useRouter();
     const setActiveCompanion = useUserStore((state) => state.setActiveCompanion);
-    const { isSmall, scale } = useScreenSize();
+    const { isSmall } = useScreenSize();
     const [selected, setSelected] = useState<CompanionType | null>(null);
+
+    const styles = useMemo(() => StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.backgrounds.main,
+        },
+        content: {
+            flex: 1,
+            padding: theme.spacing.xl,
+            justifyContent: 'center' as const,
+        },
+        title: {
+            marginBottom: theme.spacing.xxxl,
+            textAlign: 'center' as const,
+        },
+        grid: { gap: theme.spacing.lg },
+        card: {
+            alignItems: 'center' as const,
+            paddingVertical: theme.spacing.lg,
+        },
+        name: { marginTop: theme.spacing.sm },
+    }), [theme]);
 
     const companions: Array<{ type: CompanionType; name: string }> = [
         { type: 'cat', name: '🐱 Cat' },
@@ -62,28 +86,3 @@ export default function OnboardingScreen() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.colors.backgrounds.main,
-    },
-    content: {
-        flex: 1,
-        padding: THEME.spacing.xl,
-        justifyContent: 'center',
-    },
-    title: {
-        marginBottom: THEME.spacing.xxxl,
-        textAlign: 'center',
-    },
-    grid: {
-        gap: THEME.spacing.lg,
-    },
-    card: {
-        alignItems: 'center',
-        paddingVertical: THEME.spacing.lg,
-    },
-    name: {
-        marginTop: THEME.spacing.sm,
-    },
-});

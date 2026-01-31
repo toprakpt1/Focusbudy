@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet, ScrollView, Alert, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '../../src/components/ui/Text';
 import { Card } from '../../src/components/ui/Card';
 import { Button } from '../../src/components/ui/Button';
 import { CharacterDisplay } from '../../src/components/character/CharacterDisplay';
 import { useUserStore } from '../../src/stores/useUserStore';
-import { THEME } from '../../src/constants/theme';
+import { useTheme } from '../../src/constants/theme';
 import type { CompanionType } from '../../src/types';
 
 interface ShopItem {
@@ -20,6 +21,10 @@ const shopItems: ShopItem[] = [
     { type: 'fox', name: 'Fox', price: 750, emoji: '🦊' },
 ];
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const CARD_MIN_WIDTH = Math.min(160, SCREEN_WIDTH * 0.42);
+const SHOP_CARD_MIN_HEIGHT = 200;
+
 export default function ShopScreen() {
     const {
         unlockedCompanions,
@@ -29,6 +34,8 @@ export default function ShopScreen() {
         spendCurrency,
         setActiveCompanion,
     } = useUserStore();
+    
+    const theme = useTheme();
 
     const handlePurchase = (item: ShopItem) => {
         if (currency < item.price) {
@@ -62,6 +69,71 @@ export default function ShopScreen() {
 
     const isUnlocked = (type: CompanionType) => unlockedCompanions.includes(type);
 
+    const styles = useMemo(() => StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: theme.colors.backgrounds.main,
+        },
+        content: {
+            padding: theme.spacing.lg,
+            gap: theme.spacing.lg,
+        },
+        currencyCard: { alignItems: 'center' as const },
+        currencyContent: {
+            alignItems: 'center' as const,
+            gap: theme.spacing.xs,
+        },
+        sectionTitle: { marginTop: theme.spacing.md },
+        grid: {
+            flexDirection: 'row' as const,
+            flexWrap: 'wrap' as const,
+            justifyContent: 'space-between' as const,
+            gap: theme.spacing.md,
+        },
+        companionCard: {
+            width: '48%' as const,
+            flexShrink: 0,
+            alignItems: 'center' as const,
+            paddingVertical: theme.spacing.lg,
+            paddingHorizontal: theme.spacing.sm,
+            gap: theme.spacing.xs,
+        },
+        companionImageWrap: {
+            width: 64,
+            height: 64,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+        },
+        row: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+            gap: 4,
+        },
+        shopCard: {
+            width: '48%' as const,
+            flexShrink: 0,
+            alignItems: 'center' as const,
+            paddingVertical: theme.spacing.md,
+            gap: theme.spacing.sm,
+        },
+        imageContainer: {
+            opacity: 0.3,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+            minHeight: 80,
+            width: '100%' as const,
+            overflow: 'visible' as const,
+        },
+        unlocked: { opacity: 1 },
+        name: { marginTop: theme.spacing.xs },
+        unlockButton: { marginTop: theme.spacing.sm },
+        earnCard: {
+            marginTop: theme.spacing.lg,
+            gap: theme.spacing.sm,
+        },
+    }), [theme]);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.content}>
@@ -71,7 +143,7 @@ export default function ShopScreen() {
                         <Text size="xl" weight="bold">
                             💰 {currency}
                         </Text>
-                        <Text size="sm" color={THEME.colors.text.secondary}>
+                        <Text size="sm" color={theme.colors.text.secondary}>
                             Your Coins
                         </Text>
                     </View>
@@ -87,15 +159,17 @@ export default function ShopScreen() {
                             key={type}
                             selected={activeCompanion === type}
                             onPress={() => handleSelect(type)}
-                            style={styles.companionCard}
+                            style={[styles.companionCard, { minWidth: CARD_MIN_WIDTH }]}
                         >
-                            <CharacterDisplay type={type} mood="idle" size="sm" />
-                            <Text size="md" weight="semibold" align="center" style={styles.name}>
+                            <View style={styles.companionImageWrap}>
+                                <CharacterDisplay type={type} mood="idle" size="sm" />
+                            </View>
+                            <Text size="md" weight="semibold" align="center" style={styles.name} numberOfLines={1}>
                                 {type.charAt(0).toUpperCase() + type.slice(1)}
                             </Text>
                             {activeCompanion === type && (
                                 <View style={styles.row}>
-                                    <Text size="xs" color={THEME.colors.primary.cat}>
+                                    <Text size="xs" color={theme.colors.primary.cat} numberOfLines={1}>
                                         ● Active
                                     </Text>
                                 </View>
@@ -112,7 +186,7 @@ export default function ShopScreen() {
                     {shopItems.map((item) => {
                         const unlocked = isUnlocked(item.type);
                         return (
-                            <Card key={item.type} style={styles.shopCard}>
+                            <Card key={item.type} style={[styles.shopCard, { minWidth: CARD_MIN_WIDTH, minHeight: SHOP_CARD_MIN_HEIGHT }]}>
                                 <View style={[styles.imageContainer, unlocked && styles.unlocked]}>
                                     {unlocked ? (
                                         <CharacterDisplay type={item.type} mood="idle" size="sm" />
@@ -120,12 +194,12 @@ export default function ShopScreen() {
                                         <Text size="huge">🔒</Text>
                                     )}
                                 </View>
-                                <Text size="md" weight="semibold" align="center">
+                                <Text size="md" weight="semibold" align="center" numberOfLines={1}>
                                     {item.emoji} {item.name}
                                 </Text>
                                 {!unlocked && (
                                     <>
-                                        <Text size="sm" color={THEME.colors.text.secondary} align="center">
+                                        <Text size="sm" color={theme.colors.text.secondary} align="center">
                                             💰 {item.price} coins
                                         </Text>
                                         <Button
@@ -138,7 +212,7 @@ export default function ShopScreen() {
                                     </>
                                 )}
                                 {unlocked && (
-                                    <Text size="xs" color={THEME.colors.accents.success} align="center">
+                                    <Text size="xs" color={theme.colors.accents.success} align="center">
                                         ✓ Unlocked
                                     </Text>
                                 )}
@@ -152,7 +226,7 @@ export default function ShopScreen() {
                     <Text size="md" weight="semibold" align="center">
                         💡 Earn More Coins
                     </Text>
-                    <Text size="sm" color={THEME.colors.text.secondary} align="center">
+                    <Text size="sm" color={theme.colors.text.secondary} align="center">
                         Complete focus sessions to earn 10 coins each!
                     </Text>
                 </Card>
@@ -160,66 +234,3 @@ export default function ShopScreen() {
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.colors.backgrounds.main,
-    },
-    content: {
-        padding: THEME.spacing.lg,
-        gap: THEME.spacing.lg,
-    },
-    currencyCard: {
-        alignItems: 'center',
-    },
-    currencyContent: {
-        alignItems: 'center',
-        gap: THEME.spacing.xs,
-    },
-    sectionTitle: {
-        marginTop: THEME.spacing.md,
-    },
-    grid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between', // Changed from gap to space-between for better alignment
-        gap: THEME.spacing.md,
-    },
-    companionCard: {
-        width: '48%', // Slightly increased width
-        alignItems: 'center',
-        paddingVertical: THEME.spacing.lg,
-        gap: THEME.spacing.xs,
-    },
-    row: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 4
-    },
-    shopCard: {
-        width: '48%',
-        alignItems: 'center',
-        gap: THEME.spacing.sm,
-    },
-    imageContainer: {
-        opacity: 0.3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 80, // Fixed height for consistency
-    },
-    unlocked: {
-        opacity: 1,
-    },
-    name: {
-        marginTop: THEME.spacing.xs,
-    },
-    unlockButton: {
-        marginTop: THEME.spacing.sm,
-    },
-    earnCard: {
-        marginTop: THEME.spacing.lg,
-        gap: THEME.spacing.sm,
-    },
-});
