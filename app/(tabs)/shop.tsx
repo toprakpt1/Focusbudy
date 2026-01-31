@@ -34,7 +34,7 @@ export default function ShopScreen() {
         spendCurrency,
         setActiveCompanion,
     } = useUserStore();
-    
+
     const theme = useTheme();
 
     const handlePurchase = (item: ShopItem) => {

@@ -9,11 +9,22 @@ import { useUserStore } from '../../src/stores/useUserStore';
 import { useThemeStore, type ThemeId } from '../../src/stores/useThemeStore';
 import { formatDuration, getLevelProgress } from '../../src/utils/formatters';
 import { useTheme } from '../../src/constants/theme';
+import {
+    Flame,
+    Timer,
+    Trophy,
+    Palette,
+    Moon,
+    Sun,
+    Flower2,
+    Zap, // For sessions
+    Star // For XP
+} from 'lucide-react-native';
 
-const THEME_OPTIONS: { id: ThemeId; label: string; emoji: string }[] = [
-    { id: 'default', label: 'Pastel (Varsayılan)', emoji: '🌸' },
-    { id: 'dark', label: 'Koyu', emoji: '🌙' },
-    { id: 'white', label: 'Beyaz', emoji: '☀️' },
+const THEME_OPTIONS: { id: ThemeId; label: string; Icon: React.ElementType }[] = [
+    { id: 'default', label: 'Pastel (Varsayılan)', Icon: Flower2 },
+    { id: 'dark', label: 'Koyu', Icon: Moon },
+    { id: 'white', label: 'Beyaz', Icon: Sun },
 ];
 
 import { FocusHeatmap } from '../../src/components/profile/FocusHeatmap';
@@ -52,6 +63,8 @@ export default function ProfileScreen() {
         levelHeader: {
             flexDirection: 'row' as const,
             justifyContent: 'center' as const,
+            alignItems: 'center' as const,
+            gap: theme.spacing.sm,
         },
         xpText: { textAlign: 'center' as const },
         statsGrid: {
@@ -62,23 +75,33 @@ export default function ProfileScreen() {
             flex: 1,
             alignItems: 'center' as const,
             gap: theme.spacing.xs,
+            paddingVertical: theme.spacing.lg,
         },
         activityCard: { gap: theme.spacing.md },
-        sectionTitle: { marginBottom: theme.spacing.sm },
-        weekChart: {
+        sectionHeader: {
             flexDirection: 'row' as const,
-            justifyContent: 'space-between' as const,
-            height: 120,
-            alignItems: 'flex-end' as const,
-        },
-        dayColumn: {
-            flex: 1,
             alignItems: 'center' as const,
-            gap: theme.spacing.xs,
+            gap: theme.spacing.sm,
+            marginBottom: theme.spacing.sm
         },
-        dayBar: {
-            width: '70%' as const,
-            borderRadius: theme.radius.sm,
+        themeRow: {
+            flexDirection: 'row' as const,
+            gap: theme.spacing.sm,
+        },
+        themeOption: {
+            flex: 1,
+            paddingVertical: theme.spacing.lg,
+            paddingHorizontal: theme.spacing.sm,
+            borderRadius: theme.radius.lg,
+            borderWidth: 2,
+            borderColor: 'transparent',
+            alignItems: 'center' as const,
+            gap: theme.spacing.sm,
+            backgroundColor: theme.colors.backgrounds.subtle,
+        },
+        themeOptionSelected: {
+            borderColor: theme.colors.primary.cat,
+            backgroundColor: theme.colors.backgrounds.cardSolid,
         },
         todayStats: {
             flexDirection: 'row' as const,
@@ -89,22 +112,12 @@ export default function ProfileScreen() {
             alignItems: 'center' as const,
             gap: theme.spacing.xs,
         },
-        themeRow: {
-            flexDirection: 'row' as const,
-            gap: theme.spacing.sm,
-        },
-        themeOption: {
-            flex: 1,
-            paddingVertical: theme.spacing.md,
-            paddingHorizontal: theme.spacing.sm,
-            borderRadius: theme.radius.lg,
-            borderWidth: 2,
-            borderColor: 'transparent',
-            alignItems: 'center' as const,
-        },
-        themeOptionSelected: {
-            borderColor: theme.colors.primary.cat,
-        },
+        iconWrapper: {
+            padding: theme.spacing.sm,
+            borderRadius: theme.radius.full,
+            backgroundColor: theme.colors.backgrounds.subtle,
+            marginBottom: theme.spacing.xs,
+        }
     }), [theme]);
 
     return (
@@ -112,9 +125,12 @@ export default function ProfileScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 {/* Theme Picker */}
                 <Card>
-                    <Text size="lg" weight="semibold" style={styles.sectionTitle}>
-                        🎨 Tema
-                    </Text>
+                    <View style={styles.sectionHeader}>
+                        <Palette size={20} color={theme.colors.text.primary} />
+                        <Text size="lg" weight="semibold">
+                            Tema
+                        </Text>
+                    </View>
                     <View style={styles.themeRow}>
                         {THEME_OPTIONS.map((opt) => (
                             <Pressable
@@ -125,8 +141,16 @@ export default function ProfileScreen() {
                                     themeId === opt.id && styles.themeOptionSelected,
                                 ]}
                             >
-                                <Text size="lg">{opt.emoji}</Text>
-                                <Text size="sm" weight="medium" align="center" color={theme.colors.text.secondary}>
+                                <opt.Icon
+                                    size={24}
+                                    color={themeId === opt.id ? theme.colors.primary.cat : theme.colors.text.secondary}
+                                />
+                                <Text
+                                    size="sm"
+                                    weight={themeId === opt.id ? "semibold" : "medium"}
+                                    align="center"
+                                    color={themeId === opt.id ? theme.colors.text.primary : theme.colors.text.secondary}
+                                >
                                     {opt.label}
                                 </Text>
                             </Pressable>
@@ -148,8 +172,9 @@ export default function ProfileScreen() {
                 <Card style={styles.levelCard}>
                     <View style={styles.levelHeader}>
                         <Text size="xl" weight="bold">
-                            Level {level} 🏆
+                            Level {level}
                         </Text>
+                        <Trophy size={24} color={theme.colors.accents.xp} fill={theme.colors.accents.xp} />
                     </View>
                     <ProgressBar
                         progress={levelProgress}
@@ -164,14 +189,18 @@ export default function ProfileScreen() {
                 {/* Stats Grid */}
                 <View style={styles.statsGrid}>
                     <Card style={styles.statCard}>
-                        <Text size="huge" align="center">🔥</Text>
+                        <View style={styles.iconWrapper}>
+                            <Flame size={32} color={theme.colors.primary.cat} fill={theme.colors.primary.cat} fillOpacity={0.2} />
+                        </View>
                         <Text size="xl" weight="bold" align="center">{streak}</Text>
-                        <Text size="sm" color={theme.colors.text.secondary} align="center">Day Streak</Text>
+                        <Text size="sm" color={theme.colors.text.secondary} align="center">Günlük Seri</Text>
                     </Card>
                     <Card style={styles.statCard}>
-                        <Text size="huge" align="center">⏱️</Text>
+                        <View style={styles.iconWrapper}>
+                            <Timer size={32} color={theme.colors.primary.cat} />
+                        </View>
                         <Text size="xl" weight="bold" align="center">{formatDuration(totalFocusTime)}</Text>
-                        <Text size="sm" color={theme.colors.text.secondary} align="center">Total Time</Text>
+                        <Text size="sm" color={theme.colors.text.secondary} align="center">Toplam Odak</Text>
                     </Card>
                 </View>
 
@@ -182,15 +211,17 @@ export default function ProfileScreen() {
 
                 {/* Today's Stats */}
                 <Card>
-                    <Text size="lg" weight="semibold" style={styles.sectionTitle}>Today's Progress</Text>
+                    <Text size="lg" weight="semibold" style={{ marginBottom: theme.spacing.sm }}>Günlük İlerleme</Text>
                     <View style={styles.todayStats}>
                         <View style={styles.todayStat}>
+                            <Zap size={24} color={theme.colors.primary.cat} style={{ marginBottom: 4 }} />
                             <Text size="xxl" weight="bold" color={theme.colors.primary.cat}>{sessionsToday}</Text>
-                            <Text size="sm" color={theme.colors.text.secondary}>Sessions</Text>
+                            <Text size="sm" color={theme.colors.text.secondary}>Oturum</Text>
                         </View>
                         <View style={styles.todayStat}>
+                            <Star size={24} color={theme.colors.accents.xp} fill={theme.colors.accents.xp} style={{ marginBottom: 4 }} />
                             <Text size="xxl" weight="bold" color={theme.colors.accents.xp}>{sessionsToday * 25}</Text>
-                            <Text size="sm" color={theme.colors.text.secondary}>XP Earned</Text>
+                            <Text size="sm" color={theme.colors.text.secondary}>Kazanılan XP</Text>
                         </View>
                     </View>
                 </Card>
