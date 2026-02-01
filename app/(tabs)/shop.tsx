@@ -8,22 +8,30 @@ import { CharacterDisplay } from '../../src/components/character/CharacterDispla
 import { useUserStore } from '../../src/stores/useUserStore';
 import { useTheme } from '../../src/constants/theme';
 import type { CompanionType } from '../../src/types';
+import {
+    Coins,
+    Wallet,
+    Sparkles,
+    CheckCircle2,
+    Lock,
+    Info,
+    Store
+} from 'lucide-react-native';
 
 interface ShopItem {
     type: CompanionType;
     name: string;
     price: number;
-    emoji: string;
 }
 
 const shopItems: ShopItem[] = [
-    { type: 'panda', name: 'Panda', price: 500, emoji: '🐼' },
-    { type: 'fox', name: 'Fox', price: 750, emoji: '🦊' },
+    { type: 'panda', name: 'Panda', price: 500 },
+    { type: 'fox', name: 'Tilki', price: 750 },
 ];
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_MIN_WIDTH = Math.min(160, SCREEN_WIDTH * 0.42);
-const SHOP_CARD_MIN_HEIGHT = 200;
+const SHOP_CARD_MIN_HEIGHT = 220;
 
 export default function ShopScreen() {
     const {
@@ -39,22 +47,22 @@ export default function ShopScreen() {
 
     const handlePurchase = (item: ShopItem) => {
         if (currency < item.price) {
-            Alert.alert('Not enough coins', `You need ${item.price - currency} more coins!`);
+            Alert.alert('Yetersiz Bakıye', `${item.price - currency} altın daha gerekiyor!`);
             return;
         }
 
         Alert.alert(
-            `Unlock ${item.name}?`,
-            `This will cost ${item.price} coins.`,
+            `${item.name} Açılsın mı?`,
+            `Bu işlem ${item.price} altın değerinde.`,
             [
-                { text: 'Cancel', style: 'cancel' },
+                { text: 'Vazgeç', style: 'cancel' },
                 {
-                    text: 'Unlock',
+                    text: 'Kilidi Aç',
                     onPress: () => {
                         const success = spendCurrency(item.price);
                         if (success) {
                             unlockCompanion(item.type);
-                            Alert.alert('Success!', `${item.name} is now unlocked! 🎉`);
+                            Alert.alert('Başarılı!', `${item.name} artık seninle! 🎉`);
                         }
                     },
                 },
@@ -64,7 +72,7 @@ export default function ShopScreen() {
 
     const handleSelect = (type: CompanionType) => {
         setActiveCompanion(type);
-        Alert.alert('Companion changed!', `${type} is now your active companion.`);
+        // User alert for confirmation
     };
 
     const isUnlocked = (type: CompanionType) => unlockedCompanions.includes(type);
@@ -78,12 +86,22 @@ export default function ShopScreen() {
             padding: theme.spacing.lg,
             gap: theme.spacing.lg,
         },
-        currencyCard: { alignItems: 'center' as const },
+        currencyCard: {
+            paddingVertical: theme.spacing.lg,
+            alignItems: 'center' as const,
+            backgroundColor: theme.colors.primary.cat,
+            ...theme.shadows.glow,
+        },
         currencyContent: {
             alignItems: 'center' as const,
             gap: theme.spacing.xs,
         },
-        sectionTitle: { marginTop: theme.spacing.md },
+        sectionHeader: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            gap: theme.spacing.sm,
+            marginTop: theme.spacing.md,
+        },
         grid: {
             flexDirection: 'row' as const,
             flexWrap: 'wrap' as const,
@@ -99,16 +117,16 @@ export default function ShopScreen() {
             gap: theme.spacing.xs,
         },
         companionImageWrap: {
-            width: 64,
-            height: 64,
+            width: 70,
+            height: 70,
             alignItems: 'center' as const,
             justifyContent: 'center' as const,
         },
-        row: {
+        statusRow: {
             flexDirection: 'row' as const,
             alignItems: 'center' as const,
-            justifyContent: 'center' as const,
             gap: 4,
+            marginTop: 4,
         },
         shopCard: {
             width: '48%' as const,
@@ -118,20 +136,48 @@ export default function ShopScreen() {
             gap: theme.spacing.sm,
         },
         imageContainer: {
-            opacity: 0.3,
             alignItems: 'center' as const,
             justifyContent: 'center' as const,
             minHeight: 80,
             width: '100%' as const,
-            overflow: 'visible' as const,
+        },
+        lockOverlay: {
+            position: 'absolute' as const,
+            bottom: -5,
+            right: '25%' as const,
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            borderRadius: theme.radius.full,
+            padding: 4,
+            borderWidth: 2,
+            borderColor: theme.colors.backgrounds.main,
         },
         unlocked: { opacity: 1 },
-        name: { marginTop: theme.spacing.xs },
-        unlockButton: { marginTop: theme.spacing.sm },
+        locked: { opacity: 0.5 },
+        priceBadge: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            gap: 4,
+            backgroundColor: theme.colors.backgrounds.subtle,
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            borderRadius: theme.radius.full,
+            marginTop: 4,
+        },
         earnCard: {
             marginTop: theme.spacing.lg,
             gap: theme.spacing.sm,
+            padding: theme.spacing.lg,
+            backgroundColor: theme.colors.backgrounds.subtle,
+            borderStyle: 'dashed' as const,
+            borderWidth: 2,
+            borderColor: theme.colors.ui.border,
         },
+        earnHeader: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+            gap: theme.spacing.sm,
+        }
     }), [theme]);
 
     return (
@@ -140,19 +186,24 @@ export default function ShopScreen() {
                 {/* Currency Display */}
                 <Card style={styles.currencyCard}>
                     <View style={styles.currencyContent}>
-                        <Text size="xl" weight="bold">
-                            💰 {currency}
-                        </Text>
-                        <Text size="sm" color={theme.colors.text.secondary}>
-                            Your Coins
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                            <Coins size={28} color={theme.colors.text.inverse} />
+                            <Text size="xxl" weight="bold" color={theme.colors.text.inverse}>
+                                {currency}
+                            </Text>
+                        </View>
+                        <Text size="sm" color={theme.colors.text.inverse} style={{ opacity: 0.8 }}>
+                            Mevcut Altınların
                         </Text>
                     </View>
                 </Card>
 
                 {/* Owned Companions */}
-                <Text size="lg" weight="semibold" style={styles.sectionTitle}>
-                    Your Companions
-                </Text>
+                <View style={styles.sectionHeader}>
+                    <Sparkles size={20} color={theme.colors.primary.cat} />
+                    <Text size="lg" weight="semibold">Dostların</Text>
+                </View>
+
                 <View style={styles.grid}>
                     {unlockedCompanions.map((type) => (
                         <Card
@@ -164,13 +215,14 @@ export default function ShopScreen() {
                             <View style={styles.companionImageWrap}>
                                 <CharacterDisplay type={type} mood="idle" size="sm" />
                             </View>
-                            <Text size="md" weight="semibold" align="center" style={styles.name} numberOfLines={1}>
+                            <Text size="md" weight="semibold" align="center" style={{ marginTop: 8 }} numberOfLines={1}>
                                 {type.charAt(0).toUpperCase() + type.slice(1)}
                             </Text>
                             {activeCompanion === type && (
-                                <View style={styles.row}>
-                                    <Text size="xs" color={theme.colors.primary.cat} numberOfLines={1}>
-                                        ● Active
+                                <View style={styles.statusRow}>
+                                    <CheckCircle2 size={12} color={theme.colors.primary.cat} />
+                                    <Text size="xs" color={theme.colors.primary.cat} weight="bold">
+                                        Seçili
                                     </Text>
                                 </View>
                             )}
@@ -179,42 +231,51 @@ export default function ShopScreen() {
                 </View>
 
                 {/* Shop Items */}
-                <Text size="lg" weight="semibold" style={styles.sectionTitle}>
-                    Unlock New Companions
-                </Text>
+                <View style={styles.sectionHeader}>
+                    <Store size={20} color={theme.colors.primary.cat} />
+                    <Text size="lg" weight="semibold">Mağaza</Text>
+                </View>
+
                 <View style={styles.grid}>
                     {shopItems.map((item) => {
                         const unlocked = isUnlocked(item.type);
                         return (
                             <Card key={item.type} style={[styles.shopCard, { minWidth: CARD_MIN_WIDTH, minHeight: SHOP_CARD_MIN_HEIGHT }]}>
-                                <View style={[styles.imageContainer, unlocked && styles.unlocked]}>
-                                    {unlocked ? (
-                                        <CharacterDisplay type={item.type} mood="idle" size="sm" />
-                                    ) : (
-                                        <Text size="huge">🔒</Text>
+                                <View style={[styles.imageContainer, !unlocked && styles.locked]}>
+                                    <CharacterDisplay type={item.type} mood="idle" size="sm" />
+                                    {!unlocked && (
+                                        <View style={styles.lockOverlay}>
+                                            <Lock size={14} color={theme.colors.text.secondary} />
+                                        </View>
                                     )}
                                 </View>
                                 <Text size="md" weight="semibold" align="center" numberOfLines={1}>
-                                    {item.emoji} {item.name}
+                                    {item.name}
                                 </Text>
                                 {!unlocked && (
                                     <>
-                                        <Text size="sm" color={theme.colors.text.secondary} align="center">
-                                            💰 {item.price} coins
-                                        </Text>
+                                        <View style={styles.priceBadge}>
+                                            <Coins size={14} color={theme.colors.primary.cat} />
+                                            <Text size="sm" weight="bold" color={theme.colors.text.primary}>
+                                                {item.price}
+                                            </Text>
+                                        </View>
                                         <Button
-                                            label="Unlock"
+                                            label="Kilidi Aç"
                                             onPress={() => handlePurchase(item)}
                                             size="sm"
                                             variant="secondary"
-                                            style={styles.unlockButton}
+                                            style={{ marginTop: 8 }}
                                         />
                                     </>
                                 )}
                                 {unlocked && (
-                                    <Text size="xs" color={theme.colors.accents.success} align="center">
-                                        ✓ Unlocked
-                                    </Text>
+                                    <View style={styles.statusRow}>
+                                        <CheckCircle2 size={14} color={theme.colors.accents.success} />
+                                        <Text size="xs" color={theme.colors.accents.success} weight="bold">
+                                            Açıldı
+                                        </Text>
+                                    </View>
                                 )}
                             </Card>
                         );
@@ -223,14 +284,16 @@ export default function ShopScreen() {
 
                 {/* Earn More Section */}
                 <Card style={styles.earnCard}>
-                    <Text size="md" weight="semibold" align="center">
-                        💡 Earn More Coins
-                    </Text>
+                    <View style={styles.earnHeader}>
+                        <Info size={18} color={theme.colors.primary.cat} />
+                        <Text size="md" weight="semibold">Daha Fazla Kazan</Text>
+                    </View>
                     <Text size="sm" color={theme.colors.text.secondary} align="center">
-                        Complete focus sessions to earn 10 coins each!
+                        Her odaklanma seansını tamamladığında 10 altın kazanırsın!
                     </Text>
                 </Card>
             </ScrollView>
         </SafeAreaView>
     );
 }
+
