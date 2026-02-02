@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, StyleSheet, Alert, Dimensions, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { X } from 'lucide-react-native';
 import { Text } from '../src/components/ui/Text';
 import { Button } from '../src/components/ui/Button';
@@ -9,6 +11,7 @@ import { ProgressBar } from '../src/components/ui/ProgressBar';
 import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { usePomodoro } from '../src/hooks/usePomodoro';
 import { useUserStore } from '../src/stores/useUserStore';
+import { useSettingsStore } from '../src/stores/useSettingsStore';
 import { useTheme } from '../src/constants/theme';
 
 const { height } = Dimensions.get('window');
@@ -17,6 +20,8 @@ const IS_SMALL_DEVICE = height < 700;
 export default function FocusScreen() {
     const theme = useTheme();
     const router = useRouter();
+    const { t } = useTranslation();
+    const { keepScreenOn } = useSettingsStore();
     const {
         status,
         phase,
@@ -29,14 +34,26 @@ export default function FocusScreen() {
     } = usePomodoro();
     const { activeCompanion } = useUserStore();
 
+    // Keep screen awake when timer is running and setting is enabled
+    useEffect(() => {
+        if (keepScreenOn && status === 'running') {
+            activateKeepAwake('focus-timer');
+        } else {
+            deactivateKeepAwake('focus-timer');
+        }
+        return () => {
+            deactivateKeepAwake('focus-timer');
+        };
+    }, [keepScreenOn, status]);
+
     const handleExit = () => {
         Alert.alert(
-            'Exit Focus Mode?',
-            'Your progress will be lost if you exit now.',
+            t('focus.exit_title'),
+            t('focus.exit_desc'),
             [
-                { text: 'Cancel', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Exit',
+                    text: t('focus.exit_confirm'),
                     style: 'destructive',
                     onPress: () => {
                         pause();
@@ -168,14 +185,14 @@ export default function FocusScreen() {
                         align="center"
                         style={styles.phaseText}
                     >
-                        {phase === 'work' ? 'Stay focused...' : 'Take a break!'}
+                        {phase === 'work' ? t('focus.stay_focused') : t('focus.take_break')}
                     </Text>
                 </View>
 
                 {/* Controls Section - Bottom Anchored */}
                 <View style={styles.controls}>
                     <Button
-                        label={status === 'running' ? 'Pause Session' : 'Resume Session'}
+                        label={status === 'running' ? t('focus.pause') : t('focus.resume')}
                         onPress={handleToggle}
                         variant="secondary"
                         size="lg"

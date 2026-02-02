@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { TimerPhase, TimerStatus } from '../types';
+import { useSettingsStore } from './useSettingsStore';
 
 interface TimerStore {
     timeLeft: number;
@@ -21,16 +22,21 @@ interface TimerStore {
     syncTimer: () => void;
 }
 
-const WORK_DURATION = 25 * 60; // 25 minutes
 const SHORT_BREAK = 5 * 60;    // 5 minutes
 const LONG_BREAK = 15 * 60;    // 15 minutes
 const SESSIONS_UNTIL_LONG_BREAK = 4;
 
+// Settings store'dan odak suresini al
+const getWorkDuration = () => {
+    const focusDuration = useSettingsStore.getState().focusDuration;
+    return focusDuration * 60;
+};
+
 export const useTimerStore = create<TimerStore>()(
     persist(
         (set, get) => ({
-            timeLeft: WORK_DURATION,
-            totalTime: WORK_DURATION,
+            timeLeft: 25 * 60, // Default 25 min
+            totalTime: 25 * 60,
             phase: 'work',
             status: 'idle',
             sessionsCompleted: 0,
@@ -61,8 +67,9 @@ export const useTimerStore = create<TimerStore>()(
 
             reset: () => {
                 const { phase } = get();
+                const workDuration = getWorkDuration();
                 const duration = phase === 'work'
-                    ? WORK_DURATION
+                    ? workDuration
                     : phase === 'shortBreak'
                         ? SHORT_BREAK
                         : LONG_BREAK;
@@ -90,6 +97,7 @@ export const useTimerStore = create<TimerStore>()(
 
             complete: () => {
                 const { phase, sessionsCompleted } = get();
+                const workDuration = getWorkDuration();
 
                 if (phase === 'work') {
                     const newSessionsCompleted = sessionsCompleted + 1;
@@ -109,18 +117,20 @@ export const useTimerStore = create<TimerStore>()(
                     });
                 } else {
                     // Break completed, back to work
+                    const workDuration = getWorkDuration();
                     set({
                         status: 'completed',
                         phase: 'work',
-                        timeLeft: WORK_DURATION,
-                        totalTime: WORK_DURATION,
+                        timeLeft: workDuration,
+                        totalTime: workDuration,
                     });
                 }
             },
 
             setPhase: (phase: TimerPhase) => {
+                const workDuration = getWorkDuration();
                 const duration = phase === 'work'
-                    ? WORK_DURATION
+                    ? workDuration
                     : phase === 'shortBreak'
                         ? SHORT_BREAK
                         : LONG_BREAK;
@@ -136,6 +146,7 @@ export const useTimerStore = create<TimerStore>()(
             syncTimer: () => {
                 // Called on app mount to account for time passed while backgrounded/closed
                 const { status, startTimestamp, timeLeft, phase } = get();
+                const workDuration = getWorkDuration();
 
                 let newTimeLeft = timeLeft;
                 if (status === 'running' && startTimestamp) {
@@ -143,10 +154,15 @@ export const useTimerStore = create<TimerStore>()(
                     newTimeLeft = Math.max(0, timeLeft - elapsed);
                 }
 
+                // If idle and in work phase, update to current work duration
+                const finalTimeLeft = (status === 'idle' && phase === 'work') ? workDuration : newTimeLeft;
+                const finalTotalTime = (status === 'idle' && phase === 'work') ? workDuration : get().totalTime;
+
                 set({
-                    status: newTimeLeft > 0 ? 'paused' : 'idle', // Always pause on sync, don't auto-start
-                    timeLeft: newTimeLeft,
-                    startTimestamp: null, // Clear timestamp to prevent auto-counting
+                    status: finalTimeLeft > 0 ? 'paused' : 'idle',
+                    timeLeft: finalTimeLeft,
+                    totalTime: finalTotalTime,
+                    startTimestamp: null,
                 });
             },
         }),

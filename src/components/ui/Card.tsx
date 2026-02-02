@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import {
     View,
     ViewStyle,
+    StyleProp,
     Pressable,
     PressableProps,
 } from 'react-native';
@@ -17,7 +18,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 interface CardProps extends Omit<PressableProps, 'style'> {
     children: React.ReactNode;
     selected?: boolean;
-    style?: ViewStyle;
+    style?: StyleProp<ViewStyle>;
     shadow?: 'soft' | 'medium' | 'strong';
 }
 

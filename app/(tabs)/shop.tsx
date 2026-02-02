@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Dimensions } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '../../src/components/ui/Text';
 import { Card } from '../../src/components/ui/Card';
@@ -34,6 +35,7 @@ const CARD_MIN_WIDTH = Math.min(160, SCREEN_WIDTH * 0.42);
 const SHOP_CARD_MIN_HEIGHT = 220;
 
 export default function ShopScreen() {
+    const { t } = useTranslation();
     const {
         unlockedCompanions,
         activeCompanion,
@@ -47,22 +49,22 @@ export default function ShopScreen() {
 
     const handlePurchase = (item: ShopItem) => {
         if (currency < item.price) {
-            Alert.alert('Yetersiz Bakıye', `${item.price - currency} altın daha gerekiyor!`);
+            Alert.alert(t('shop.insufficient_balance'), t('shop.gold_needed', { amount: item.price - currency }));
             return;
         }
 
         Alert.alert(
-            `${item.name} Açılsın mı?`,
-            `Bu işlem ${item.price} altın değerinde.`,
+            t('shop.unlock_confirm_title', { name: item.name }),
+            t('shop.unlock_confirm_desc', { price: item.price }),
             [
-                { text: 'Vazgeç', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Kilidi Aç',
+                    text: t('shop.unlock'),
                     onPress: () => {
                         const success = spendCurrency(item.price);
                         if (success) {
                             unlockCompanion(item.type);
-                            Alert.alert('Başarılı!', `${item.name} artık seninle! 🎉`);
+                            Alert.alert(t('common.success'), t('shop.unlock_success', { name: item.name }));
                         }
                     },
                 },
@@ -193,7 +195,7 @@ export default function ShopScreen() {
                             </Text>
                         </View>
                         <Text size="sm" color={theme.colors.text.inverse} style={{ opacity: 0.8 }}>
-                            Mevcut Altınların
+                            {t('shop.your_gold')}
                         </Text>
                     </View>
                 </Card>
@@ -201,7 +203,7 @@ export default function ShopScreen() {
                 {/* Owned Companions */}
                 <View style={styles.sectionHeader}>
                     <Sparkles size={20} color={theme.colors.primary.cat} />
-                    <Text size="lg" weight="semibold">Dostların</Text>
+                    <Text size="lg" weight="semibold">{t('shop.your_buddies')}</Text>
                 </View>
 
                 <View style={styles.grid}>
@@ -222,7 +224,7 @@ export default function ShopScreen() {
                                 <View style={styles.statusRow}>
                                     <CheckCircle2 size={12} color={theme.colors.primary.cat} />
                                     <Text size="xs" color={theme.colors.primary.cat} weight="bold">
-                                        Seçili
+                                        {t('shop.selected')}
                                     </Text>
                                 </View>
                             )}
@@ -233,7 +235,7 @@ export default function ShopScreen() {
                 {/* Shop Items */}
                 <View style={styles.sectionHeader}>
                     <Store size={20} color={theme.colors.primary.cat} />
-                    <Text size="lg" weight="semibold">Mağaza</Text>
+                    <Text size="lg" weight="semibold">{t('common.shop')}</Text>
                 </View>
 
                 <View style={styles.grid}>
@@ -261,7 +263,7 @@ export default function ShopScreen() {
                                             </Text>
                                         </View>
                                         <Button
-                                            label="Kilidi Aç"
+                                            label={t('shop.unlock')}
                                             onPress={() => handlePurchase(item)}
                                             size="sm"
                                             variant="secondary"
@@ -273,7 +275,7 @@ export default function ShopScreen() {
                                     <View style={styles.statusRow}>
                                         <CheckCircle2 size={14} color={theme.colors.accents.success} />
                                         <Text size="xs" color={theme.colors.accents.success} weight="bold">
-                                            Açıldı
+                                            {t('shop.unlocked')}
                                         </Text>
                                     </View>
                                 )}
@@ -286,10 +288,10 @@ export default function ShopScreen() {
                 <Card style={styles.earnCard}>
                     <View style={styles.earnHeader}>
                         <Info size={18} color={theme.colors.primary.cat} />
-                        <Text size="md" weight="semibold">Daha Fazla Kazan</Text>
+                        <Text size="md" weight="semibold">{t('shop.earn_more_title')}</Text>
                     </View>
                     <Text size="sm" color={theme.colors.text.secondary} align="center">
-                        Her odaklanma seansını tamamladığında 10 altın kazanırsın!
+                        {t('shop.earn_more_desc')}
                     </Text>
                 </Card>
             </ScrollView>

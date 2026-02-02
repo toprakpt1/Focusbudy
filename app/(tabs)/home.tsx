@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Text } from '../../src/components/ui/Text';
@@ -17,6 +18,7 @@ import { Flame, Star, Play, CircleDot } from 'lucide-react-native';
 export default function HomeScreen() {
     const theme = useTheme();
     const router = useRouter();
+    const { t } = useTranslation();
     const { status, phase, timeLeft, formatTime, start, reset } = usePomodoro();
     const { activeCompanion, streak, sessionsToday } = useUserStore();
     const { isSmall, scale } = useScreenSize();
@@ -121,7 +123,7 @@ export default function HomeScreen() {
                 <View style={styles.phaseLabel}>
                     <CircleDot size={14} color={phase === 'work' ? theme.colors.primary.cat : theme.colors.accents.xp} />
                     <Text size="md" color={theme.colors.text.secondary} align="center">
-                        {phase === 'work' ? 'Odaklanma Zamanı' : 'Mola Zamanı'}
+                        {phase === 'work' ? t('home.focus_time') : t('home.break_time')}
                     </Text>
                 </View>
             </View>
@@ -129,7 +131,7 @@ export default function HomeScreen() {
             {/* CTA — primary action with glow */}
             <View style={styles.actionContainer}>
                 <Button
-                    label={status === 'idle' ? 'Odağa Başla' : 'Devam Et'}
+                    label={status === 'idle' ? t('home.start_focus') : t('home.continue')}
                     onPress={handleStart}
                     size="lg"
                     icon={Play}
@@ -141,7 +143,7 @@ export default function HomeScreen() {
             <View style={styles.progressContainer}>
                 <View style={styles.progressCard}>
                     <Text size="md" weight="semibold" style={styles.progressTitle}>
-                        Günün Özeti
+                        {t('home.summary')}
                     </Text>
                     <ProgressBar
                         progress={sessionProgress}
@@ -149,7 +151,7 @@ export default function HomeScreen() {
                         height={10}
                     />
                     <Text size="sm" color={theme.colors.text.secondary} style={styles.progressText}>
-                        {sessionsToday}/{targetSessions} oturum tamamlandı
+                        {t('home.sessions_completed', { count: sessionsToday, total: targetSessions })}
                     </Text>
                 </View>
             </View>

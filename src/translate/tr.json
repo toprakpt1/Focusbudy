@@ -1,0 +1,78 @@
+{
+    "common": {
+        "home": "Ana Sayfa",
+        "profile": "Profil",
+        "shop": "Mağaza",
+        "settings": "Ayarlar",
+        "cancel": "Vazgeç",
+        "success": "Başarılı!"
+    },
+    "home": {
+        "focus_time": "Odaklanma Zamanı",
+        "break_time": "Mola Zamanı",
+        "start_focus": "Odağa Başla",
+        "continue": "Devam Et",
+        "summary": "Günün Özeti",
+        "sessions_completed": "{{count}}/{{total}} oturum tamamlandı"
+    },
+    "shop": {
+        "your_gold": "Mevcut Altınların",
+        "your_buddies": "Dostların",
+        "selected": "Seçili",
+        "unlock": "Kilidi Aç",
+        "unlocked": "Açıldı",
+        "earn_more_title": "Daha Fazla Kazan",
+        "earn_more_desc": "Her odaklanma seansını tamamladığında 10 altın kazanırsın!",
+        "insufficient_balance": "Yetersiz Bakiye",
+        "gold_needed": "{{amount}} altın daha gerekiyor!",
+        "unlock_confirm_title": "{{name}} Açılsın mı?",
+        "unlock_confirm_desc": "Bu işlem {{price}} altın değerinde.",
+        "unlock_success": "{{name}} artık seninle! 🎉"
+    },
+    "profile": {
+        "theme": "Tema",
+        "theme_pastel": "Pastel (Varsayılan)",
+        "theme_dark": "Koyu",
+        "theme_white": "Beyaz",
+        "level": "Level {{level}}",
+        "streak": "Günlük Seri",
+        "total_focus": "Toplam Odak",
+        "daily_progress": "Günlük İlerleme",
+        "sessions": "Oturum",
+        "xp_gained": "Kazanılan XP",
+        "focus_heatmap": "Fokus Haritası",
+        "less": "Az",
+        "more": "Çok"
+    },
+    "focus": {
+        "exit_title": "Odak Modundan Çık?",
+        "exit_desc": "Şimdi çıkarsan ilerlemen kaybolacak.",
+        "exit_confirm": "Çık",
+        "stay_focused": "Odaklanmaya devam et...",
+        "take_break": "Mola ver!",
+        "pause": "Oturumu Duraklat",
+        "resume": "Oturuma Devam Et"
+    },
+    "settings": {
+        "general": "GENEL",
+        "language": "Dil",
+        "lang_tr": "Türkçe",
+        "lang_en": "English",
+        "focus_duration": "Odaklanma Süresi",
+        "duration_25": "25 dk (Pomodoro)",
+        "duration_45": "45 dk (Uzun)",
+        "duration_60": "60 dk (Maraton)",
+        "sounds": "Sesler",
+        "screen_always_on": "Ekran Hep Açık",
+        "screen_always_on_desc": "Zamanlayıcı çalışırken",
+        "support_feedback": "DESTEK & GERİ BİLDİRİM",
+        "report_issue": "Sorun Bildir",
+        "rate_app": "Puan Ver",
+        "about": "HAKKINDA",
+        "version": "Sürüm",
+        "terms": "Kullanım Koşulları",
+        "timer_not_finished_title": "Zamanlayıcı Bitmemiş",
+        "timer_not_finished_desc": "Şu anki zamanlayıcı henüz bitmedi. Eğer evet derseniz yeni süreye ayarlanacak ve mevcut ilerlemeniz sıfırlanacaktır.",
+        "yes_set": "Evet, Ayarla"
+    }
+}

@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useTheme } from '../src/constants/theme';
+import '../src/translate/i18n';
 
 export default function RootLayout() {
     const theme = useTheme();

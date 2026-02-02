@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '../../src/components/ui/Text';
 import { Card } from '../../src/components/ui/Card';
@@ -17,20 +18,24 @@ import {
     Moon,
     Sun,
     Flower2,
-    Zap, // For sessions
-    Star // For XP
+    Zap,
+    Star,
+    Settings
 } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 
-const THEME_OPTIONS: { id: ThemeId; label: string; Icon: React.ElementType }[] = [
-    { id: 'default', label: 'Pastel (Varsayılan)', Icon: Flower2 },
-    { id: 'dark', label: 'Koyu', Icon: Moon },
-    { id: 'white', label: 'Beyaz', Icon: Sun },
+const THEME_OPTIONS: { id: ThemeId; labelKey: string; Icon: React.ElementType }[] = [
+    { id: 'default', labelKey: 'profile.theme_pastel', Icon: Flower2 },
+    { id: 'dark', labelKey: 'profile.theme_dark', Icon: Moon },
+    { id: 'white', labelKey: 'profile.theme_white', Icon: Sun },
 ];
 
 import { FocusHeatmap } from '../../src/components/profile/FocusHeatmap';
 
 export default function ProfileScreen() {
     const theme = useTheme();
+    const router = useRouter();
+    const { t } = useTranslation();
     const themeId = useThemeStore((s) => s.themeId);
     const setTheme = useThemeStore((s) => s.setTheme);
     const {
@@ -117,18 +122,41 @@ export default function ProfileScreen() {
             borderRadius: theme.radius.full,
             backgroundColor: theme.colors.backgrounds.subtle,
             marginBottom: theme.spacing.xs,
-        }
+        },
+        header: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            justifyContent: 'space-between' as const,
+            paddingHorizontal: theme.spacing.lg,
+            paddingVertical: theme.spacing.md,
+        },
+        settingsButton: {
+            padding: theme.spacing.sm,
+            borderRadius: theme.radius.full,
+            backgroundColor: theme.colors.backgrounds.subtle,
+        },
     }), [theme]);
 
     return (
         <SafeAreaView style={styles.container}>
+            {/* Header with Settings */}
+            <View style={styles.header}>
+                <Text size="xl" weight="bold">{t('common.profile')}</Text>
+                <Pressable
+                    onPress={() => router.push('/settings')}
+                    style={styles.settingsButton}
+                >
+                    <Settings size={24} color={theme.colors.text.primary} />
+                </Pressable>
+            </View>
+
             <ScrollView contentContainerStyle={styles.content}>
                 {/* Theme Picker */}
                 <Card>
                     <View style={styles.sectionHeader}>
                         <Palette size={20} color={theme.colors.text.primary} />
                         <Text size="lg" weight="semibold">
-                            Tema
+                            {t('profile.theme')}
                         </Text>
                     </View>
                     <View style={styles.themeRow}>
@@ -151,7 +179,7 @@ export default function ProfileScreen() {
                                     align="center"
                                     color={themeId === opt.id ? theme.colors.text.primary : theme.colors.text.secondary}
                                 >
-                                    {opt.label}
+                                    {t(opt.labelKey)}
                                 </Text>
                             </Pressable>
                         ))}
@@ -172,7 +200,7 @@ export default function ProfileScreen() {
                 <Card style={styles.levelCard}>
                     <View style={styles.levelHeader}>
                         <Text size="xl" weight="bold">
-                            Level {level}
+                            {t('profile.level', { level })}
                         </Text>
                         <Trophy size={24} color={theme.colors.accents.xp} fill={theme.colors.accents.xp} />
                     </View>
@@ -193,14 +221,14 @@ export default function ProfileScreen() {
                             <Flame size={32} color={theme.colors.primary.cat} fill={theme.colors.primary.cat} fillOpacity={0.2} />
                         </View>
                         <Text size="xl" weight="bold" align="center">{streak}</Text>
-                        <Text size="sm" color={theme.colors.text.secondary} align="center">Günlük Seri</Text>
+                        <Text size="sm" color={theme.colors.text.secondary} align="center">{t('profile.streak')}</Text>
                     </Card>
                     <Card style={styles.statCard}>
                         <View style={styles.iconWrapper}>
                             <Timer size={32} color={theme.colors.primary.cat} />
                         </View>
                         <Text size="xl" weight="bold" align="center">{formatDuration(totalFocusTime)}</Text>
-                        <Text size="sm" color={theme.colors.text.secondary} align="center">Toplam Odak</Text>
+                        <Text size="sm" color={theme.colors.text.secondary} align="center">{t('profile.total_focus')}</Text>
                     </Card>
                 </View>
 
@@ -211,17 +239,17 @@ export default function ProfileScreen() {
 
                 {/* Today's Stats */}
                 <Card>
-                    <Text size="lg" weight="semibold" style={{ marginBottom: theme.spacing.sm }}>Günlük İlerleme</Text>
+                    <Text size="lg" weight="semibold" style={{ marginBottom: theme.spacing.sm }}>{t('profile.daily_progress')}</Text>
                     <View style={styles.todayStats}>
                         <View style={styles.todayStat}>
                             <Zap size={24} color={theme.colors.primary.cat} style={{ marginBottom: 4 }} />
                             <Text size="xxl" weight="bold" color={theme.colors.primary.cat}>{sessionsToday}</Text>
-                            <Text size="sm" color={theme.colors.text.secondary}>Oturum</Text>
+                            <Text size="sm" color={theme.colors.text.secondary}>{t('profile.sessions')}</Text>
                         </View>
                         <View style={styles.todayStat}>
                             <Star size={24} color={theme.colors.accents.xp} fill={theme.colors.accents.xp} style={{ marginBottom: 4 }} />
                             <Text size="xxl" weight="bold" color={theme.colors.accents.xp}>{sessionsToday * 25}</Text>
-                            <Text size="sm" color={theme.colors.text.secondary}>Kazanılan XP</Text>
+                            <Text size="sm" color={theme.colors.text.secondary}>{t('profile.xp_gained')}</Text>
                         </View>
                     </View>
                 </Card>

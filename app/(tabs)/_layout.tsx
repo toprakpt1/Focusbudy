@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
 import { Home, User, ShoppingBag } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../src/constants/theme';
 
 export default function TabLayout() {
     const theme = useTheme();
+    const { t } = useTranslation();
     return (
         <Tabs
             screenOptions={{
@@ -31,21 +33,21 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="home"
                 options={{
-                    title: 'Home',
+                    title: t('common.home'),
                     tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
                 }}
             />
             <Tabs.Screen
                 name="profile"
                 options={{
-                    title: 'Profile',
+                    title: t('common.profile'),
                     tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
                 }}
             />
             <Tabs.Screen
                 name="shop"
                 options={{
-                    title: 'Shop',
+                    title: t('common.shop'),
                     tabBarIcon: ({ color, size }) => <ShoppingBag color={color} size={size} />,
                 }}
             />

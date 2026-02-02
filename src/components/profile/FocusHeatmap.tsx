@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Text } from '../ui/Text';
 import { useTheme } from '../../constants/theme';
 import { useThemeStore } from '../../stores/useThemeStore';
@@ -13,6 +14,7 @@ const WEEKS_TO_SHOW = 20; // Show last ~5 months to keep it manageable horizonta
 
 export const FocusHeatmap: React.FC<FocusHeatmapProps> = ({ data }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     const activeThemeId = useThemeStore((s) => s.themeId);
 
     // Generate dates
@@ -165,7 +167,7 @@ export const FocusHeatmap: React.FC<FocusHeatmapProps> = ({ data }) => {
 
     return (
         <View style={styles.container}>
-            <Text size="lg" weight="semibold">Fokus Haritası</Text>
+            <Text size="lg" weight="semibold">{t('profile.focus_heatmap')}</Text>
 
             <ScrollView
                 horizontal
@@ -190,12 +192,12 @@ export const FocusHeatmap: React.FC<FocusHeatmapProps> = ({ data }) => {
             </ScrollView>
 
             <View style={styles.legend}>
-                <Text size="xs" color={theme.colors.text.secondary}>Az</Text>
+                <Text size="xs" color={theme.colors.text.secondary}>{t('profile.less')}</Text>
                 <View style={[styles.cell, { backgroundColor: theme.colors.backgrounds.cardSolid }]} />
                 <View style={[styles.cell, { backgroundColor: adjustOpacity(theme.colors.primary.cat, 0.4) }]} />
                 <View style={[styles.cell, { backgroundColor: adjustOpacity(theme.colors.primary.cat, 0.8) }]} />
                 <View style={[styles.cell, { backgroundColor: theme.colors.primary.cat }]} />
-                <Text size="xs" color={theme.colors.text.secondary}>Çok</Text>
+                <Text size="xs" color={theme.colors.text.secondary}>{t('profile.more')}</Text>
             </View>
         </View>
     );

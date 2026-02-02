@@ -1,0 +1,78 @@
+{
+    "common": {
+        "home": "Home",
+        "profile": "Profile",
+        "shop": "Shop",
+        "settings": "Settings",
+        "cancel": "Cancel",
+        "success": "Success!"
+    },
+    "home": {
+        "focus_time": "Focus Time",
+        "break_time": "Break Time",
+        "start_focus": "Start Focus",
+        "continue": "Continue",
+        "summary": "Today's Summary",
+        "sessions_completed": "{{count}}/{{total}} sessions completed"
+    },
+    "shop": {
+        "your_gold": "Your Gold",
+        "your_buddies": "Your Buddies",
+        "selected": "Selected",
+        "unlock": "Unlock",
+        "unlocked": "Unlocked",
+        "earn_more_title": "Earn More",
+        "earn_more_desc": "You earn 10 gold for every focus session you complete!",
+        "insufficient_balance": "Insufficient Balance",
+        "gold_needed": "{{amount}} more gold needed!",
+        "unlock_confirm_title": "Unlock {{name}}?",
+        "unlock_confirm_desc": "This will cost {{price}} gold.",
+        "unlock_success": "{{name}} is now with you! 🎉"
+    },
+    "profile": {
+        "theme": "Theme",
+        "theme_pastel": "Pastel (Default)",
+        "theme_dark": "Dark",
+        "theme_white": "White",
+        "level": "Level {{level}}",
+        "streak": "Daily Streak",
+        "total_focus": "Total Focus",
+        "daily_progress": "Daily Progress",
+        "sessions": "Sessions",
+        "xp_gained": "XP Gained",
+        "focus_heatmap": "Focus Heatmap",
+        "less": "Less",
+        "more": "More"
+    },
+    "focus": {
+        "exit_title": "Exit Focus Mode?",
+        "exit_desc": "Your progress will be lost if you exit now.",
+        "exit_confirm": "Exit",
+        "stay_focused": "Stay focused...",
+        "take_break": "Take a break!",
+        "pause": "Pause Session",
+        "resume": "Resume Session"
+    },
+    "settings": {
+        "general": "GENERAL",
+        "language": "Language",
+        "lang_tr": "Turkish",
+        "lang_en": "English",
+        "focus_duration": "Focus Duration",
+        "duration_25": "25 min (Pomodoro)",
+        "duration_45": "45 min (Long)",
+        "duration_60": "60 min (Marathon)",
+        "sounds": "Sounds",
+        "screen_always_on": "Screen Always On",
+        "screen_always_on_desc": "While timer is running",
+        "support_feedback": "SUPPORT & FEEDBACK",
+        "report_issue": "Report Issue",
+        "rate_app": "Rate App",
+        "about": "ABOUT",
+        "version": "Version",
+        "terms": "Terms of Use",
+        "timer_not_finished_title": "Timer Not Finished",
+        "timer_not_finished_desc": "The current timer is not finished. If you say yes, it will be set to the new duration and your current progress will be reset.",
+        "yes_set": "Yes, Set"
+    }
+}
