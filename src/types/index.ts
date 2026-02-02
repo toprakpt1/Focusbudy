@@ -39,6 +39,8 @@ export interface UserStats {
     currency: number;
     activeCompanion: CompanionType;
     unlockedCompanions: CompanionType[];
+    isPremium: boolean;
+     lastSessionOutcome: 'none' | 'completed' | 'abandoned';
 }
 
 // Settings Types

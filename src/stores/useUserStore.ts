@@ -21,6 +21,8 @@ interface UserStore extends UserStats {
     spendCurrency: (amount: number) => boolean;
     addCurrency: (amount: number) => void;
     resetDailyStats: () => void;
+    setPremium: (status: boolean) => void;
+     setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
     // loadFromStorage removed as valid persist middleware handles rehydration
 }
 
@@ -43,6 +45,8 @@ export const useUserStore = create<UserStore>()(
             currency: 0,
             activeCompanion: 'cat',
             unlockedCompanions: ['cat', 'dog'],
+            isPremium: false,
+            lastSessionOutcome: 'none',
 
             addXP: (amount: number) => {
                 set((state) => {
@@ -98,10 +102,11 @@ export const useUserStore = create<UserStore>()(
                     // Award XP and currency
                     get().addXP(XP_PER_SESSION);
                     get().addCurrency(CURRENCY_PER_SESSION);
-                    
-                    return { 
+
+                    return {
                         sessionsToday: newCount,
-                        history: newHistory
+                        history: newHistory,
+                        lastSessionOutcome: 'completed',
                     };
                 });
             },
@@ -137,6 +142,12 @@ export const useUserStore = create<UserStore>()(
 
             resetDailyStats: () => {
                 set({ sessionsToday: 0 });
+            },
+            setPremium: (status: boolean) => {
+                set({ isPremium: status });
+            },
+            setLastSessionOutcome: (outcome) => {
+                set({ lastSessionOutcome: outcome });
             },
         }),
         {

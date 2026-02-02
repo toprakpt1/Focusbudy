@@ -1,10 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTimerStore } from '../stores/useTimerStore';
 import { useUserStore } from '../stores/useUserStore';
 
 export const usePomodoro = () => {
     const timer = useTimerStore();
     const user = useUserStore();
+
+    const prevPhaseRef = useRef(timer.phase);
+
+    useEffect(() => {
+        prevPhaseRef.current = timer.phase;
+    }, [timer.phase]);
 
     // Timer tick effect
     useEffect(() => {
@@ -19,12 +25,12 @@ export const usePomodoro = () => {
 
     // Handle completion
     useEffect(() => {
-        if (timer.status === 'completed' && timer.phase === 'work') {
+        if (timer.status === 'completed' && prevPhaseRef.current === 'work') {
             // Work session completed - award XP
             user.incrementSessionsToday(timer.totalTime);
             user.addFocusTime(timer.totalTime);
         }
-    }, [timer.status, timer.phase]);
+    }, [timer.status, timer.totalTime]);
 
     const formatTime = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);

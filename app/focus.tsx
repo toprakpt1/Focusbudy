@@ -13,6 +13,7 @@ import { usePomodoro } from '../src/hooks/usePomodoro';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useSettingsStore } from '../src/stores/useSettingsStore';
 import { useTheme } from '../src/constants/theme';
+import { getCharacterMood } from '../src/utils/characterMood';
 
 const { height } = Dimensions.get('window');
 const IS_SMALL_DEVICE = height < 700;
@@ -32,7 +33,7 @@ export default function FocusScreen() {
         resume,
         complete
     } = usePomodoro();
-    const { activeCompanion } = useUserStore();
+    const { activeCompanion, sessionsToday, lastSessionOutcome, setLastSessionOutcome } = useUserStore();
 
     // Keep screen awake when timer is running and setting is enabled
     useEffect(() => {
@@ -56,6 +57,7 @@ export default function FocusScreen() {
                     text: t('focus.exit_confirm'),
                     style: 'destructive',
                     onPress: () => {
+                        setLastSessionOutcome('abandoned');
                         pause();
                         router.back();
                     },
@@ -145,6 +147,8 @@ export default function FocusScreen() {
         },
     }), [theme]);
 
+    const mood = status === 'running' ? 'idle' : getCharacterMood(status, lastSessionOutcome, sessionsToday);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -168,7 +172,7 @@ export default function FocusScreen() {
                     <View style={styles.glowEffect} />
                     <CharacterDisplay
                         type={activeCompanion}
-                        mood="focused"
+                        mood={mood}
                         size={IS_SMALL_DEVICE ? "md" : "lg"}
                         animated={true}
                     />

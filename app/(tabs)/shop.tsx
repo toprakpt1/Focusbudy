@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Dimensions, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '../../src/components/ui/Text';
@@ -16,7 +16,9 @@ import {
     CheckCircle2,
     Lock,
     Info,
-    Store
+    Store,
+    Crown,
+    PlayCircle
 } from 'lucide-react-native';
 
 interface ShopItem {
@@ -24,6 +26,8 @@ interface ShopItem {
     name: string;
     price: number;
 }
+
+ const ALL_COMPANIONS: CompanionType[] = ['cat', 'dog', 'panda', 'fox'];
 
 const shopItems: ShopItem[] = [
     { type: 'panda', name: 'Panda', price: 500 },
@@ -43,11 +47,15 @@ export default function ShopScreen() {
         unlockCompanion,
         spendCurrency,
         setActiveCompanion,
+        isPremium,
+        setPremium,
+        addCurrency,
     } = useUserStore();
 
     const theme = useTheme();
 
     const handlePurchase = (item: ShopItem) => {
+        if (isPremium) return;
         if (currency < item.price) {
             Alert.alert(t('shop.insufficient_balance'), t('shop.gold_needed', { amount: item.price - currency }));
             return;
@@ -74,10 +82,38 @@ export default function ShopScreen() {
 
     const handleSelect = (type: CompanionType) => {
         setActiveCompanion(type);
-        // User alert for confirmation
     };
 
-    const isUnlocked = (type: CompanionType) => unlockedCompanions.includes(type);
+    const handleWatchAd = () => {
+        // Simulated Ad
+        Alert.alert(
+            t('common.success'),
+            t('shop.ad_success'),
+            [{ text: 'OK', onPress: () => addCurrency(10) }]
+        );
+    };
+
+    const handleGoPremium = () => {
+        // Simulated Purchase
+        Alert.alert(
+            t('shop.go_premium'),
+            t('shop.premium_desc'),
+            [
+                { text: t('common.cancel'), style: 'cancel' },
+                {
+                    text: t('shop.get_premium'),
+                    onPress: () => {
+                        setPremium(true);
+                        Alert.alert(t('common.success'), t('shop.purchase_success'));
+                    },
+                },
+            ]
+        );
+    };
+
+    const isUnlocked = (type: CompanionType) => isPremium || unlockedCompanions.includes(type);
+
+     const ownedCompanions = isPremium ? ALL_COMPANIONS : unlockedCompanions;
 
     const styles = useMemo(() => StyleSheet.create({
         container: {
@@ -179,7 +215,58 @@ export default function ShopScreen() {
             alignItems: 'center' as const,
             justifyContent: 'center' as const,
             gap: theme.spacing.sm,
-        }
+        },
+        premiumBanner: {
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+            padding: theme.spacing.lg,
+            borderRadius: theme.radius.xl,
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            gap: theme.spacing.md,
+            borderWidth: 2,
+            borderColor: theme.colors.accents.xp,
+            marginBottom: theme.spacing.sm,
+        },
+        premiumText: {
+            flex: 1,
+            gap: 2,
+        },
+        premiumBenefits: {
+            marginTop: 8,
+            gap: 6,
+        },
+        premiumBenefitRow: {
+            flexDirection: 'row' as const,
+            alignItems: 'center' as const,
+            gap: 8,
+        },
+        premiumBenefitDot: {
+            width: 6,
+            height: 6,
+            borderRadius: 9999,
+            backgroundColor: theme.colors.accents.xp,
+        },
+        adButton: {
+            marginTop: theme.spacing.sm,
+            backgroundColor: theme.colors.backgrounds.main,
+            borderColor: theme.colors.primary.cat,
+        },
+        iconWrapper: {
+            width: 40,
+            height: 40,
+            borderRadius: theme.radius.md,
+            backgroundColor: theme.colors.backgrounds.subtle,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderWidth: 1,
+            borderColor: theme.colors.ui.border,
+        },
+        settingRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingVertical: theme.spacing.md,
+        },
     }), [theme]);
 
     return (
@@ -200,6 +287,37 @@ export default function ShopScreen() {
                     </View>
                 </Card>
 
+                {/* Premium Banner */}
+                {!isPremium && (
+                    <Pressable onPress={handleGoPremium}>
+                        <View style={styles.premiumBanner}>
+                            <View style={[styles.settingRow, { backgroundColor: 'transparent', paddingVertical: 0, gap: 12 }]}>
+                                <View style={styles.iconWrapper}>
+                                    <Crown size={24} color={theme.colors.accents.xp} />
+                                </View>
+                                <View style={styles.premiumText}>
+                                    <Text weight="bold" size="lg">{t('shop.go_premium')}</Text>
+                                    <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_desc')}</Text>
+                                    <View style={styles.premiumBenefits}>
+                                        <View style={styles.premiumBenefitRow}>
+                                            <View style={styles.premiumBenefitDot} />
+                                            <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_unlock_all')}</Text>
+                                        </View>
+                                        <View style={styles.premiumBenefitRow}>
+                                            <View style={styles.premiumBenefitDot} />
+                                            <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_exclusive_animals')}</Text>
+                                        </View>
+                                        <View style={styles.premiumBenefitRow}>
+                                            <View style={styles.premiumBenefitDot} />
+                                            <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_remove_ads')}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </Pressable>
+                )}
+
                 {/* Owned Companions */}
                 <View style={styles.sectionHeader}>
                     <Sparkles size={20} color={theme.colors.primary.cat} />
@@ -207,7 +325,7 @@ export default function ShopScreen() {
                 </View>
 
                 <View style={styles.grid}>
-                    {unlockedCompanions.map((type) => (
+                    {ownedCompanions.map((type) => (
                         <Card
                             key={type}
                             selected={activeCompanion === type}
@@ -293,6 +411,14 @@ export default function ShopScreen() {
                     <Text size="sm" color={theme.colors.text.secondary} align="center">
                         {t('shop.earn_more_desc')}
                     </Text>
+                    <Button
+                        label={t('shop.watch_ad_gold')}
+                        onPress={handleWatchAd}
+                        variant="secondary"
+                        size="md"
+                        icon={PlayCircle}
+                        style={styles.adButton}
+                    />
                 </Card>
             </ScrollView>
         </SafeAreaView>

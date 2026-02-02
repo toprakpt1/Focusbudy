@@ -7,6 +7,7 @@ import { Text } from '../src/components/ui/Text';
 import { Card } from '../src/components/ui/Card';
 import { useSettingsStore, type FocusDuration } from '../src/stores/useSettingsStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
+import { useUserStore } from '../src/stores/useUserStore';
 import { useTheme } from '../src/constants/theme';
 import {
     Globe,
@@ -19,6 +20,8 @@ import {
     Info,
     FileText,
     ChevronLeft,
+    Crown,
+    CheckCircle2
 } from 'lucide-react-native';
 
 const FOCUS_OPTIONS: { value: FocusDuration; labelKey: string }[] = [
@@ -43,6 +46,7 @@ export default function SettingsScreen() {
         appVersion,
     } = useSettingsStore();
     const { status, setPhase } = useTimerStore();
+    const { isPremium, setPremium } = useUserStore();
 
     const styles = useMemo(() => StyleSheet.create({
         container: {
@@ -164,6 +168,43 @@ export default function SettingsScreen() {
             gap: theme.spacing.md,
             paddingVertical: theme.spacing.md,
         },
+        premiumCard: {
+            gap: theme.spacing.md,
+            paddingVertical: theme.spacing.lg,
+            borderWidth: 1,
+            borderColor: theme.colors.ui.border,
+            backgroundColor: theme.colors.backgrounds.cardSolid,
+        },
+        premiumHeader: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        premiumHeaderLeft: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: theme.spacing.md,
+            flex: 1,
+        },
+        premiumBadge: {
+            paddingVertical: 6,
+            paddingHorizontal: 10,
+            borderRadius: theme.radius.full,
+            backgroundColor: theme.colors.backgrounds.subtle,
+            borderWidth: 1,
+            borderColor: theme.colors.accents.xp,
+        },
+        benefits: {
+            gap: 10,
+        },
+        benefitRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10,
+        },
+        ctaRow: {
+            marginTop: theme.spacing.sm,
+        },
     }), [theme]);
 
     const handleContactSupport = () => {
@@ -202,6 +243,24 @@ export default function SettingsScreen() {
             setFocusDuration(value);
             setPhase('work');
         }
+    };
+
+    const handleGoPremium = () => {
+        // Simulated Purchase
+        Alert.alert(
+            t('shop.go_premium'),
+            t('shop.premium_desc'),
+            [
+                { text: t('common.cancel'), style: 'cancel' },
+                {
+                    text: t('shop.get_premium'),
+                    onPress: () => {
+                        setPremium(true);
+                        Alert.alert(t('common.success'), t('shop.purchase_success'));
+                    },
+                },
+            ]
+        );
     };
 
     return (
@@ -410,6 +469,65 @@ export default function SettingsScreen() {
                             </View>
                             <Text weight="semibold">{t('settings.terms')}</Text>
                         </Pressable>
+                    </Card>
+                </View>
+
+                {/* Premium */}
+                <View style={styles.section}>
+                    <Text size="sm" weight="semibold" color={theme.colors.text.secondary} style={styles.sectionTitle}>
+                        PREMIUM
+                    </Text>
+                    <Card style={styles.premiumCard}>
+                        <View style={styles.premiumHeader}>
+                            <View style={styles.premiumHeaderLeft}>
+                                <View style={[styles.iconWrapper, { borderColor: theme.colors.accents.xp }]}>
+                                    <Crown size={20} color={theme.colors.accents.xp} />
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Text weight="bold">
+                                        {isPremium ? t('shop.premium_member') : t('shop.go_premium')}
+                                    </Text>
+                                    <Text size="sm" color={theme.colors.text.secondary}>
+                                        {t('shop.premium_desc')}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            {isPremium ? (
+                                <View style={styles.premiumBadge}>
+                                    <Text size="xs" weight="bold" color={theme.colors.accents.xp}>
+                                        {t('shop.premium_active_badge')}
+                                    </Text>
+                                </View>
+                            ) : (
+                                <CheckCircle2 size={22} color={theme.colors.backgrounds.cardSolid} style={{ opacity: 0 }} />
+                            )}
+                        </View>
+
+                        <View style={styles.benefits}>
+                            <View style={styles.benefitRow}>
+                                <CheckCircle2 size={18} color={theme.colors.accents.success} />
+                                <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_unlock_all')}</Text>
+                            </View>
+                            <View style={styles.benefitRow}>
+                                <CheckCircle2 size={18} color={theme.colors.accents.success} />
+                                <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_exclusive_animals')}</Text>
+                            </View>
+                            <View style={styles.benefitRow}>
+                                <CheckCircle2 size={18} color={theme.colors.accents.success} />
+                                <Text size="sm" color={theme.colors.text.secondary}>{t('shop.premium_benefit_remove_ads')}</Text>
+                            </View>
+                        </View>
+
+                        {!isPremium && (
+                            <View style={styles.ctaRow}>
+                                <Pressable onPress={handleGoPremium} style={[styles.chip, { borderColor: theme.colors.accents.xp, alignSelf: 'flex-start' }]}>
+                                    <Text size="sm" weight="bold" color={theme.colors.accents.xp}>
+                                        {t('shop.get_premium')}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        )}
                     </Card>
                 </View>
             </ScrollView>

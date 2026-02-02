@@ -27,7 +27,18 @@
         "gold_needed": "{{amount}} altın daha gerekiyor!",
         "unlock_confirm_title": "{{name}} Açılsın mı?",
         "unlock_confirm_desc": "Bu işlem {{price}} altın değerinde.",
-        "unlock_success": "{{name}} artık seninle! 🎉"
+        "unlock_success": "{{name}} artık seninle! 🎉",
+        "watch_ad_gold": "Reklam İzle (+10 Altın)",
+        "go_premium": "Premium'a Geç ✨",
+        "premium_desc": "Tüm hayvanların kilidini aç ve reklamları kaldır.",
+        "get_premium": "Hemen Al",
+        "premium_member": "Premium Üye ✨",
+        "premium_active_badge": "Aktif",
+        "premium_benefit_unlock_all": "Tüm hayvanlar otomatik açılır ve ücretsiz seçilebilir",
+        "premium_benefit_exclusive_animals": "Sadece Premium'a özel 2 özel hayvan",
+        "premium_benefit_remove_ads": "Reklamlar kaldırılır",
+        "purchase_success": "Artık bir Premium üyesiniz! Tüm dostlar sizi bekliyor. 🎉",
+        "ad_success": "Tebrikler! 10 altın kazandın."
     },
     "profile": {
         "theme": "Tema",
@@ -51,7 +62,8 @@
         "stay_focused": "Odaklanmaya devam et...",
         "take_break": "Mola ver!",
         "pause": "Oturumu Duraklat",
-        "resume": "Oturuma Devam Et"
+        "resume": "Oturuma Devam Et",
+        "double_reward": "Ödülü İkiye Katla (Reklam)"
     },
     "settings": {
         "general": "GENEL",

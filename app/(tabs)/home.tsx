@@ -20,7 +20,7 @@ export default function HomeScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { status, phase, timeLeft, formatTime, start, reset } = usePomodoro();
-    const { activeCompanion, streak, sessionsToday } = useUserStore();
+    const { activeCompanion, streak, sessionsToday, lastSessionOutcome, setLastSessionOutcome } = useUserStore();
     const { isSmall, scale } = useScreenSize();
 
     const styles = useMemo(() => StyleSheet.create({
@@ -85,9 +85,10 @@ export default function HomeScreen() {
         },
     }), [theme]);
 
-    const mood = getCharacterMood(status, phase, timeLeft);
+    const mood = getCharacterMood(status, lastSessionOutcome, sessionsToday);
 
     const handleStart = () => {
+        setLastSessionOutcome('none');
         start();
         router.push('/focus');
     };

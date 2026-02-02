@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import Animated, {
@@ -15,11 +16,14 @@ import { CharacterDisplay } from '../src/components/character/CharacterDisplay';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useTheme } from '../src/constants/theme';
+import { PlayCircle } from 'lucide-react-native';
+import { getCharacterMood } from '../src/utils/characterMood';
 
 export default function CompletionScreen() {
     const theme = useTheme();
     const router = useRouter();
-    const { activeCompanion, xp, level } = useUserStore();
+    const { t } = useTranslation();
+    const { activeCompanion, xp, level, addXP, addCurrency, sessionsToday, lastSessionOutcome } = useUserStore();
     const reset = useTimerStore((state) => state.reset);
 
     const scale = useSharedValue(0);
@@ -44,9 +48,29 @@ export default function CompletionScreen() {
         opacity: confettiOpacity.value,
     }));
 
+    const mood = getCharacterMood('completed', lastSessionOutcome, sessionsToday);
+
     const handleContinue = () => {
         reset();
         router.replace('/(tabs)/home');
+    };
+
+    const handleDoubleReward = () => {
+        // Simulated Ad
+        Alert.alert(
+            t('common.success'),
+            t('shop.ad_success'),
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        addXP(25); // Original was 25, add another 25
+                        addCurrency(10); // Original was 10, add another 10
+                        handleContinue();
+                    }
+                }
+            ]
+        );
     };
 
     const styles = useMemo(() => StyleSheet.create({
@@ -75,11 +99,15 @@ export default function CompletionScreen() {
         },
         rewardContainer: {
             marginTop: theme.spacing.xxl,
-            marginBottom: theme.spacing.xxl,
+            marginBottom: theme.spacing.xl,
             alignItems: 'center' as const,
             gap: theme.spacing.xs,
         },
         button: { width: '100%' as const },
+        secondaryButton: {
+            width: '100%' as const,
+            marginTop: theme.spacing.md,
+        },
     }), [theme]);
 
     return (
@@ -95,7 +123,7 @@ export default function CompletionScreen() {
                 {/* Character */}
                 <CharacterDisplay
                     type={activeCompanion}
-                    mood="celebrating"
+                    mood={mood}
                     size="lg"
                     animated={true}
                 />
@@ -121,10 +149,19 @@ export default function CompletionScreen() {
 
                 {/* Continue Button */}
                 <Button
-                    label="Continue"
+                    label={t('home.continue')}
                     onPress={handleContinue}
                     size="lg"
                     style={styles.button}
+                />
+
+                <Button
+                    label={t('focus.double_reward')}
+                    onPress={handleDoubleReward}
+                    size="md"
+                    variant="secondary"
+                    icon={PlayCircle}
+                    style={styles.secondaryButton}
                 />
             </Animated.View>
         </SafeAreaView>

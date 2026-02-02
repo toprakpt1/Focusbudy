@@ -27,7 +27,18 @@
         "gold_needed": "{{amount}} more gold needed!",
         "unlock_confirm_title": "Unlock {{name}}?",
         "unlock_confirm_desc": "This will cost {{price}} gold.",
-        "unlock_success": "{{name}} is now with you! 🎉"
+        "unlock_success": "{{name}} is now with you! 🎉",
+        "watch_ad_gold": "Watch Ad (+10 Gold)",
+        "go_premium": "Go Premium ✨",
+        "premium_desc": "Unlock all animals and remove all ads.",
+        "get_premium": "Get Now",
+        "premium_member": "Premium Member ✨",
+        "premium_active_badge": "Active",
+        "premium_benefit_unlock_all": "All animals are automatically unlocked and free to select",
+        "premium_benefit_exclusive_animals": "2 exclusive animals (Premium-only)",
+        "premium_benefit_remove_ads": "Ads are removed",
+        "purchase_success": "You are now a Premium member! All buddies await you. 🎉",
+        "ad_success": "Congratulations! You earned 10 gold."
     },
     "profile": {
         "theme": "Theme",
@@ -51,7 +62,8 @@
         "stay_focused": "Stay focused...",
         "take_break": "Take a break!",
         "pause": "Pause Session",
-        "resume": "Resume Session"
+        "resume": "Resume Session",
+        "double_reward": "Double Reward (Ad)"
     },
     "settings": {
         "general": "GENERAL",
