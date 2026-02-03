@@ -1,5 +1,5 @@
 // Character Types
-export type CompanionType = 'cat' | 'dog' | 'panda' | 'fox';
+export type CompanionType = 'cat' | 'dog' | 'panda' | 'fox' | 'owl' | 'rabbit';
 
 export type CharacterMood =
     | 'idle'

@@ -28,6 +28,8 @@ const defaultTheme = {
             dog: '#dd6236',   // primary-200
             panda: '#8f1e00', // primary-300
             fox: '#8B4513',   // accent-100
+            owl: '#5E548E',
+            rabbit: '#E07A5F',
         },
         backgrounds: {
             main: '#F7EEDD',     // bg-100
@@ -103,6 +105,8 @@ const darkTheme = {
             dog: '#4a9d9c',   // primary-200
             panda: '#afffff', // primary-300
             fox: '#FF3D3D',   // accent-100
+            owl: '#B8B8FF',
+            rabbit: '#FFB703',
         },
         backgrounds: {
             main: '#0D1F2D',     // bg-100
@@ -178,6 +182,8 @@ const whiteTheme = {
             dog: '#ff983f',   // primary-200
             panda: '#ffffa1', // primary-300
             fox: '#F5F5F5',   // accent-100
+            owl: '#3D405B',
+            rabbit: '#F4A261',
         },
         backgrounds: {
             main: '#ffffff',     // bg-100
@@ -247,7 +253,7 @@ const whiteTheme = {
 
 export interface Theme {
     colors: {
-        primary: { cat: string; dog: string; panda: string; fox: string };
+        primary: { cat: string; dog: string; panda: string; fox: string; owl: string; rabbit: string };
         backgrounds: { main: string; card: string; cardSolid: string; subtle: string; overlay: string; focus: string };
         text: { primary: string; secondary: string; inverse: string; muted: string };
         accents: { success: string; warning: string; streak: string; xp: string };

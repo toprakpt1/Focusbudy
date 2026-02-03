@@ -27,7 +27,7 @@ interface ShopItem {
     price: number;
 }
 
- const ALL_COMPANIONS: CompanionType[] = ['cat', 'dog', 'panda', 'fox'];
+ const ALL_COMPANIONS: CompanionType[] = ['cat', 'dog', 'panda', 'fox', 'owl', 'rabbit'];
 
 const shopItems: ShopItem[] = [
     { type: 'panda', name: 'Panda', price: 500 },

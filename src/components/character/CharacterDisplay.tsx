@@ -52,6 +52,22 @@ const imageMap: Record<CompanionType, Record<CharacterMood, any>> = {
         focused: require('../../../assets/Images/fox-idle.png'),
         celebrating: require('../../../assets/Images/fox-happy.png'),
     },
+    owl: {
+        idle: require('../../../assets/Images/owl-idle.png'),
+        happy: require('../../../assets/Images/owl-happy.png'),
+        sad: require('../../../assets/Images/owl-sad.png'),
+        sleepy: require('../../../assets/Images/owl-sleppy.png'),
+        focused: require('../../../assets/Images/owl-idle.png'),
+        celebrating: require('../../../assets/Images/owl-happy.png'),
+    },
+    rabbit: {
+        idle: require('../../../assets/Images/rabbit-idle.png'),
+        happy: require('../../../assets/Images/rabbit-happy.png'),
+        sad: require('../../../assets/Images/rabbit-sad.png'),
+        sleepy: require('../../../assets/Images/rabbit-sleppy.png'),
+        focused: require('../../../assets/Images/rabbit-idle.png'),
+        celebrating: require('../../../assets/Images/rabbit-happy.png'),
+    },
 };
 
 const sizeMap = {
