@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../translate/i18n';
 
 export type Language = 'tr' | 'en';
-export type FocusDuration = 25 | 45 | 60;
+export type FocusDuration = 0.16666666666666666 | 25 | 45 | 60;
 
 interface SettingsStore {
     // Dil

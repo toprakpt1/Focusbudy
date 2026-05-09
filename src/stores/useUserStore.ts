@@ -17,12 +17,9 @@ interface UserStore extends UserStats {
     addFocusTime: (seconds: number) => void;
     incrementSessionsToday: (sessionDuration: number) => void;
     setActiveCompanion: (companion: CompanionType) => void;
-    unlockCompanion: (companion: CompanionType) => void;
-    spendCurrency: (amount: number) => boolean;
     addCurrency: (amount: number) => void;
     resetDailyStats: () => void;
-    setPremium: (status: boolean) => void;
-     setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
+    setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
     // loadFromStorage removed as valid persist middleware handles rehydration
 }
 
@@ -44,8 +41,6 @@ export const useUserStore = create<UserStore>()(
             sessionsToday: 0,
             currency: 0,
             activeCompanion: 'cat',
-            unlockedCompanions: ['cat', 'dog'],
-            isPremium: false,
             lastSessionOutcome: 'none',
 
             addXP: (amount: number) => {
@@ -115,24 +110,6 @@ export const useUserStore = create<UserStore>()(
                 set({ activeCompanion: companion });
             },
 
-            unlockCompanion: (companion: CompanionType) => {
-                set((state) => {
-                    // Check if already unlocked to prevent duplicates (Fixes unique key error)
-                    if (state.unlockedCompanions.includes(companion)) {
-                        return state;
-                    }
-                    const newUnlocked = Array.from(new Set([...state.unlockedCompanions, companion]));
-                    return { unlockedCompanions: newUnlocked };
-                });
-            },
-
-            spendCurrency: (amount: number) => {
-                const current = get().currency;
-                if (current < amount) return false;
-                set({ currency: current - amount });
-                return true;
-            },
-
             addCurrency: (amount: number) => {
                 set((state) => {
                     const newCurrency = state.currency + amount;
@@ -142,9 +119,6 @@ export const useUserStore = create<UserStore>()(
 
             resetDailyStats: () => {
                 set({ sessionsToday: 0 });
-            },
-            setPremium: (status: boolean) => {
-                set({ isPremium: status });
             },
             setLastSessionOutcome: (outcome) => {
                 set({ lastSessionOutcome: outcome });

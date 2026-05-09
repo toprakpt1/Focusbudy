@@ -71,6 +71,7 @@
         "lang_tr": "Türkçe",
         "lang_en": "English",
         "focus_duration": "Odaklanma Süresi",
+        "duration_10s": "10 sn (Test)",
         "duration_25": "25 dk (Pomodoro)",
         "duration_45": "45 dk (Uzun)",
         "duration_60": "60 dk (Maraton)",

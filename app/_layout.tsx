@@ -21,10 +21,7 @@ export default function RootLayout() {
         (async () => {
             try {
                 const NavigationBar = await import('expo-navigation-bar');
-                await NavigationBar.setPositionAsync('absolute');
-                await NavigationBar.setBackgroundColorAsync('transparent');
                 await NavigationBar.setButtonStyleAsync('dark');
-                await NavigationBar.setBehaviorAsync('overlay-swipe');
                 await NavigationBar.setVisibilityAsync('hidden');
             } catch {
                 // ignore

@@ -29,7 +29,7 @@ const SESSIONS_UNTIL_LONG_BREAK = 4;
 // Settings store'dan odak suresini al
 const getWorkDuration = () => {
     const focusDuration = useSettingsStore.getState().focusDuration;
-    return focusDuration * 60;
+    return Math.round(focusDuration * 60);
 };
 
 export const useTimerStore = create<TimerStore>()(

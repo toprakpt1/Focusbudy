@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert, Dimensions, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { X } from 'lucide-react-native';
 import { Text } from '../src/components/ui/Text';
 import { Button } from '../src/components/ui/Button';
@@ -38,7 +38,7 @@ export default function FocusScreen() {
     // Keep screen awake when timer is running and setting is enabled
     useEffect(() => {
         if (keepScreenOn && status === 'running') {
-            activateKeepAwake('focus-timer');
+            activateKeepAwakeAsync('focus-timer');
         } else {
             deactivateKeepAwake('focus-timer');
         }

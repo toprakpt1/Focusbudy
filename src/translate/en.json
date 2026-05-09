@@ -71,6 +71,7 @@
         "lang_tr": "Turkish",
         "lang_en": "English",
         "focus_duration": "Focus Duration",
+        "duration_10s": "10 sec (Test)",
         "duration_25": "25 min (Pomodoro)",
         "duration_45": "45 min (Long)",
         "duration_60": "60 min (Marathon)",
