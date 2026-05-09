@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../ui/Text';
@@ -16,6 +16,17 @@ export const FocusHeatmap: React.FC<FocusHeatmapProps> = ({ data }) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const activeThemeId = useThemeStore((s) => s.themeId);
+    const scrollViewRef = useRef<ScrollView>(null);
+
+    // Scroll to the end to show current day
+    useEffect(() => {
+        // Small timeout to ensure the component is fully rendered
+        const timeoutId = setTimeout(() => {
+            scrollViewRef.current?.scrollToEnd({ animated: false });
+        }, 100);
+        
+        return () => clearTimeout(timeoutId);
+    }, []);
 
     // Generate dates
     const weeks = useMemo(() => {
@@ -170,6 +181,7 @@ export const FocusHeatmap: React.FC<FocusHeatmapProps> = ({ data }) => {
             <Text size="lg" weight="semibold">{t('profile.focus_heatmap')}</Text>
 
             <ScrollView
+                ref={scrollViewRef}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingRight: 20 }}

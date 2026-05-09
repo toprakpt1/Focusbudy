@@ -35,7 +35,7 @@ export const useSettingsStore = create<SettingsStore>()(
             soundEnabled: true,
             keepScreenOn: true,
             focusDuration: 25,
-            appVersion: '1.0.4',
+            appVersion: '1.0.0',
 
             // Actions
             setLanguage: (lang: Language) => {

@@ -15,6 +15,17 @@
         "summary": "Günün Özeti",
         "sessions_completed": "{{count}}/{{total}} oturum tamamlandı"
     },
+    "onboarding": {
+        "title": "İlk dostunu seç",
+        "subtitle": "Başlangıçta iki hayvan açık geliyor. Odak seanslarında yanında kalmasını istediğini seç.",
+        "available": "Açık",
+        "selected": "Seçili",
+        "tap_to_choose": "Seçmek için dokun",
+        "ready_with": "{{name}} hazır",
+        "selection_hint": "Açık olan dostlar arasında daha sonra mağaza sekmesinden geçiş yapabilirsin.",
+        "continue": "Dostla devam et",
+        "unlock_hint": "Level atladıkça yeni dostların kilidi otomatik açılır."
+    },
     "shop": {
         "your_gold": "Mevcut Altınların",
         "your_buddies": "Dostların",
@@ -88,7 +99,7 @@
         "screen_always_on_desc": "Zamanlayıcı çalışırken",
         "support_feedback": "DESTEK & GERİ BİLDİRİM",
         "report_issue": "Sorun Bildir",
-        "rate_app": "Puan Ver",
+        "suggest_feature": "Öneride Bulun",
         "about": "HAKKINDA",
         "version": "Sürüm",
         "terms": "Kullanım Koşulları",

@@ -15,7 +15,7 @@ import {
     Monitor,
     Clock,
     Wrench,
-    Star,
+    Lightbulb,
     Info,
     FileText,
     ChevronLeft
@@ -205,17 +205,17 @@ export default function SettingsScreen() {
     }), [theme]);
 
     const handleContactSupport = () => {
-        Linking.openURL('mailto:support@focusbuddy.app?subject=Sorun Bildirimi');
+        const subject = language === 'tr' ? 'Sorun+Bildirimi' : 'Issue+Report';
+        Linking.openURL(`mailto:toprakpt1@protonmail.com?subject=${subject}`);
     };
 
-    const handleRateApp = () => {
-        // TODO: App store linki eklenecek
-        console.log('Rate app clicked');
+    const handleSuggestFeature = () => {
+        const subject = language === 'tr' ? 'Öneri' : 'Feature+Suggestion';
+        Linking.openURL(`mailto:toprakpt1@protonmail.com?subject=${subject}`);
     };
 
     const handleTermsOfUse = () => {
-        // TODO: Kullanim kosullari sayfasina yonlendirme
-        console.log('Terms of use clicked');
+        router.push('/terms');
     };
 
     const handleSetFocusDuration = (value: FocusDuration) => {
@@ -412,12 +412,12 @@ export default function SettingsScreen() {
 
                         <View style={styles.divider} />
 
-                        {/* Puan Ver */}
-                        <Pressable onPress={handleRateApp} style={styles.actionButton}>
+                        {/* Öneride Bulun */}
+                        <Pressable onPress={handleSuggestFeature} style={styles.actionButton}>
                             <View style={styles.iconWrapper}>
-                                <Star size={20} color={theme.colors.accents.xp} />
+                                <Lightbulb size={20} color={theme.colors.accents.xp} />
                             </View>
-                            <Text weight="semibold">{t('settings.rate_app')}</Text>
+                            <Text weight="semibold">{t('settings.suggest_feature')}</Text>
                         </Pressable>
                     </Card>
                 </View>
@@ -436,7 +436,7 @@ export default function SettingsScreen() {
                                 </View>
                                 <Text weight="semibold">{t('settings.version')}</Text>
                             </View>
-                            <Text color={theme.colors.text.secondary}>v{appVersion}</Text>
+                            <Text color={theme.colors.text.secondary}>V{appVersion}</Text>
                         </View>
 
                         <View style={styles.divider} />

@@ -15,6 +15,17 @@
         "summary": "Today's Summary",
         "sessions_completed": "{{count}}/{{total}} sessions completed"
     },
+    "onboarding": {
+        "title": "Choose your first buddy",
+        "subtitle": "You start with two unlocked animals. Pick the one you want beside you during focus sessions.",
+        "available": "Open",
+        "selected": "Selected",
+        "tap_to_choose": "Tap to choose",
+        "ready_with": "{{name}} is ready",
+        "selection_hint": "You can switch between unlocked buddies later from the shop tab.",
+        "continue": "Continue with buddy",
+        "unlock_hint": "New buddies unlock automatically as your level goes up."
+    },
     "shop": {
         "your_gold": "Your Gold",
         "your_buddies": "Your Buddies",
@@ -88,7 +99,7 @@
         "screen_always_on_desc": "While timer is running",
         "support_feedback": "SUPPORT & FEEDBACK",
         "report_issue": "Report Issue",
-        "rate_app": "Rate App",
+        "suggest_feature": "Suggest Feature",
         "about": "ABOUT",
         "version": "Version",
         "terms": "Terms of Use",
