@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Text } from '../src/components/ui/Text';
@@ -9,13 +9,15 @@ import { useUserStore } from '../src/stores/useUserStore';
 import { useScreenSize } from '../src/hooks/useScreenSize';
 import { useTheme } from '../src/constants/theme';
 import type { CompanionType } from '../src/types';
+import { COMPANIONS } from '../src/constants/companions';
 
 export default function OnboardingScreen() {
     const theme = useTheme();
     const router = useRouter();
     const setActiveCompanion = useUserStore((state) => state.setActiveCompanion);
-    const { isSmall } = useScreenSize();
+    const { isSmall, width } = useScreenSize();
     const [selected, setSelected] = useState<CompanionType | null>(null);
+    const cardWidth = Math.floor((width - theme.spacing.lg * 2 - theme.spacing.md) / 2);
 
     const styles = useMemo(() => StyleSheet.create({
         container: {
@@ -24,25 +26,44 @@ export default function OnboardingScreen() {
         },
         content: {
             flex: 1,
-            padding: theme.spacing.xl,
-            justifyContent: 'center' as const,
+            paddingHorizontal: theme.spacing.lg,
+            paddingTop: theme.spacing.xl,
+            paddingBottom: theme.spacing.xl,
         },
         title: {
-            marginBottom: theme.spacing.xxxl,
-            textAlign: 'center' as const,
+            marginBottom: theme.spacing.sm,
         },
-        grid: { gap: theme.spacing.lg },
+        subtitle: {
+            marginBottom: theme.spacing.xl,
+            maxWidth: 320,
+        },
+        grid: {
+            flexDirection: 'row' as const,
+            flexWrap: 'wrap' as const,
+            gap: theme.spacing.md,
+        },
         card: {
             alignItems: 'center' as const,
-            paddingVertical: theme.spacing.lg,
+            width: cardWidth,
+            minHeight: 156,
+            paddingVertical: theme.spacing.md,
+            paddingHorizontal: theme.spacing.sm,
         },
-        name: { marginTop: theme.spacing.sm },
-    }), [theme]);
-
-    const companions: Array<{ type: CompanionType; name: string }> = [
-        { type: 'cat', name: 'Cat' },
-        { type: 'dog', name: 'Dog' },
-    ];
+        avatarWrap: {
+            width: 72,
+            height: 72,
+            alignItems: 'center' as const,
+            justifyContent: 'center' as const,
+        },
+        name: {
+            marginTop: theme.spacing.xs,
+            minHeight: 28,
+        },
+        helper: {
+            marginTop: theme.spacing.xs,
+            minHeight: 20,
+        },
+    }), [cardWidth, theme]);
 
     const handleSelect = (type: CompanionType) => {
         setSelected(type);
@@ -56,33 +77,39 @@ export default function OnboardingScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.content}>
-                <Text size={isSmall ? "xl" : "xxl"} weight="bold" align="center" style={styles.title}>
-                    Choose your focus{'\n'}companion
+            <ScrollView contentContainerStyle={styles.content}>
+                <Text size={isSmall ? "xl" : "xxl"} weight="bold" style={styles.title}>
+                    Choose a companion
                 </Text>
-
+                <Text size="md" color={theme.colors.text.secondary} style={styles.subtitle}>
+                    Pick the one you want to keep around while you focus.
+                </Text>
                 <View style={styles.grid}>
-                    {companions.map((companion) => (
+                    {COMPANIONS.filter((c) => c.unlockLevel === 0).map((companion) => (
                         <Card
                             key={companion.type}
                             selected={selected === companion.type}
                             onPress={() => handleSelect(companion.type)}
                             style={styles.card}
                         >
-                            <CharacterDisplay
-                                type={companion.type}
-                                mood="idle"
-                                size={isSmall ? "sm" : "md"}
-                                animated={true}
-                            />
+                            <View style={styles.avatarWrap}>
+                                <CharacterDisplay
+                                    type={companion.type}
+                                    mood="idle"
+                                    size="sm"
+                                    animated={true}
+                                />
+                            </View>
                             <Text size="lg" weight="semibold" align="center" style={styles.name}>
                                 {companion.name}
+                            </Text>
+                            <Text size={isSmall ? "xs" : "sm"} color={theme.colors.text.secondary} align="center" style={styles.helper}>
+                                {selected === companion.type ? 'Selected' : 'Tap to choose'}
                             </Text>
                         </Card>
                     ))}
                 </View>
-            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
-

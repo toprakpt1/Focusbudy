@@ -8,20 +8,21 @@ import { CharacterDisplay } from '../../src/components/character/CharacterDispla
 import { useUserStore } from '../../src/stores/useUserStore';
 import { useTheme } from '../../src/constants/theme';
 import type { CompanionType } from '../../src/types';
-import { Sparkles, CheckCircle2 } from 'lucide-react-native';
-
-const ALL_COMPANIONS: CompanionType[] = ['cat', 'dog', 'panda', 'fox', 'owl', 'rabbit'];
+import { Sparkles, CheckCircle2, Lock } from 'lucide-react-native';
+import { COMPANIONS } from '../../src/constants/companions';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_MIN_WIDTH = Math.min(160, SCREEN_WIDTH * 0.42);
 
 export default function ShopScreen() {
     const { t } = useTranslation();
-    const { activeCompanion, setActiveCompanion } = useUserStore();
+    const { activeCompanion, setActiveCompanion, unlockedCompanions, level } = useUserStore();
     const theme = useTheme();
 
     const handleSelect = (type: CompanionType) => {
-        setActiveCompanion(type);
+        if (unlockedCompanions?.includes(type)) {
+            setActiveCompanion(type);
+        }
     };
 
     const styles = useMemo(
@@ -82,38 +83,53 @@ export default function ShopScreen() {
                 </View>
 
                 <View style={styles.grid}>
-                    {ALL_COMPANIONS.map((type) => (
-                        <Card
-                            key={type}
-                            selected={activeCompanion === type}
-                            onPress={() => handleSelect(type)}
-                            style={[styles.companionCard, { minWidth: CARD_MIN_WIDTH }]}
-                        >
-                            <View style={styles.companionImageWrap}>
-                                <CharacterDisplay type={type} mood="idle" size="sm" />
-                            </View>
-                            <Text
-                                size="md"
-                                weight="semibold"
-                                align="center"
-                                style={{ marginTop: 8 }}
-                                numberOfLines={1}
+                    {COMPANIONS.map(({ type, name, unlockLevel }) => {
+                        const isUnlocked = unlockedCompanions?.includes(type) ?? false;
+                        const isSelected = activeCompanion === type;
+                        return (
+                            <Card
+                                key={type}
+                                selected={isUnlocked && isSelected}
+                                onPress={isUnlocked ? () => handleSelect(type) : undefined}
+                                style={[
+                                    styles.companionCard,
+                                    { minWidth: CARD_MIN_WIDTH, opacity: isUnlocked ? 1 : 0.5 },
+                                ]}
                             >
-                                {type.charAt(0).toUpperCase() + type.slice(1)}
-                            </Text>
-                            {activeCompanion === type && (
-                                <View style={styles.statusRow}>
-                                    <CheckCircle2 size={12} color={theme.colors.primary.cat} />
-                                    <Text size="xs" color={theme.colors.primary.cat} weight="bold">
-                                        {t('shop.selected')}
-                                    </Text>
+                                <View style={styles.companionImageWrap}>
+                                    <CharacterDisplay type={type} mood="idle" size="sm" />
                                 </View>
-                            )}
-                        </Card>
-                    ))}
+                                <Text
+                                    size="md"
+                                    weight="semibold"
+                                    align="center"
+                                    style={{ marginTop: 8 }}
+                                    numberOfLines={1}
+                                >
+                                    {name}
+                                </Text>
+                                {isUnlocked ? (
+                                    isSelected && (
+                                        <View style={styles.statusRow}>
+                                            <CheckCircle2 size={12} color={theme.colors.primary.cat} />
+                                            <Text size="xs" color={theme.colors.primary.cat} weight="bold">
+                                                {t('shop.selected')}
+                                            </Text>
+                                        </View>
+                                    )
+                                ) : (
+                                    <View style={styles.statusRow}>
+                                        <Lock size={12} color={theme.colors.text.secondary} />
+                                        <Text size="xs" color={theme.colors.text.secondary} weight="bold">
+                                            {t('shop.unlock_at_level', { level: unlockLevel })}
+                                        </Text>
+                                    </View>
+                                )}
+                            </Card>
+                        );
+                    })}
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
 }
-

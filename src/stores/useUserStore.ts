@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { UserStats, CompanionType } from '../types';
+import { COMPANIONS } from '../constants/companions';
 
 
 interface DailyStats {
@@ -20,7 +21,7 @@ interface UserStore extends UserStats {
     addCurrency: (amount: number) => void;
     resetDailyStats: () => void;
     setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
-    // loadFromStorage removed as valid persist middleware handles rehydration
+    clearLastSessionRewards: () => void;
 }
 
 const XP_PER_LEVEL = 100;
@@ -42,20 +43,53 @@ export const useUserStore = create<UserStore>()(
             currency: 0,
             activeCompanion: 'cat',
             lastSessionOutcome: 'none',
+            unlockedCompanions: ['cat', 'dog'] as CompanionType[],
+            lastSessionRewards: { leveledUp: false },
 
             addXP: (amount: number) => {
                 set((state) => {
                     const newXP = state.xp + amount;
                     const xpForNextLevel = state.level * XP_PER_LEVEL;
+                    let leveledUp = false;
+                    let newLevel: number | undefined;
+                    let unlockedCompanion: CompanionType | null = null;
+                    const unlockedCompanions = [...(state.unlockedCompanions || ['cat', 'dog'])];
 
                     if (newXP >= xpForNextLevel) {
-                        // Level up!
+                        leveledUp = true;
                         const remainingXP = newXP - xpForNextLevel;
-                        const newLevel = state.level + 1;
-                        return { xp: remainingXP, level: newLevel };
+                        const currentNewLevel = state.level + 1;
+                        newLevel = currentNewLevel;
+
+                        // Check if any companion unlocks at this new level
+                        for (const companion of COMPANIONS) {
+                            if (companion.unlockLevel === currentNewLevel && !unlockedCompanions.includes(companion.type)) {
+                                unlockedCompanion = companion.type;
+                                unlockedCompanions.push(companion.type);
+                                break;
+                            }
+                        }
+
+                        return {
+                            xp: remainingXP,
+                            level: currentNewLevel,
+                            unlockedCompanions,
+                            lastSessionRewards: {
+                                leveledUp,
+                                newLevel,
+                                unlockedCompanion,
+                            },
+                        };
                     }
 
-                    return { xp: newXP };
+                    return {
+                        xp: newXP,
+                        lastSessionRewards: {
+                            leveledUp,
+                            newLevel,
+                            unlockedCompanion,
+                        },
+                    };
                 });
             },
 
@@ -123,9 +157,32 @@ export const useUserStore = create<UserStore>()(
             setLastSessionOutcome: (outcome) => {
                 set({ lastSessionOutcome: outcome });
             },
+            clearLastSessionRewards: () => {
+                set({ lastSessionRewards: { leveledUp: false } });
+            },
         }),
         {
             name: 'user-storage',
+            version: 1,
+            migrate: (persistedState: any, version) => {
+                if (version === 0) {
+                    const state = persistedState as any;
+                    if (!state.unlockedCompanions) {
+                        const level = state.level || 1;
+                        const unlocked: CompanionType[] = ['cat', 'dog'];
+                        for (const c of COMPANIONS) {
+                            if (c.unlockLevel > 0 && c.unlockLevel <= level) {
+                                unlocked.push(c.type);
+                            }
+                        }
+                        state.unlockedCompanions = unlocked;
+                    }
+                    if (!state.lastSessionRewards) {
+                        state.lastSessionRewards = { leveledUp: false };
+                    }
+                }
+                return persistedState;
+            },
             storage: createJSONStorage(() => AsyncStorage),
         }
     )

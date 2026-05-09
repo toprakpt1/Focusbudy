@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -7,8 +7,6 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withSpring,
-    withSequence,
-    withDelay,
 } from 'react-native-reanimated';
 import { Text } from '../src/components/ui/Text';
 import { Button } from '../src/components/ui/Button';
@@ -18,18 +16,19 @@ import { useUserStore } from '../src/stores/useUserStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useTheme } from '../src/constants/theme';
 import { getCharacterMood } from '../src/utils/characterMood';
+import { COMPANIONS } from '../src/constants/companions';
+import type { CharacterMood, CompanionType } from '../src/types';
 
 export default function CompletionScreen() {
     const theme = useTheme();
     const router = useRouter();
     const { t } = useTranslation();
-    const { activeCompanion, xp, level, sessionsToday, lastSessionOutcome } = useUserStore();
+    const { activeCompanion, xp, level, sessionsToday, lastSessionOutcome, lastSessionRewards, clearLastSessionRewards } = useUserStore();
     const reset = useTimerStore((state) => state.reset);
 
     const scale = useSharedValue(0);
 
     useEffect(() => {
-        // Entry animation
         scale.value = withSpring(1, { damping: 10 });
     }, []);
 
@@ -39,7 +38,22 @@ export default function CompletionScreen() {
 
     const mood = getCharacterMood('completed', lastSessionOutcome, sessionsToday);
 
+    const leveledUp = lastSessionRewards?.leveledUp ?? false;
+    const newLevel = lastSessionRewards?.newLevel;
+    const unlockedCompanion = lastSessionRewards?.unlockedCompanion;
+
+    const unlockedCompanionName = React.useMemo(() => {
+        if (!unlockedCompanion) return '';
+        return COMPANIONS.find((c) => c.type === unlockedCompanion)?.name ?? '';
+    }, [unlockedCompanion]);
+
+    // Determine display state
+    const displayCharacter: CompanionType = unlockedCompanion ?? activeCompanion;
+    const displayMood: CharacterMood = unlockedCompanion ? 'celebrating' : mood;
+    const confettiCount = leveledUp ? (unlockedCompanion ? 100 : 75) : 50;
+
     const handleContinue = () => {
+        clearLastSessionRewards();
         reset();
         router.replace('/(tabs)/home');
     };
@@ -66,33 +80,43 @@ export default function CompletionScreen() {
             gap: theme.spacing.xs,
         },
         button: { width: '100%' as const },
-        secondaryButton: {
-            width: '100%' as const,
-            marginTop: theme.spacing.md,
-        },
     }), [theme]);
 
     return (
         <SafeAreaView style={styles.container}>
-            <Confetti count={50} />
+            <Confetti count={confettiCount} />
 
             <Animated.View style={[styles.content, animatedStyle]}>
                 {/* Character */}
                 <CharacterDisplay
-                    type={activeCompanion}
-                    mood={mood}
+                    type={displayCharacter}
+                    mood={displayMood}
                     size="lg"
                     animated={true}
                 />
 
-                {/* Success Message */}
-                <Text size="xxl" weight="bold" align="center" style={styles.title}>
-                    Great work!
-                </Text>
-
-                <Text size="lg" color={theme.colors.text.secondary} align="center">
-                    You completed a focus session
-                </Text>
+                {/* Message */}
+                {leveledUp && newLevel ? (
+                    <>
+                        <Text size="xxl" weight="bold" align="center" style={styles.title}>
+                            {t('completion.level_up', { level: newLevel })}
+                        </Text>
+                        <Text size="lg" color={theme.colors.text.secondary} align="center">
+                            {unlockedCompanion
+                                ? t('completion.unlocked', { name: unlockedCompanionName })
+                                : t('completion.level_up_message')}
+                        </Text>
+                    </>
+                ) : (
+                    <>
+                        <Text size="xxl" weight="bold" align="center" style={styles.title}>
+                            {t('completion.great_work')}
+                        </Text>
+                        <Text size="lg" color={theme.colors.text.secondary} align="center">
+                            {t('completion.session_complete')}
+                        </Text>
+                    </>
+                )}
 
                 {/* XP Reward */}
                 <View style={styles.rewardContainer}>
@@ -100,7 +124,7 @@ export default function CompletionScreen() {
                         +25 XP
                     </Text>
                     <Text size="md" color={theme.colors.text.secondary}>
-                        Level {level} • {xp} XP
+                        {t('profile.level', { level })} • {xp} XP
                     </Text>
                 </View>
 

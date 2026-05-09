@@ -30,6 +30,12 @@ export interface TimerState {
 }
 
 // User Progress Types
+export interface SessionRewards {
+    leveledUp: boolean;
+    newLevel?: number;
+    unlockedCompanion?: CompanionType | null;
+}
+
 export interface UserStats {
     xp: number;
     level: number;
@@ -39,6 +45,8 @@ export interface UserStats {
     currency: number;
     activeCompanion: CompanionType;
     lastSessionOutcome: 'none' | 'completed' | 'abandoned';
+    unlockedCompanions: CompanionType[];
+    lastSessionRewards: SessionRewards;
 }
 
 // Settings Types

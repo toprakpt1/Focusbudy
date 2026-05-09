@@ -38,13 +38,21 @@
         "premium_benefit_exclusive_animals": "Sadece Premium'a özel: Owl & Rabbit",
         "premium_benefit_remove_ads": "Reklamlar kaldırılır",
         "purchase_success": "Artık bir Premium üyesiniz! Tüm dostlar sizi bekliyor. 🎉",
-        "ad_success": "Tebrikler! 10 altın kazandın."
+        "ad_success": "Tebrikler! 10 altın kazandın.",
+        "unlock_at_level": "Level {{level}}"
+    },
+    "completion": {
+        "great_work": "Harika iş!",
+        "session_complete": "Bir odak seansı tamamladın",
+        "level_up": "Level {{level}}!",
+        "level_up_message": "Tebrikler, yeni seviyeye ulaştın!",
+        "unlocked": "{{name}} açıldı!"
     },
     "profile": {
         "theme": "Tema",
-        "theme_pastel": "Pastel (Varsayılan)",
-        "theme_dark": "Koyu",
-        "theme_white": "Beyaz",
+        "theme_pastel": "Sıcak",
+        "theme_dark": "Gece",
+        "theme_white": "Kağıt",
         "level": "Level {{level}}",
         "streak": "Günlük Seri",
         "total_focus": "Toplam Odak",

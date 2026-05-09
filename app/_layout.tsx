@@ -5,10 +5,12 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useTheme } from '../src/constants/theme';
+import { useThemeStore } from '../src/stores/useThemeStore';
 import '../src/translate/i18n';
 
 export default function RootLayout() {
     const theme = useTheme();
+    const themeId = useThemeStore((state) => state.themeId);
     const syncTimer = useTimerStore((state) => state.syncTimer);
 
     useEffect(() => {
@@ -31,7 +33,7 @@ export default function RootLayout() {
 
     return (
         <SafeAreaProvider>
-            <StatusBar style={theme.colors.backgrounds.main === '#0D1F2D' ? 'light' : 'dark'} />
+            <StatusBar style={themeId === 'dark' ? 'light' : 'dark'} />
             <Stack
                 screenOptions={{
                     headerShown: false,

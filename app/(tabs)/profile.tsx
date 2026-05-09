@@ -23,6 +23,7 @@ import {
     Settings
 } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { getTheme } from '../../src/constants/theme';
 
 const THEME_OPTIONS: { id: ThemeId; labelKey: string; Icon: React.ElementType }[] = [
     { id: 'default', labelKey: 'profile.theme_pastel', Icon: Flower2 },
@@ -93,21 +94,6 @@ export default function ProfileScreen() {
             flexDirection: 'row' as const,
             gap: theme.spacing.sm,
         },
-        themeOption: {
-            flex: 1,
-            paddingVertical: theme.spacing.lg,
-            paddingHorizontal: theme.spacing.sm,
-            borderRadius: theme.radius.lg,
-            borderWidth: 2,
-            borderColor: 'transparent',
-            alignItems: 'center' as const,
-            gap: theme.spacing.sm,
-            backgroundColor: theme.colors.backgrounds.subtle,
-        },
-        themeOptionSelected: {
-            borderColor: theme.colors.primary.cat,
-            backgroundColor: theme.colors.backgrounds.cardSolid,
-        },
         todayStats: {
             flexDirection: 'row' as const,
             justifyContent: 'space-around' as const,
@@ -161,27 +147,14 @@ export default function ProfileScreen() {
                     </View>
                     <View style={styles.themeRow}>
                         {THEME_OPTIONS.map((opt) => (
-                            <Pressable
+                            <ThemeOptionCard
                                 key={opt.id}
+                                option={opt}
+                                selected={themeId === opt.id}
+                                label={t(opt.labelKey)}
                                 onPress={() => setTheme(opt.id)}
-                                style={[
-                                    styles.themeOption,
-                                    themeId === opt.id && styles.themeOptionSelected,
-                                ]}
-                            >
-                                <opt.Icon
-                                    size={24}
-                                    color={themeId === opt.id ? theme.colors.primary.cat : theme.colors.text.secondary}
-                                />
-                                <Text
-                                    size="sm"
-                                    weight={themeId === opt.id ? "semibold" : "medium"}
-                                    align="center"
-                                    color={themeId === opt.id ? theme.colors.text.primary : theme.colors.text.secondary}
-                                >
-                                    {t(opt.labelKey)}
-                                </Text>
-                            </Pressable>
+                                currentTheme={theme}
+                            />
                         ))}
                     </View>
                 </Card>
@@ -255,5 +228,122 @@ export default function ProfileScreen() {
                 </Card>
             </ScrollView>
         </SafeAreaView >
+    );
+}
+
+function ThemeOptionCard({
+    option,
+    selected,
+    label,
+    onPress,
+    currentTheme,
+}: {
+    option: { id: ThemeId; labelKey: string; Icon: React.ElementType };
+    selected: boolean;
+    label: string;
+    onPress: () => void;
+    currentTheme: ReturnType<typeof useTheme>;
+}) {
+    const previewTheme = getTheme(option.id);
+
+    return (
+        <Pressable
+            onPress={onPress}
+            style={[
+                {
+                    flex: 1,
+                    paddingVertical: currentTheme.spacing.md,
+                    paddingHorizontal: currentTheme.spacing.sm,
+                    borderRadius: currentTheme.radius.sm,
+                    borderWidth: 1,
+                    borderColor: selected ? currentTheme.colors.primary.cat : currentTheme.colors.ui.border,
+                    gap: currentTheme.spacing.sm,
+                    backgroundColor: selected ? currentTheme.colors.backgrounds.cardSolid : currentTheme.colors.backgrounds.subtle,
+                },
+            ]}
+        >
+            <View
+                style={{
+                    height: 74,
+                    borderRadius: currentTheme.radius.xs,
+                    borderWidth: 1,
+                    borderColor: previewTheme.colors.ui.border,
+                    backgroundColor: previewTheme.colors.backgrounds.main,
+                    overflow: 'hidden',
+                    justifyContent: 'space-between',
+                    padding: currentTheme.spacing.sm,
+                }}
+            >
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <option.Icon size={16} color={previewTheme.colors.primary.cat} />
+                    <View style={{ flexDirection: 'row', gap: 6 }}>
+                        <View
+                            style={{
+                                width: 18,
+                                height: 18,
+                                borderRadius: currentTheme.radius.xs,
+                                borderWidth: 1,
+                                borderColor: previewTheme.colors.ui.borderStrong,
+                                backgroundColor: previewTheme.colors.backgrounds.cardSolid,
+                            }}
+                        />
+                        <View
+                            style={{
+                                width: 18,
+                                height: 18,
+                                borderRadius: currentTheme.radius.xs,
+                                borderWidth: 1,
+                                borderColor: previewTheme.colors.primary.cat,
+                                backgroundColor: previewTheme.colors.primary.cat,
+                            }}
+                        />
+                    </View>
+                </View>
+                <View style={{ gap: 6 }}>
+                    <View
+                        style={{
+                            height: 7,
+                            width: '82%',
+                            borderRadius: 3,
+                            backgroundColor: previewTheme.colors.text.primary,
+                            opacity: 0.85,
+                        }}
+                    />
+                    <View
+                        style={{
+                            height: 7,
+                            width: '58%',
+                            borderRadius: 3,
+                            backgroundColor: previewTheme.colors.text.secondary,
+                            opacity: 0.45,
+                        }}
+                    />
+                </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <option.Icon
+                        size={18}
+                        color={selected ? currentTheme.colors.primary.cat : currentTheme.colors.text.secondary}
+                    />
+                    <Text
+                        size="sm"
+                        weight={selected ? 'semibold' : 'medium'}
+                        color={selected ? currentTheme.colors.text.primary : currentTheme.colors.text.secondary}
+                    >
+                        {label}
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: 999,
+                        backgroundColor: selected ? currentTheme.colors.primary.cat : currentTheme.colors.ui.border,
+                    }}
+                />
+            </View>
+        </Pressable>
     );
 }

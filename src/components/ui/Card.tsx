@@ -36,7 +36,7 @@ export const Card: React.FC<CardProps> = ({
     const styles = useMemo(() => ({
         card: {
             backgroundColor: theme.colors.backgrounds.cardSolid,
-            borderRadius: theme.radius.xl,
+            borderRadius: theme.radius.sm,
             padding: theme.spacing.lg,
             borderWidth: 1,
             borderColor: theme.colors.ui.border,
@@ -45,12 +45,7 @@ export const Card: React.FC<CardProps> = ({
         },
         selected: {
             borderColor: theme.colors.primary.cat,
-            borderWidth: 1.5,
-            shadowColor: theme.colors.primary.cat,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.35,
-            shadowRadius: 12,
-            elevation: 8,
+            borderWidth: 1,
         },
     }), [theme, shadow]);
 
@@ -59,7 +54,7 @@ export const Card: React.FC<CardProps> = ({
     }));
 
     const handlePressIn = () => {
-        scale.value = withSpring(0.98);
+        scale.value = withSpring(0.99);
     };
 
     const handlePressOut = () => {

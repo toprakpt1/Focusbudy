@@ -11,6 +11,7 @@ interface TimerStore {
     status: TimerStatus;
     sessionsCompleted: number;
     startTimestamp: number | null;
+    lastCompletedPhase: TimerPhase | null;
 
     start: () => void;
     pause: () => void;
@@ -41,6 +42,7 @@ export const useTimerStore = create<TimerStore>()(
             status: 'idle',
             sessionsCompleted: 0,
             startTimestamp: null,
+            lastCompletedPhase: null,
 
             start: () => {
                 const now = Date.now();
@@ -79,6 +81,7 @@ export const useTimerStore = create<TimerStore>()(
                     totalTime: duration,
                     status: 'idle',
                     startTimestamp: null,
+                    lastCompletedPhase: null,
                 });
             },
 
@@ -114,6 +117,7 @@ export const useTimerStore = create<TimerStore>()(
                         phase: nextPhase,
                         timeLeft: nextDuration,
                         totalTime: nextDuration,
+                        lastCompletedPhase: 'work',
                     });
                 } else {
                     // Break completed, back to work
@@ -123,6 +127,7 @@ export const useTimerStore = create<TimerStore>()(
                         phase: 'work',
                         timeLeft: workDuration,
                         totalTime: workDuration,
+                        lastCompletedPhase: phase,
                     });
                 }
             },
@@ -140,6 +145,7 @@ export const useTimerStore = create<TimerStore>()(
                     timeLeft: duration,
                     totalTime: duration,
                     status: 'idle',
+                    lastCompletedPhase: null,
                 });
             },
 
@@ -163,6 +169,7 @@ export const useTimerStore = create<TimerStore>()(
                     timeLeft: finalTimeLeft,
                     totalTime: finalTotalTime,
                     startTimestamp: null,
+                    lastCompletedPhase: null,
                 });
             },
         }),

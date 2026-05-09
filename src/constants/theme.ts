@@ -24,43 +24,43 @@ const radius = {
 const defaultTheme = {
     colors: {
         primary: {
-            cat: '#FF7F50',   // primary-100
-            dog: '#dd6236',   // primary-200
-            panda: '#8f1e00', // primary-300
-            fox: '#8B4513',   // accent-100
-            owl: '#5E548E',
-            rabbit: '#E07A5F',
+            cat: '#C86B3C',
+            dog: '#A95534',
+            panda: '#7A3E28',
+            fox: '#76513F',
+            owl: '#6B637D',
+            rabbit: '#D8956C',
         },
         backgrounds: {
-            main: '#F7EEDD',     // bg-100
-            card: 'rgba(237,228,211,0.9)',  // bg-200
-            cardSolid: '#ede4d3',           // bg-200
-            subtle: '#F1E8D9',              // light cream for default
+            main: '#F6EEE2',
+            card: 'rgba(235,223,208,0.92)',
+            cardSolid: '#EBDFD0',
+            subtle: '#E2D5C4',
             overlay: 'rgba(0,0,0,0.5)',
-            focus: '#c4bcaa',   // bg-300 (c4bca → c4bcaa)
+            focus: '#C9B79F',
         },
         text: {
-            primary: '#000000',   // text-100
-            secondary: '#2c2c2c', // text-200
-            inverse: '#F7EEDD',   // okunaklı buton metni
-            muted: '#2c2c2c',
+            primary: '#241B15',
+            secondary: '#5C4F45',
+            inverse: '#FFF8F1',
+            muted: '#76675C',
         },
         accents: {
-            success: '#8B4513',
-            warning: '#dd6236',
-            streak: '#ffd299',   // accent-200
-            xp: '#FF7F50',
+            success: '#6F7B4B',
+            warning: '#B55E3C',
+            streak: '#D8BA83',
+            xp: '#C86B3C',
         },
         ui: {
-            border: 'rgba(0,0,0,0.12)',
-            borderStrong: 'rgba(0,0,0,0.2)',
+            border: 'rgba(36,27,21,0.12)',
+            borderStrong: 'rgba(36,27,21,0.24)',
             shadow: '#000000',
-            disabled: '#c4bcaa',
+            disabled: '#C9B79F',
         },
         glow: {
-            primary: 'rgba(255,127,80,0.4)',
-            streak: 'rgba(255,210,153,0.3)',
-            xp: 'rgba(255,127,80,0.3)',
+            primary: 'rgba(200,107,60,0.22)',
+            streak: 'rgba(216,186,131,0.24)',
+            xp: 'rgba(200,107,60,0.2)',
         },
     },
     spacing,
@@ -88,7 +88,7 @@ const defaultTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#FF7F50',
+            shadowColor: '#C86B3C',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.35,
             shadowRadius: 14,
@@ -101,43 +101,43 @@ const defaultTheme = {
 const darkTheme = {
     colors: {
         primary: {
-            cat: '#0D6E6E',   // primary-100
-            dog: '#4a9d9c',   // primary-200
-            panda: '#afffff', // primary-300
-            fox: '#FF3D3D',   // accent-100
-            owl: '#B8B8FF',
-            rabbit: '#FFB703',
+            cat: '#8DAA6D',
+            dog: '#708B57',
+            panda: '#556946',
+            fox: '#A06C49',
+            owl: '#8E86A3',
+            rabbit: '#C38A5A',
         },
         backgrounds: {
-            main: '#0D1F2D',     // bg-100
-            card: 'rgba(29,46,61,0.9)',   // bg-200
-            cardSolid: '#1d2e3d',         // bg-200
-            subtle: '#142a3b',            // slightly lighter dark blue for dark
+            main: '#171614',
+            card: 'rgba(31,29,26,0.94)',
+            cardSolid: '#1F1D1A',
+            subtle: '#292621',
             overlay: 'rgba(0,0,0,0.7)',
-            focus: '#354656',   // bg-300
+            focus: '#11100E',
         },
         text: {
-            primary: '#FFFFFF',   // text-100
-            secondary: '#e0e0e0', // text-200
-            inverse: '#0D1F2D',
-            muted: '#e0e0e0',
+            primary: '#F4F1EA',
+            secondary: '#B8B0A4',
+            inverse: '#171614',
+            muted: '#948B7E',
         },
         accents: {
-            success: '#4a9d9c',
-            warning: '#FF3D3D',
-            streak: '#ffe0c8',   // accent-200
-            xp: '#afffff',
+            success: '#8DAA6D',
+            warning: '#C47452',
+            streak: '#85725C',
+            xp: '#C9A36D',
         },
         ui: {
-            border: 'rgba(255,255,255,0.1)',
-            borderStrong: 'rgba(255,255,255,0.18)',
+            border: 'rgba(244,241,234,0.1)',
+            borderStrong: 'rgba(244,241,234,0.18)',
             shadow: '#000000',
-            disabled: '#354656',
+            disabled: '#35312B',
         },
         glow: {
-            primary: 'rgba(13,110,110,0.4)',
-            streak: 'rgba(255,224,200,0.25)',
-            xp: 'rgba(175,255,255,0.3)',
+            primary: 'rgba(141,170,109,0.18)',
+            streak: 'rgba(133,114,92,0.22)',
+            xp: 'rgba(201,163,109,0.18)',
         },
     },
     spacing,
@@ -165,7 +165,7 @@ const darkTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#0D6E6E',
+            shadowColor: '#8DAA6D',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.4,
             shadowRadius: 16,
@@ -178,43 +178,43 @@ const darkTheme = {
 const whiteTheme = {
     colors: {
         primary: {
-            cat: '#FF6600',   // primary-100
-            dog: '#ff983f',   // primary-200
-            panda: '#ffffa1', // primary-300
-            fox: '#F5F5F5',   // accent-100
-            owl: '#3D405B',
-            rabbit: '#F4A261',
+            cat: '#A55A2A',
+            dog: '#C07A47',
+            panda: '#D9C189',
+            fox: '#6C8B67',
+            owl: '#4E556B',
+            rabbit: '#D6966B',
         },
         backgrounds: {
-            main: '#ffffff',     // bg-100
-            card: 'rgba(245,245,245,0.95)', // bg-200
-            cardSolid: '#f5f5f5',           // bg-200
-            subtle: '#FAFAFA',              // off-white for white theme
+            main: '#FCFBF8',
+            card: 'rgba(244,240,232,0.96)',
+            cardSolid: '#F4F0E8',
+            subtle: '#ECE7DD',
             overlay: 'rgba(0,0,0,0.4)',
-            focus: '#cccccc',   // bg-300
+            focus: '#E4DDD1',
         },
         text: {
-            primary: '#1d1f21',   // text-100
-            secondary: '#444648',  // text-200
-            inverse: '#ffffff',   // buton metni (turuncu üzerinde)
-            muted: '#444648',
+            primary: '#201A17',
+            secondary: '#62564E',
+            inverse: '#FFFDFC',
+            muted: '#7B6F66',
         },
         accents: {
-            success: '#ff983f',
-            warning: '#929292',
-            streak: '#929292',   // accent-200
-            xp: '#FF6600',
+            success: '#6C8B67',
+            warning: '#B86F42',
+            streak: '#C8B28A',
+            xp: '#A55A2A',
         },
         ui: {
-            border: 'rgba(29,31,33,0.12)',
-            borderStrong: 'rgba(29,31,33,0.2)',
+            border: 'rgba(32,26,23,0.1)',
+            borderStrong: 'rgba(32,26,23,0.18)',
             shadow: '#000000',
-            disabled: '#cccccc',
+            disabled: '#D9D1C5',
         },
         glow: {
-            primary: 'rgba(255,102,0,0.35)',
-            streak: 'rgba(146,146,146,0.25)',
-            xp: 'rgba(255,102,0,0.3)',
+            primary: 'rgba(165,90,42,0.14)',
+            streak: 'rgba(200,178,138,0.18)',
+            xp: 'rgba(165,90,42,0.14)',
         },
     },
     spacing,
@@ -242,7 +242,7 @@ const whiteTheme = {
             elevation: 12,
         },
         glow: {
-            shadowColor: '#FF6600',
+            shadowColor: '#A55A2A',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.35,
             shadowRadius: 14,

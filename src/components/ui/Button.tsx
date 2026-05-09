@@ -46,42 +46,42 @@ export const Button: React.FC<ButtonProps> = ({
             flexDirection: 'row' as const,
             alignItems: 'center' as const,
             justifyContent: 'center' as const,
-            borderRadius: theme.radius.lg,
+            borderRadius: theme.radius.xs,
             gap: theme.spacing.sm,
+            borderWidth: 1,
         },
         primary: {
             backgroundColor: theme.colors.primary.cat,
-            ...theme.shadows.medium,
-            shadowColor: theme.colors.primary.cat,
-            shadowOpacity: 0.35,
-            shadowRadius: 14,
+            borderColor: theme.colors.primary.cat,
+            ...theme.shadows.soft,
         },
         secondary: {
             backgroundColor: theme.colors.backgrounds.cardSolid,
-            borderWidth: 1,
             borderColor: theme.colors.ui.borderStrong,
         },
         ghost: {
             backgroundColor: 'transparent' as const,
+            borderColor: 'transparent',
         },
         sm: {
             paddingHorizontal: theme.spacing.md,
             paddingVertical: theme.spacing.sm,
-            minHeight: 36,
+            minHeight: 38,
         },
         md: {
             paddingHorizontal: theme.spacing.lg,
-            paddingVertical: theme.spacing.md,
-            minHeight: 44,
+            paddingVertical: 14,
+            minHeight: 46,
         },
         lg: {
             paddingHorizontal: theme.spacing.xl,
-            paddingVertical: theme.spacing.lg,
-            minHeight: 52,
+            paddingVertical: theme.spacing.md,
+            minHeight: 50,
         },
         disabled: {
             opacity: 0.5,
             backgroundColor: theme.colors.ui.disabled,
+            borderColor: theme.colors.ui.disabled,
         },
     }), [theme]);
 
@@ -91,8 +91,8 @@ export const Button: React.FC<ButtonProps> = ({
     }));
 
     const handlePressIn = () => {
-        scale.value = withSpring(0.96);
-        opacity.value = withSpring(0.8);
+        scale.value = withSpring(0.985);
+        opacity.value = withSpring(0.92);
     };
 
     const handlePressOut = () => {
@@ -126,7 +126,9 @@ export const Button: React.FC<ButtonProps> = ({
                 color={
                     variant === 'primary'
                         ? theme.colors.text.inverse
-                        : theme.colors.text.primary
+                        : variant === 'ghost'
+                            ? theme.colors.text.secondary
+                            : theme.colors.text.primary
                 }
             >
                 {label}
