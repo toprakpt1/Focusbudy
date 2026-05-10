@@ -4,17 +4,21 @@ import { Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTimerStore } from '../src/stores/useTimerStore';
+import { useUserStore } from '../src/stores/useUserStore';
 import { useTheme } from '../src/constants/theme';
 import { useThemeStore } from '../src/stores/useThemeStore';
+import { NotificationCoordinator } from '../src/components/NotificationCoordinator';
 import '../src/translate/i18n';
 
 export default function RootLayout() {
     const theme = useTheme();
     const themeId = useThemeStore((state) => state.themeId);
     const syncTimer = useTimerStore((state) => state.syncTimer);
+    const syncDailyProgress = useUserStore((state) => state.syncDailyProgress);
 
     useEffect(() => {
         syncTimer();
+        syncDailyProgress();
     }, []);
 
     useEffect(() => {
@@ -24,15 +28,17 @@ export default function RootLayout() {
             try {
                 const NavigationBar = await import('expo-navigation-bar');
                 await NavigationBar.setButtonStyleAsync('dark');
-                await NavigationBar.setVisibilityAsync('hidden');
+                await NavigationBar.setBackgroundColorAsync(theme.colors.backgrounds.main);
+                await NavigationBar.setVisibilityAsync('visible');
             } catch {
                 // ignore
             }
         })();
-    }, []);
+    }, [theme.colors.backgrounds.main]);
 
     return (
         <SafeAreaProvider>
+            <NotificationCoordinator />
             <StatusBar style={themeId === 'dark' ? 'light' : 'dark'} />
             <Stack
                 screenOptions={{

@@ -27,29 +27,10 @@
         "unlock_hint": "Level atladıkça yeni dostların kilidi otomatik açılır."
     },
     "shop": {
-        "your_gold": "Mevcut Altınların",
         "your_buddies": "Dostların",
         "selected": "Seçili",
         "unlock": "Kilidi Aç",
         "unlocked": "Açıldı",
-        "earn_more_title": "Daha Fazla Kazan",
-        "earn_more_desc": "Her odaklanma seansını tamamladığında 10 altın kazanırsın!",
-        "insufficient_balance": "Yetersiz Bakiye",
-        "gold_needed": "{{amount}} altın daha gerekiyor!",
-        "unlock_confirm_title": "{{name}} Açılsın mı?",
-        "unlock_confirm_desc": "Bu işlem {{price}} altın değerinde.",
-        "unlock_success": "{{name}} artık seninle! 🎉",
-        "watch_ad_gold": "Reklam İzle (+10 Altın)",
-        "go_premium": "Premium'a Geç ✨",
-        "premium_desc": "Tüm hayvanların kilidini aç ve reklamları kaldır.",
-        "get_premium": "Hemen Al",
-        "premium_member": "Premium Üye ✨",
-        "premium_active_badge": "Aktif",
-        "premium_benefit_unlock_all": "Tüm hayvanlar otomatik açılır ve ücretsiz seçilebilir",
-        "premium_benefit_exclusive_animals": "Sadece Premium'a özel: Owl & Rabbit",
-        "premium_benefit_remove_ads": "Reklamlar kaldırılır",
-        "purchase_success": "Artık bir Premium üyesiniz! Tüm dostlar sizi bekliyor. 🎉",
-        "ad_success": "Tebrikler! 10 altın kazandın.",
         "unlock_at_level": "Level {{level}}"
     },
     "completion": {
@@ -81,8 +62,7 @@
         "stay_focused": "Odaklanmaya devam et...",
         "take_break": "Mola ver!",
         "pause": "Oturumu Duraklat",
-        "resume": "Oturuma Devam Et",
-        "double_reward": "Ödülü İkiye Katla (Reklam)"
+        "resume": "Oturuma Devam Et"
     },
     "settings": {
         "general": "GENEL",
@@ -94,7 +74,12 @@
         "duration_25": "25 dk (Pomodoro)",
         "duration_45": "45 dk (Uzun)",
         "duration_60": "60 dk (Maraton)",
-        "sounds": "Sesler",
+        "notifications": "Bildirimler",
+        "notifications_desc": "Süre bitişleri ve seri hatırlatmaları için",
+        "notifications_denied_title": "Bildirim İzni Gerekli",
+        "notifications_denied_desc": "Bildirimleri açmak için sistem iznini vermen gerekiyor.",
+        "notifications_required_title": "Bildirimleri Aç",
+        "notifications_required_desc": "Ekran hep açık kapalıyken süre bitişlerini kaçırmaman için bildirimleri açman gerekiyor.",
         "screen_always_on": "Ekran Hep Açık",
         "screen_always_on_desc": "Zamanlayıcı çalışırken",
         "support_feedback": "DESTEK & GERİ BİLDİRİM",
@@ -103,8 +88,18 @@
         "about": "HAKKINDA",
         "version": "Sürüm",
         "terms": "Kullanım Koşulları",
+        "github": "GitHub Profili",
         "timer_not_finished_title": "Zamanlayıcı Bitmemiş",
         "timer_not_finished_desc": "Şu anki zamanlayıcı henüz bitmedi. Eğer evet derseniz yeni süreye ayarlanacak ve mevcut ilerlemeniz sıfırlanacaktır.",
         "yes_set": "Evet, Ayarla"
+    },
+    "notifications": {
+        "focus_complete_title": "Odak seansı bitti",
+        "focus_complete_body": "Güzel iş. Şimdi kısa bir mola zamanı.",
+        "break_complete_title": "Mola bitti",
+        "short_break_complete_body": "Hazırsan yeni odak seansına dönebilirsin.",
+        "long_break_complete_body": "Uzun mola tamam. Yeni seans seni bekliyor.",
+        "streak_title": "Serin riskte",
+        "streak_body": "{{streak}} günlük seriyi kaybetmemek için bugün bir seans daha yap."
     }
 }

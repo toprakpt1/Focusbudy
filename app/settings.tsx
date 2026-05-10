@@ -8,10 +8,11 @@ import { Card } from '../src/components/ui/Card';
 import { useSettingsStore, type FocusDuration } from '../src/stores/useSettingsStore';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useTheme } from '../src/constants/theme';
+import { cancelAllAppNotifications, ensureNotificationPermissions } from '../src/services/notifications';
 import {
     Globe,
-    Volume2,
-    VolumeX,
+    Bell,
+    BellOff,
     Monitor,
     Clock,
     Wrench,
@@ -35,10 +36,10 @@ export default function SettingsScreen() {
     const {
         language,
         setLanguage,
-        soundEnabled,
-        toggleSound,
+        notificationsEnabled,
+        setNotificationsEnabled,
         keepScreenOn,
-        toggleKeepScreenOn,
+        setKeepScreenOn,
         focusDuration,
         setFocusDuration,
         appVersion,
@@ -218,6 +219,57 @@ export default function SettingsScreen() {
         router.push('/terms');
     };
 
+    const handleOpenGithub = () => {
+        Linking.openURL('https://github.com/toprakpt1');
+    };
+
+    const handleNotificationsChange = async (value: boolean) => {
+        if (value) {
+            const granted = await ensureNotificationPermissions();
+
+            if (!granted) {
+                Alert.alert(
+                    t('settings.notifications_denied_title'),
+                    t('settings.notifications_denied_desc')
+                );
+                setNotificationsEnabled(false);
+                return;
+            }
+
+            setNotificationsEnabled(true);
+            return;
+        }
+
+        setNotificationsEnabled(false);
+        if (!keepScreenOn) {
+            setKeepScreenOn(true);
+        }
+        await cancelAllAppNotifications();
+    };
+
+    const handleKeepScreenOnChange = async (value: boolean) => {
+        if (value) {
+            setKeepScreenOn(true);
+            return;
+        }
+
+        if (!notificationsEnabled) {
+            const granted = await ensureNotificationPermissions();
+
+            if (!granted) {
+                Alert.alert(
+                    t('settings.notifications_required_title'),
+                    t('settings.notifications_required_desc')
+                );
+                return;
+            }
+
+            setNotificationsEnabled(true);
+        }
+
+        setKeepScreenOn(false);
+    };
+
     const handleSetFocusDuration = (value: FocusDuration) => {
         if (value === focusDuration) return;
 
@@ -351,21 +403,26 @@ export default function SettingsScreen() {
 
                         <View style={styles.divider} />
 
-                        {/* Sesler */}
+                        {/* Bildirimler */}
                         <View style={styles.settingRow}>
                             <View style={styles.settingLeft}>
                                 <View style={styles.iconWrapper}>
-                                    {soundEnabled ? (
-                                        <Volume2 size={20} color={theme.colors.primary.cat} />
+                                    {notificationsEnabled ? (
+                                        <Bell size={20} color={theme.colors.primary.cat} />
                                     ) : (
-                                        <VolumeX size={20} color={theme.colors.text.secondary} />
+                                        <BellOff size={20} color={theme.colors.text.secondary} />
                                     )}
                                 </View>
-                                <Text weight="semibold">{t('settings.sounds')}</Text>
+                                <View>
+                                    <Text weight="semibold">{t('settings.notifications')}</Text>
+                                    <Text size="sm" color={theme.colors.text.secondary}>
+                                        {t('settings.notifications_desc')}
+                                    </Text>
+                                </View>
                             </View>
                             <Switch
-                                value={soundEnabled}
-                                onValueChange={toggleSound}
+                                value={notificationsEnabled}
+                                onValueChange={handleNotificationsChange}
                                 trackColor={{ false: theme.colors.ui.disabled, true: theme.colors.primary.cat }}
                                 thumbColor={'#ffffff'}
                             />
@@ -388,7 +445,7 @@ export default function SettingsScreen() {
                             </View>
                             <Switch
                                 value={keepScreenOn}
-                                onValueChange={toggleKeepScreenOn}
+                                onValueChange={handleKeepScreenOnChange}
                                 trackColor={{ false: theme.colors.ui.disabled, true: theme.colors.primary.cat }}
                                 thumbColor={'#ffffff'}
                             />
@@ -447,6 +504,15 @@ export default function SettingsScreen() {
                                 <FileText size={20} color={theme.colors.primary.cat} />
                             </View>
                             <Text weight="semibold">{t('settings.terms')}</Text>
+                        </Pressable>
+
+                        <View style={styles.divider} />
+
+                        <Pressable onPress={handleOpenGithub} style={styles.actionButton}>
+                            <View style={styles.iconWrapper}>
+                                <Globe size={20} color={theme.colors.primary.cat} />
+                            </View>
+                            <Text weight="semibold">{t('settings.github')}</Text>
                         </Pressable>
                     </Card>
                 </View>

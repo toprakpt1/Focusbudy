@@ -1,0 +1,17 @@
+<p>FocusBuddy, Android için gizlilik odaklı ve açık kaynak bir Pomodoro zamanlayıcısıdır. Oyunlaştırılmış, sıcak bir deneyim sunar. Bir hayvan dostu seç, odak seansına başla ve çalışırken yanında seni bekleyen dostunla birlikte odaklan.</p>
+
+<p><b>Özellikler:</b></p>
+<ul>
+<li>Özelleştirilebilir Pomodoro zamanlayıcı (25 dk, 45 dk, 60 dk)</li>
+<li>Seni destekleyen hayvan dostlar — seviye atladıkça yenilerinin kilidini aç</li>
+<li>Tamamlanan seanslar için XP ve seviye sistemi</li>
+<li>Günlük seri takibi</li>
+<li>Üretkenliğini görselleştiren odak haritası</li>
+<li>Birden fazla tema: Sıcak Pastel, Gece ve Kağıt</li>
+<li>İsteğe bağlı seans bitişi ve seri hatırlatma bildirimleri</li>
+<li>Seans sırasında ekranı açık tutma</li>
+<li>Tamamen çevrimdışı — reklam, takip veya abonelik yok</li>
+<li>İngilizce ve Türkçe dil desteği</li>
+</ul>
+
+<p>FocusBuddy tüm verileri cihazınızda yerel olarak saklar ve temel işlevler için ağ izni gerektirmez.</p>

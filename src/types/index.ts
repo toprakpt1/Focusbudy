@@ -55,7 +55,6 @@ export interface AppSettings {
     shortBreakDuration: number;
     longBreakDuration: number;
     sessionsUntilLongBreak: number;
-    soundEnabled: boolean;
     hapticsEnabled: boolean;
     notificationsEnabled: boolean;
 }

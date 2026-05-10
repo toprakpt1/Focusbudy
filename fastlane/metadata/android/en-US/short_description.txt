@@ -1,0 +1,1 @@
+A cute, privacy-first Pomodoro companion for Android.

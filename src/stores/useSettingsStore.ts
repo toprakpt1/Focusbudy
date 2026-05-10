@@ -11,13 +11,13 @@ interface SettingsStore {
     language: Language;
     setLanguage: (lang: Language) => void;
 
-    // Sesler
-    soundEnabled: boolean;
-    toggleSound: () => void;
-
     // Ekran acik kalma
     keepScreenOn: boolean;
-    toggleKeepScreenOn: () => void;
+    setKeepScreenOn: (value: boolean) => void;
+
+    // Bildirimler
+    notificationsEnabled: boolean;
+    setNotificationsEnabled: (value: boolean) => void;
 
     // Odaklanma suresi (dakika)
     focusDuration: FocusDuration;
@@ -32,8 +32,8 @@ export const useSettingsStore = create<SettingsStore>()(
         (set) => ({
             // Varsayilan degerler
             language: 'tr',
-            soundEnabled: true,
             keepScreenOn: true,
+            notificationsEnabled: false,
             focusDuration: 25,
             appVersion: '1.0.0',
 
@@ -42,8 +42,8 @@ export const useSettingsStore = create<SettingsStore>()(
                 i18n.changeLanguage(lang);
                 set({ language: lang });
             },
-            toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
-            toggleKeepScreenOn: () => set((state) => ({ keepScreenOn: !state.keepScreenOn })),
+            setKeepScreenOn: (value: boolean) => set({ keepScreenOn: value }),
+            setNotificationsEnabled: (value: boolean) => set({ notificationsEnabled: value }),
             setFocusDuration: (duration: FocusDuration) => set({ focusDuration: duration }),
         }),
         {

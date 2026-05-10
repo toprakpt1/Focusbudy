@@ -27,29 +27,10 @@
         "unlock_hint": "New buddies unlock automatically as your level goes up."
     },
     "shop": {
-        "your_gold": "Your Gold",
         "your_buddies": "Your Buddies",
         "selected": "Selected",
         "unlock": "Unlock",
         "unlocked": "Unlocked",
-        "earn_more_title": "Earn More",
-        "earn_more_desc": "You earn 10 gold for every focus session you complete!",
-        "insufficient_balance": "Insufficient Balance",
-        "gold_needed": "{{amount}} more gold needed!",
-        "unlock_confirm_title": "Unlock {{name}}?",
-        "unlock_confirm_desc": "This will cost {{price}} gold.",
-        "unlock_success": "{{name}} is now with you! 🎉",
-        "watch_ad_gold": "Watch Ad (+10 Gold)",
-        "go_premium": "Go Premium ✨",
-        "premium_desc": "Unlock all animals and remove all ads.",
-        "get_premium": "Get Now",
-        "premium_member": "Premium Member ✨",
-        "premium_active_badge": "Active",
-        "premium_benefit_unlock_all": "All animals are automatically unlocked and free to select",
-        "premium_benefit_exclusive_animals": "Premium-only: Owl & Rabbit",
-        "premium_benefit_remove_ads": "Ads are removed",
-        "purchase_success": "You are now a Premium member! All buddies await you. 🎉",
-        "ad_success": "Congratulations! You earned 10 gold.",
         "unlock_at_level": "Level {{level}}"
     },
     "completion": {
@@ -81,8 +62,7 @@
         "stay_focused": "Stay focused...",
         "take_break": "Take a break!",
         "pause": "Pause Session",
-        "resume": "Resume Session",
-        "double_reward": "Double Reward (Ad)"
+        "resume": "Resume Session"
     },
     "settings": {
         "general": "GENERAL",
@@ -94,7 +74,12 @@
         "duration_25": "25 min (Pomodoro)",
         "duration_45": "45 min (Long)",
         "duration_60": "60 min (Marathon)",
-        "sounds": "Sounds",
+        "notifications": "Notifications",
+        "notifications_desc": "For timer endings and streak reminders",
+        "notifications_denied_title": "Notification Permission Required",
+        "notifications_denied_desc": "You need to allow system notifications to enable reminders.",
+        "notifications_required_title": "Enable Notifications",
+        "notifications_required_desc": "Turn on notifications so timer endings are not missed when the screen is allowed to sleep.",
         "screen_always_on": "Screen Always On",
         "screen_always_on_desc": "While timer is running",
         "support_feedback": "SUPPORT & FEEDBACK",
@@ -103,8 +88,18 @@
         "about": "ABOUT",
         "version": "Version",
         "terms": "Terms of Use",
+        "github": "GitHub Profile",
         "timer_not_finished_title": "Timer Not Finished",
         "timer_not_finished_desc": "The current timer is not finished. If you say yes, it will be set to the new duration and your current progress will be reset.",
         "yes_set": "Yes, Set"
+    },
+    "notifications": {
+        "focus_complete_title": "Focus session finished",
+        "focus_complete_body": "Nice work. It is time for a break.",
+        "break_complete_title": "Break finished",
+        "short_break_complete_body": "You can jump back into your next focus session now.",
+        "long_break_complete_body": "Long break complete. Your next session is waiting.",
+        "streak_title": "Your streak is at risk",
+        "streak_body": "Complete a session today to protect your {{streak}} day streak."
     }
 }

@@ -3,6 +3,7 @@
     "name": "FocusBuddy",
     "slug": "focusbuddy",
     "version": "1.0.0",
+    "owner": "toprakpt1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -35,12 +36,18 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-notifications"
     ],
     "extra": {
       "router": {},
       "eas": {
         "projectId": "53cbb6f5-9f1b-4762-a6cc-5dbd2079406f"
+      },
+      "developer": {
+        "name": "Toprak Talha Karcılar",
+        "email": "toprakpt1@protonmail.com",
+        "website": "https://github.com/toprakpt1"
       }
     }
   }

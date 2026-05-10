@@ -1,0 +1,17 @@
+<p>FocusBuddy is a privacy-first, open-source Pomodoro timer for Android wrapped in a cozy, gamified experience. Choose a little animal companion, start a focus session, and let your buddy keep you company while you work.</p>
+
+<p><b>Features:</b></p>
+<ul>
+<li>Pomodoro timer with customizable durations (25 min, 45 min, 60 min)</li>
+<li>Animal companions that cheer you on — unlock more as you level up</li>
+<li>XP & level system for completed sessions</li>
+<li>Daily streak tracking</li>
+<li>Focus heatmap to visualize productivity</li>
+<li>Multiple themes: Warm Pastel, Dark, and Paper</li>
+<li>Optional notifications for session ends and streak reminders</li>
+<li>Keep screen on during sessions</li>
+<li>Fully offline — no ads, no trackers, no subscriptions</li>
+<li>English & Turkish localization</li>
+</ul>
+
+<p>FocusBuddy stores all data locally on your device and does not require network permissions for core functionality.</p>

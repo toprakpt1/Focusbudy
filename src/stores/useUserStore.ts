@@ -20,6 +20,7 @@ interface UserStore extends UserStats {
     setActiveCompanion: (companion: CompanionType) => void;
     addCurrency: (amount: number) => void;
     resetDailyStats: () => void;
+    syncDailyProgress: () => void;
     setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
     clearLastSessionRewards: () => void;
 }
@@ -28,7 +29,41 @@ const XP_PER_LEVEL = 100;
 const XP_PER_SESSION = 25;
 const CURRENCY_PER_SESSION = 10;
 
-const getTodayString = () => new Date().toISOString().split('T')[0];
+const formatDateKey = (date: Date) => {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+
+const getDateKeyWithOffset = (offsetDays = 0) => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + offsetDays);
+    return formatDateKey(date);
+};
+
+const calculateVisibleStreak = (history: Record<string, DailyStats>) => {
+    const todayKey = getDateKeyWithOffset(0);
+    const anchorOffset = history[todayKey]?.count ? 0 : -1;
+    const anchorKey = getDateKeyWithOffset(anchorOffset);
+
+    if (!history[anchorKey]?.count) {
+        return 0;
+    }
+
+    let streak = 0;
+    const cursor = new Date();
+    cursor.setHours(0, 0, 0, 0);
+    cursor.setDate(cursor.getDate() + anchorOffset);
+
+    while (history[formatDateKey(cursor)]?.count) {
+        streak += 1;
+        cursor.setDate(cursor.getDate() - 1);
+    }
+
+    return streak;
+};
 
 export const useUserStore = create<UserStore>()(
     persist(
@@ -113,7 +148,7 @@ export const useUserStore = create<UserStore>()(
 
             incrementSessionsToday: (sessionDuration: number) => {
                 set((state) => {
-                    const today = getTodayString();
+                    const today = getDateKeyWithOffset(0);
                     const currentHistory = state.history || {};
                     const todayStats = currentHistory[today] || { count: 0, duration: 0 };
 
@@ -128,12 +163,15 @@ export const useUserStore = create<UserStore>()(
                         }
                     };
 
+                    const streak = calculateVisibleStreak(newHistory);
+
                     // Award XP and currency
                     get().addXP(XP_PER_SESSION);
                     get().addCurrency(CURRENCY_PER_SESSION);
 
                     return {
                         sessionsToday: newCount,
+                        streak,
                         history: newHistory,
                         lastSessionOutcome: 'completed',
                     };
@@ -152,7 +190,20 @@ export const useUserStore = create<UserStore>()(
             },
 
             resetDailyStats: () => {
-                set({ sessionsToday: 0 });
+                const history = get().history || {};
+                set({
+                    sessionsToday: 0,
+                    streak: calculateVisibleStreak(history),
+                });
+            },
+            syncDailyProgress: () => {
+                const history = get().history || {};
+                const today = getDateKeyWithOffset(0);
+
+                set({
+                    sessionsToday: history[today]?.count ?? 0,
+                    streak: calculateVisibleStreak(history),
+                });
             },
             setLastSessionOutcome: (outcome) => {
                 set({ lastSessionOutcome: outcome });
