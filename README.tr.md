@@ -278,6 +278,8 @@ Proje Bağlantısı: [https://github.com/toprakpt1/Focusbudy](https://github.com
 [Zustand-url]: https://github.com/pmndrs/zustand
 [i18next-shield]: https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white
 [i18next-url]: https://www.i18next.com/
+[license-shield]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[license-url]: https://www.gnu.org/licenses/gpl-3.0
 
 [screenshot-1]: fastlane/metadata/android/tr/images/phoneScreenshots/1.jpg
 [screenshot-2]: fastlane/metadata/android/tr/images/phoneScreenshots/2.jpg
