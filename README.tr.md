@@ -4,7 +4,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![License][license-shield]][license-url]
+[![License: GPL v3][license-shield]][license-url]
 [![F-Droid][fdroid-shield]][fdroid-url]
 
 
@@ -143,9 +143,9 @@ Bu uygulama, **reklamsız, takipsiz ve aboneliksiz** bir odak aracı arayanlar i
 <!-- SCREENSHOTS -->
 ## Ekran Görüntüleri
 
-> Yayınlamadan önce 3 ekran görüntüsünü `fastlane/metadata/android/tr/images/phoneScreenshots/` dizinine ekleyin.
 
-| Ana Sayfa & Zamanlayıcı | Odak Seansı | Profil & İstatistikler |
+
+| Ana Sayfa & Zamanlayıcı | Profil & İstatistikler | Mağaza |
 |---|---|---|
 | ![Ekran Görüntüsü 1][screenshot-1] | ![Ekran Görüntüsü 2][screenshot-2] | ![Ekran Görüntüsü 3][screenshot-3] |
 
@@ -279,6 +279,6 @@ Proje Bağlantısı: [https://github.com/toprakpt1/Focusbudy](https://github.com
 [i18next-shield]: https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white
 [i18next-url]: https://www.i18next.com/
 
-[screenshot-1]: fastlane/metadata/android/tr/images/phoneScreenshots/1.png
-[screenshot-2]: fastlane/metadata/android/tr/images/phoneScreenshots/2.png
-[screenshot-3]: fastlane/metadata/android/tr/images/phoneScreenshots/3.png
+[screenshot-1]: fastlane/metadata/android/tr/images/phoneScreenshots/1.jpg
+[screenshot-2]: fastlane/metadata/android/tr/images/phoneScreenshots/2.jpg
+[screenshot-3]: fastlane/metadata/android/tr/images/phoneScreenshots/3.jpg

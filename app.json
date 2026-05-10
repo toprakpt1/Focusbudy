@@ -5,11 +5,11 @@
     "version": "1.0.0",
     "owner": "toprakpt1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/focusbuddy.png",
     "userInterfaceStyle": "light",
     "scheme": "focusbuddy",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/focusbuddy.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFF8F0"
     },
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/focusbuddy.png",
         "backgroundColor": "#FFF8F0"
       },
       "package": "com.focusbuddy.app",
@@ -27,13 +27,13 @@
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan",
       "splash": {
-        "image": "./assets/splash-icon.png",
+        "image": "./assets/focusbuddy.png",
         "resizeMode": "contain",
         "backgroundColor": "#FFF8F0"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/focusbuddy.png"
     },
     "plugins": [
       "expo-router",
