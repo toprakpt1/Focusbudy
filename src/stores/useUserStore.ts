@@ -12,6 +12,7 @@ interface DailyStats {
 
 interface UserStore extends UserStats {
     history: Record<string, DailyStats>; // YYYY-MM-DD -> Stats
+    onboardingComplete: boolean;
     addXP: (amount: number) => void;
     incrementStreak: () => void;
     resetStreak: () => void;
@@ -23,6 +24,7 @@ interface UserStore extends UserStats {
     syncDailyProgress: () => void;
     setLastSessionOutcome: (outcome: UserStats['lastSessionOutcome']) => void;
     clearLastSessionRewards: () => void;
+    completeOnboarding: (companion: CompanionType) => void;
 }
 
 const XP_PER_LEVEL = 100;
@@ -80,6 +82,7 @@ export const useUserStore = create<UserStore>()(
             lastSessionOutcome: 'none',
             unlockedCompanions: ['cat', 'dog'] as CompanionType[],
             lastSessionRewards: { leveledUp: false },
+            onboardingComplete: false,
 
             addXP: (amount: number) => {
                 set((state) => {
@@ -210,6 +213,9 @@ export const useUserStore = create<UserStore>()(
             },
             clearLastSessionRewards: () => {
                 set({ lastSessionRewards: { leveledUp: false } });
+            },
+            completeOnboarding: (companion: CompanionType) => {
+                set({ activeCompanion: companion, onboardingComplete: true });
             },
         }),
         {

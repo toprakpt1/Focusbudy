@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -18,7 +18,7 @@ export default function OnboardingScreen() {
     const { t } = useTranslation();
     const theme = useTheme();
     const router = useRouter();
-    const setActiveCompanion = useUserStore((state) => state.setActiveCompanion);
+    const { onboardingComplete, completeOnboarding } = useUserStore();
     const { isSmall, width } = useScreenSize();
     const [selected, setSelected] = useState<CompanionType | null>(null);
     const availableCompanions = useMemo(
@@ -27,6 +27,14 @@ export default function OnboardingScreen() {
     );
     const selectedCompanion = availableCompanions.find((companion) => companion.type === selected) ?? null;
     const cardWidth = Math.floor((width - theme.spacing.lg * 2 - theme.spacing.md) / 2);
+
+    useEffect(() => {
+        if (!onboardingComplete) return;
+        const timer = setTimeout(() => {
+            router.replace('/(tabs)/home');
+        }, 0);
+        return () => clearTimeout(timer);
+    }, [onboardingComplete]);
 
     const styles = useMemo(() => StyleSheet.create({
         container: {
@@ -138,7 +146,7 @@ export default function OnboardingScreen() {
             return;
         }
 
-        setActiveCompanion(selected);
+        completeOnboarding(selected);
         router.replace('/(tabs)/home');
     };
 

@@ -124,7 +124,7 @@ export default function ProfileScreen() {
     }), [theme]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top']}>
             {/* Header with Settings */}
             <View style={styles.header}>
                 <Text size="xl" weight="bold">{t('common.profile')}</Text>

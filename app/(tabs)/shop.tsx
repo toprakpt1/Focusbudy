@@ -73,7 +73,7 @@ export default function ShopScreen() {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top']}>
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.sectionHeader}>
                     <Sparkles size={20} color={theme.colors.primary.cat} />

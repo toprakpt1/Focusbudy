@@ -23,7 +23,7 @@
         "backgroundColor": "#FFF8F0"
       },
       "package": "com.focusbuddy.app",
-      "edgeToEdgeEnabled": true,
+      "edgeToEdgeEnabled": false,
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan",
       "splash": {
@@ -32,12 +32,25 @@
         "backgroundColor": "#FFF8F0"
       }
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#EBDFD0",
+      "barStyle": "dark-content"
+    },
     "web": {
       "favicon": "./assets/focusbuddy.png"
     },
     "plugins": [
       "expo-router",
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-navigation-bar",
+        {
+          "backgroundColor": "#EBDFD0",
+          "barStyle": "dark",
+          "visibility": "visible",
+          "position": "relative"
+        }
+      ]
     ],
     "extra": {
       "router": {},

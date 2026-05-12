@@ -1,8 +1,8 @@
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { useTimerStore } from '../src/stores/useTimerStore';
 import { useUserStore } from '../src/stores/useUserStore';
 import { useTheme } from '../src/constants/theme';
@@ -21,23 +21,23 @@ export default function RootLayout() {
         syncDailyProgress();
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (Platform.OS !== 'android') return;
 
         (async () => {
             try {
                 const NavigationBar = await import('expo-navigation-bar');
-                await NavigationBar.setButtonStyleAsync('dark');
-                await NavigationBar.setBackgroundColorAsync(theme.colors.backgrounds.main);
+                await NavigationBar.setButtonStyleAsync(themeId === 'dark' ? 'light' : 'dark');
+                await NavigationBar.setBackgroundColorAsync(theme.colors.backgrounds.cardSolid);
                 await NavigationBar.setVisibilityAsync('visible');
             } catch {
                 // ignore
             }
         })();
-    }, [theme.colors.backgrounds.main]);
+    }, [theme.colors.backgrounds.cardSolid, themeId]);
 
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
             <NotificationCoordinator />
             <StatusBar style={themeId === 'dark' ? 'light' : 'dark'} />
             <Stack

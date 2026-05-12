@@ -8,6 +8,11 @@ export default function TabLayout() {
     const theme = useTheme();
     const { t } = useTranslation();
     const insets = useSafeAreaInsets();
+
+    // YouTube tarzı düzgün tab bar yüksekliği
+    const bottomPad = Math.max(insets.bottom, 0);
+    const tabBarHeight = 56 + bottomPad;
+
     return (
         <Tabs
             screenOptions={{
@@ -18,17 +23,25 @@ export default function TabLayout() {
                     backgroundColor: theme.colors.backgrounds.cardSolid,
                     borderTopWidth: 1,
                     borderTopColor: theme.colors.ui.border,
-                    paddingTop: 10,
-                    paddingBottom: Math.max(insets.bottom, 10),
-                    height: 54 + Math.max(insets.bottom, 10),
+                    height: tabBarHeight,
+                    paddingTop: 8,
+                    paddingBottom: bottomPad > 0 ? bottomPad : 0,
+                    paddingHorizontal: 0,
                 },
                 tabBarLabelStyle: {
-                    fontSize: 12,
+                    fontSize: 10,
                     fontWeight: '600',
-                    letterSpacing: 0.3,
+                    marginTop: 0,
+                    marginBottom: 0,
+                },
+                tabBarIconStyle: {
+                    marginTop: 0,
+                    marginBottom: 0,
                 },
                 tabBarItemStyle: {
-                    paddingVertical: 4,
+                    paddingVertical: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 },
             }}
         >
@@ -36,21 +49,21 @@ export default function TabLayout() {
                 name="home"
                 options={{
                     title: t('common.home'),
-                    tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+                    tabBarIcon: ({ color }) => <Home color={color} size={24} strokeWidth={2} />,
                 }}
             />
             <Tabs.Screen
                 name="profile"
                 options={{
                     title: t('common.profile'),
-                    tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
+                    tabBarIcon: ({ color }) => <User color={color} size={24} strokeWidth={2} />,
                 }}
             />
             <Tabs.Screen
                 name="shop"
                 options={{
                     title: t('common.shop'),
-                    tabBarIcon: ({ color, size }) => <ShoppingBag color={color} size={size} />,
+                    tabBarIcon: ({ color }) => <ShoppingBag color={color} size={24} strokeWidth={2} />,
                 }}
             />
         </Tabs>
